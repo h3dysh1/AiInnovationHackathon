@@ -1,38 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Redirect } from 'expo-router';
+import { Button, Notice, Page, Title } from '@/components/ui';
+import { useAuth } from '@/hooks/auth';
+import { isSupabaseConfigured, supabase } from '@/services/supabase';
 
 export default function Index() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>mo-app</Text>
-      <Text style={styles.subtitle}>Your hackathon app starts here.</Text>
-      <Text style={styles.hint}>Edit src/app/index.tsx to build your first screen.</Text>
-    </View>
-  );
+  const { session, role, error, reload } = useAuth();
+  if (!isSupabaseConfigured) {
+    return <Page><Title subtitle="Connect the app to your Supabase project to begin.">Ground Control</Title><Notice message="Add EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY to .env.local, then restart Expo." /></Page>;
+  }
+  if (!session) return <Redirect href="/sign-in" />;
+  if (role === 'coordinator') return <Redirect href="/coordinator" />;
+  if (role === 'volunteer') return <Redirect href="/volunteer" />;
+  return <Page><Title>Account unavailable</Title><Notice message={error ?? 'Your account is not ready yet.'} /><Button title="Try again" onPress={() => { void reload(); }} /><Button title="Sign out" secondary onPress={() => { void supabase?.auth.signOut(); }} /></Page>;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#F8FAFC",
-    padding: 24,
-  },
-  title: {
-    color: "#0F172A",
-    fontSize: 36,
-    fontWeight: "700",
-  },
-  subtitle: {
-    color: "#334155",
-    fontSize: 18,
-    marginTop: 12,
-    textAlign: "center",
-  },
-  hint: {
-    color: "#64748B",
-    fontSize: 14,
-    marginTop: 32,
-    textAlign: "center",
-  },
-});
