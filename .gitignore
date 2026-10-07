@@ -43,3 +43,13 @@ example
 # generated native folders
 /ios
 /android
+
+# crowd camera (cv/): credentials, footage, generated media, Python caches
+cv/.env.local
+cv/camera.json
+cv/footage/
+cv/output/*
+!cv/output/.gitkeep
+__pycache__/
+.pytest_cache/
+*.pth

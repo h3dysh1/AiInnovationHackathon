@@ -1,0 +1,10 @@
+# Crowd camera pipeline (Python 3.10+). Install into a virtual environment OUTSIDE the
+# app folder so Expo's file watcher does not scan thousands of package files.
+opencv-python>=4.9
+numpy>=1.26
+torch>=2.1
+torchvision>=0.16
+pillow>=10.0
+gdown>=4.7          # lwcc imports it; we download weights ourselves (see crowdcam/model.py)
+lwcc==0.0.6
+pytest>=8.0
