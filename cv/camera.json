@@ -1,6 +1,6 @@
 {
-  "camera_id": "footbridge-cam-1",
-  "location_name": "Footbridge",
+  "camera_id": "lawn-cam-1",
+  "location_name": "Lawn",
   "area_m2": 200,
   "confidence": 0.7,
   "region": [[0, 325], [1920, 325], [1920, 640], [0, 640]],
