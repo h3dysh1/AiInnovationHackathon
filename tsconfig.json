@@ -9,7 +9,8 @@
       "@/assets/*": [
         "./assets/*"
       ]
-    }
+    },
+    "allowImportingTsExtensions": true
   },
   "include": [
     "**/*.ts",
@@ -19,6 +20,7 @@
   ],
   "exclude": [
     "example",
+    "supabase/functions",
     "node_modules"
   ]
 }

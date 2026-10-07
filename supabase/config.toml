@@ -1,0 +1,11 @@
+[functions.setup-ai]
+verify_jwt = false
+
+[edge_runtime]
+policy = "per_worker"
+
+[functions.certificate-ai]
+verify_jwt = false
+
+[functions.roster-generate]
+verify_jwt = false
