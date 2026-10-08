@@ -1,6 +1,6 @@
-import { parseOutbox, outboxKey, reportSendFailure, retryDelay, type QueuedIncident } from '@/domain/incident-outbox';
+import { expiredReceipt, parseOutbox, outboxKey, reportSendFailure, retryDelay, type QueuedIncident } from '@/domain/incident-outbox';
 import { loadDraft, saveDraft } from './draft-storage';
-import { preserveIncidentAudio } from './incident-evidence';
+import { preserveIncidentAudio, releaseIncidentAudio } from './incident-evidence';
 import { supabase, scopedReportingClient } from './supabase';
 import { reportIncident, reportVoiceIncident } from './staffing';
 
@@ -52,6 +52,21 @@ async function update(userId: string, requestId: string, change: Partial<QueuedI
     await write(userId, reports.map(q => q.requestId === requestId ? { ...q, ...change } : q));
   });
 }
+// The queue write comes first: an entry must never point at audio that is gone.
+// A failed delete only leaves an unused file behind.
+function release(requestId: string) {
+  try { releaseIncidentAudio(requestId); } catch { /* Retried the next time receipts are pruned. */ }
+}
+async function pruneReceipts(userId: string) {
+  const expired = await mutate(async () => {
+    const reports = await readOutbox(userId);
+    const now = Date.now();
+    const expired = reports.filter(q => expiredReceipt(q, now));
+    if (expired.length) await write(userId, reports.filter(q => !expired.includes(q)));
+    return expired;
+  });
+  expired.forEach(q => release(q.requestId));
+}
 let flushing: Promise<void> | null = null;
 export async function flushIncidentOutbox(force = false): Promise<void> {
   if (flushing) return flushing;
@@ -60,6 +75,8 @@ export async function flushIncidentOutbox(force = false): Promise<void> {
     const { data } = await supabase.auth.getSession();
     const userId = data.session?.user.id;
     if (!userId) return;
+    // Housekeeping must never stop queued reports from being sent.
+    await pruneReceipts(userId).catch(() => undefined);
     const reports = await readOutbox(userId);
     for (const report of reports) {
       if (report.status !== 'queued' || !force && report.nextAttemptAt > Date.now()) continue;
@@ -73,7 +90,9 @@ export async function flushIncidentOutbox(force = false): Promise<void> {
         const received = report.recordingUri
           ? await reportVoiceIncident(report.eventId, report.recordingUri, report.assignmentId, report.report, report.requestId, client)
           : await reportIncident(report.eventId, report.report, report.assignmentId, report.requestId, client);
-        await update(userId, report.requestId, { status: 'received', incidentId: received.id, error: null });
+        // The server now holds the recording, so the local copy can go.
+        await update(userId, report.requestId, { status: 'received', incidentId: received.id, error: null, receivedAt: Date.now(), recordingUri: null });
+        if (report.recordingUri) release(report.requestId);
       } catch (cause) {
         const failure = reportSendFailure(cause);
         await update(userId, report.requestId, { status: failure.blocked ? 'blocked' : 'queued', error: failure.message });
