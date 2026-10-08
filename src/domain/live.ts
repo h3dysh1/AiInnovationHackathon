@@ -32,9 +32,13 @@ export type LiveIncident = {
 }
 export function incidentProcessingLabel(incident: LiveIncident): string {
   switch (incident.processing_status) {
-    case 'queued': return 'Report saved · processing queued';
-    case 'processing': return 'Report saved · processing';
-    case 'failed': return incident.processing_failures < 3
+    case 'queued': return 'Report saved · AI queued · human review available now';
+    case 'processing': return 'Report saved · AI analysing · human review available now';
+    case 'failed': return incident.processing_error?.startsWith('AI analysis delayed.')
+      ? incident.processing_failures < 3
+        ? 'AI analysis delayed · review the saved report now · background retry scheduled'
+        : 'AI analysis delayed · review the saved report now · retry available'
+      : incident.processing_failures < 3
       ? 'Processing failed · automatic retry scheduled · original retained'
       : 'Processing failed · retry available · original retained';
     case 'complete': return incident.status === 'needs_review'

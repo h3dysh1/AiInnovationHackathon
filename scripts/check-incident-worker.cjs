@@ -40,7 +40,7 @@ function worker(options = {}) {
   vm.runInNewContext(ts.transpileModule(fs.readFileSync('supabase/functions/incident-ai/index.ts', 'utf8'), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
   }).outputText, {
-    exports: {}, Response, Error, Uint8Array, Blob, btoa,
+    exports: {}, Response, Error, Uint8Array, Blob, btoa, AbortSignal,
     console: { error: () => {} },
     Deno: { serve: f => { handler = f; }, env: { get: key => env[key] } },
     EdgeRuntime: { waitUntil: p => pending.push(p) },

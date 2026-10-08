@@ -15,6 +15,8 @@ function load(file, deps = {}, globals = {}) {
       Error,
       Date,
       AbortSignal,
+      setTimeout,
+      clearTimeout,
       fetch,
       ArrayBuffer,
       ...globals,
@@ -129,6 +131,41 @@ test('missing facts stay null and produce deterministic clarification gaps', () 
   assert.equal(domain.proposalGaps(valid).length, 5);
 });
 const { createSetupProvider } = load('supabase/functions/_shared/ai-provider.ts');
+test('transient responses retry within one shared deadline and retain the request', async () => {
+  for (const status of [429, 500, 502, 503, 504]) {
+    const requests = [];
+    const provider = createSetupProvider({ provider: 'gemini', key: 'key', model: 'test', timeoutMs: 1000, retryDelayMs: 1 }, async (_url, request) => {
+      requests.push(request);
+      return requests.length === 1 ? new Response('', { status }) : new Response(JSON.stringify({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text: '{"ok":true}' }] } }] }));
+    });
+    assert.equal((await provider.generate([{ text: 'original' }], {})).ok, true);
+    assert.equal(requests.length, 2);
+    assert.equal(requests[0].signal, requests[1].signal);
+    assert.equal(requests[0].body, requests[1].body);
+  }
+});
+test('deadline interrupts backoff instead of starting more provider attempts', async () => {
+  let attempts = 0;
+  const provider = createSetupProvider({ provider: 'gemini', key: 'key', model: 'test', timeoutMs: 30, retryDelayMs: 200 }, async () => {
+    attempts++;
+    return new Response('', { status: 503 });
+  });
+  await assert.rejects(provider.generate([], {}), /AI analysis delayed/);
+  assert.equal(attempts, 1);
+});
+test('shared voice budget cancels a provider call without retrying or returning partial output', async () => {
+  const controller = new AbortController();
+  let attempts = 0;
+  const provider = createSetupProvider({ provider: 'gemini', key: 'key', model: 'test', signal: controller.signal }, async (_url, { signal }) => {
+    attempts++;
+    return new Promise((_resolve, reject) => {
+      signal.addEventListener('abort', () => reject(signal.reason), { once: true });
+      controller.abort();
+    });
+  });
+  await assert.rejects(provider.generate([], {}), /AI analysis delayed/);
+  assert.equal(attempts, 1);
+});
 test('Gemini key remains in backend header; provider returns structured candidate only', async () => {
   let request;
   const provider = createSetupProvider({
@@ -162,7 +199,7 @@ test('quota, missing credentials, incomplete output and malformed JSON fail with
   );
   await assert.rejects(
     createSetupProvider(
-      { provider: 'gemini', key: 'key', model: 'test' },
+      { provider: 'gemini', key: 'key', model: 'test', retryDelayMs: 1 },
       async () => new Response('rate limit', { status: 429 }),
     ).generate([], {}),
     /free-tier limit/,

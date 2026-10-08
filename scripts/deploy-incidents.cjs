@@ -27,6 +27,14 @@ async function main() {
   if (!fs.existsSync(cli)) throw new Error('Supabase CLI unavailable; set GROUND_CONTROL_SUPABASE_CLI to its installed path.');
   const secretNames = (await api('/secrets', undefined, 'GET')).map(secret => secret.name);
   if (!secretNames.includes('GEMINI_API_KEY')) throw new Error('Hosted GEMINI_API_KEY unavailable; no hosted changes made.');
+  // Latency/adapter updates do not require reapplying historical migrations.
+  if (process.argv.includes('--worker-only')) {
+    const deployed = spawnSync(cli, ['functions', 'deploy', 'incident-ai', '--project-ref', ref,
+      '--use-api', '--no-verify-jwt', '--yes'], { cwd: root, env: process.env, stdio: ['ignore', 'inherit', 'inherit'] });
+    if (deployed.error || deployed.status !== 0) throw new Error('Worker deployment failed. Saved reports remain available.');
+    console.log('Deployed incident worker only; database migrations unchanged.');
+    return;
+  }
   const preflight = await api('/database/query', { query: `select
     to_regprocedure('public.report_voice_incident(uuid,text,text,integer,uuid)') is not null
       or to_regprocedure('public.report_voice_incident(uuid,text,text,integer,uuid,text,uuid)') is not null as ready,
