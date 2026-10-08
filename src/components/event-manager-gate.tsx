@@ -8,6 +8,7 @@ import { Button, Loading, Notice, Page, Title } from './ui';
 
 export function EventManagerGate({ id, children }: PropsWithChildren<{ id: string }>) {
   const { session } = useAuth();
+  const userId = session?.user.id;
   const [decision, setDecision] = useState<
     { eventId: string; allowed: boolean; error: string | null } | null
   >(null);
@@ -15,20 +16,19 @@ export function EventManagerGate({ id, children }: PropsWithChildren<{ id: strin
   const check = useCallback(async (active: () => boolean = () => true) => {
     setLoading(true);
     try {
-      const membership = session ? await getMembership(id, session.user.id) : null;
+      const membership = userId ? await getMembership(id, userId) : null;
       if (active()) setDecision({ eventId: id, allowed: managerRole(membership), error: null });
     } catch (error) {
       if (active()) {
-        setDecision({
-          eventId: id,
-          allowed: false,
-          error: errorMessage(error, 'Could not check event access.'),
-        });
+        const failed = { eventId: id, allowed: false, error: errorMessage(error, 'Could not check event access.') };
+        // A dropped connection during a re-check is not a loss of access; the
+        // server still authorises every read and write on the screen.
+        setDecision(previous => previous?.eventId === id && previous.allowed ? previous : failed);
       }
     } finally {
       if (active()) setLoading(false);
     }
-  }, [id, session]);
+  }, [id, userId]);
   useFocusEffect(useCallback(() => {
     let active = true;
     void check(() => active);
@@ -36,7 +36,9 @@ export function EventManagerGate({ id, children }: PropsWithChildren<{ id: strin
       active = false;
     };
   }, [check]));
-  if (loading || decision?.eventId !== id) return <Loading label='Checking event access…' />;
+  // Returning to the screen re-checks access in place; replacing an allowed
+  // screen with a spinner would discard whatever the manager was typing.
+  if (decision?.eventId !== id || loading && !decision.allowed) return <Loading label='Checking event access…' />;
   if (!decision.allowed) {
     return (
       <Page>
