@@ -1,8 +1,9 @@
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const Module = require('node:module'), ts = require('typescript');
-const { PGlite } = require(process.env.PGLITE_MODULE || '/tmp/ground-control-validation/node_modules/@electric-sql/pglite');
+const { PGlite } = require(process.env.PGLITE_MODULE || '@electric-sql/pglite');
 function load(file) {
   const m = new Module(path.join(__dirname, file), module);
+  m.filename = path.join(__dirname, file);
   m._compile(ts.transpileModule(fs.readFileSync(m.filename, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText, m.filename);
   return m.exports;
 }
@@ -33,8 +34,11 @@ function load(file) {
     await db.query('select public.claim_setup_job($1)',[job]);
     const context = (await one('select public.get_setup_ai_context($1) as c',[job])).c;
     assert.equal(context.site_map.id,map.id);
+    // Internal helper: revoked from app roles, so check it as the database owner.
+    await db.exec('reset role');
     assert.equal((await one('select public.setup_source_valid($1,$2) as valid',[demo.eventId,JSON.stringify({sourceType:'document',sourceId:map.id})])).valid,true);
     assert.equal((await one('select public.setup_source_valid($1,$2) as valid',[liveDemoId,JSON.stringify({sourceType:'document',sourceId:map.id})])).valid,false);
+    await asUser(ids[0]);
     await db.query('update public.event_maps set storage_path=$1 where id=$2',[`${demo.eventId}/replacement.jpg`,map.id]);
     await assert.rejects(()=>db.query('select public.get_setup_ai_context($1)',[job]),/Setup changed/);
     await asUser(ids[1]);
