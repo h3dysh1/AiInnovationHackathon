@@ -33,6 +33,7 @@ function Routes() {
         <Stack.Screen name='events/[id]/publish' />
         <Stack.Screen name='events/[id]/team' />
         <Stack.Screen name='events/[id]/live' />
+        <Stack.Screen name='events/[id]/crowd' />
       </Stack.Protected>
       <Stack.Protected guard={Boolean(session && role === 'coordinator')}>
         <Stack.Screen name='coordinator' />

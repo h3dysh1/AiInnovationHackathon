@@ -118,6 +118,7 @@ function LiveDashboard({ id }: { id: string }) {
                 </PlanCard>
               ))}
               <Button title='Check for emerging risks' secondary compact onPress={() => { void s.run(() => detectRisk(id)); }} />
+              <Button title='Crowd cameras & map' secondary compact onPress={() => router.push({ pathname: '/events/[id]/crowd', params: { id } })} />
             </Section>
             <Section title='Response drafts and status'>
               {intelligence?.responses.map(response=><ResponseReview key={`${response.id}:${response.revision}:${response.processing_status}`} response={response} snapshot={intelligence} pending={s.pending} run={s.run}/>)}
