@@ -15,7 +15,7 @@ import type {
   SetupIssue,
 } from '@/domain/planning';
 import { type OperatingPlan, validateOperatingPlan } from '@/domain/operating-plan';
-import type { Post, PostRequirement, SiteLocation } from '@/domain/site';
+import type { Post, PostRequirement, SiteLocation, SiteMap } from '@/domain/site';
 import { supabase } from './supabase';
 
 export function planningClient() {
@@ -67,6 +67,7 @@ export type PlanningSnapshot = {
   answers: SetupAnswer[];
   readiness: Readiness;
   description: string | null;
+  siteMap?: SiteMap | null;
 };
 export async function getPlanningSnapshot(id: string): Promise<PlanningSnapshot> {
   const c = planningClient();
@@ -83,6 +84,7 @@ export async function getPlanningSnapshot(id: string): Promise<PlanningSnapshot>
     issues,
     answers,
     description,
+    maps,
   ] = await Promise.all([
     c.from('events').select('*').eq('id', id).single().then(({ data, error }) => {
       if (error) throw error;
@@ -103,6 +105,7 @@ export async function getPlanningSnapshot(id: string): Promise<PlanningSnapshot>
         return data?.description as string ?? null;
       },
     ),
+    rows<SiteMap>('event_maps', id),
   ]);
   let requirements: PostRequirement[] = [];
   if (posts.length) {
@@ -132,6 +135,7 @@ export async function getPlanningSnapshot(id: string): Promise<PlanningSnapshot>
     answers: answers.sort((a, b) => a.created_at.localeCompare(b.created_at)),
     readiness: current,
     description,
+    siteMap: maps[0] ?? null,
   };
 }
 export async function enqueueAnalysis(
@@ -164,6 +168,7 @@ export function validateProposal(plan: unknown, s: PlanningSnapshot): OperatingP
     sources: [
       ...(s.description ? [{ id: s.event.id, type: 'description' }] : []),
       ...s.documents.filter((d) => d.include_in_setup).map((d) => ({ id: d.id, type: 'document' })),
+      ...(s.siteMap ? [{ id: s.siteMap.id, type: 'document' }] : []),
       ...s.answers.map((a) => ({ id: a.id, type: 'answer' })),
     ],
   });

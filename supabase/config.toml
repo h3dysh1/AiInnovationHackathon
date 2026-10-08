@@ -9,3 +9,6 @@ verify_jwt = false
 
 [functions.roster-generate]
 verify_jwt = false
+
+[functions.operations-worker]
+verify_jwt = false

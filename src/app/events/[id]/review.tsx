@@ -1,6 +1,7 @@
+import { AppText as Text } from '@/components/app-text';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Text } from 'react-native';
+
 import { EventManagerGate } from '@/components/event-manager-gate';
 import { Button, Field, Loading, Notice, Page, Title } from '@/components/ui';
 import { PlanCard, planStyles, SourceLabel } from '@/components/plan-ui';
@@ -89,7 +90,7 @@ function Review({ id }: { id: string }) {
   return (
     <Page>
       <Title subtitle={data.event.name}>Review operating plan</Title>
-      {s.error ? <Notice message={s.error} /> : null}
+      {s.error ? <Notice tone="error" message={s.error} /> : null}
       <PlanCard>
         <Text style={planStyles.badge}>
           {readiness.modelStatus.replaceAll('_', ' ').toUpperCase()}

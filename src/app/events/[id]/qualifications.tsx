@@ -1,6 +1,7 @@
+import { AppText as Text } from '@/components/app-text';
 import { useCallback, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Linking, Text } from 'react-native';
+import { Linking } from 'react-native';
 import { EventManagerGate } from '@/components/event-manager-gate';
 import { Button, Field, Loading, Notice, Page, Title } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
@@ -86,7 +87,7 @@ function Review({ id }: { id: string }) {
       <Title subtitle='Review original evidence before confirming. Qualifications must cover the whole event.'>
         Crew qualifications
       </Title>
-      {s.error && <Notice message={s.error} />}
+      {s.error && <Notice tone="error" message={s.error} />}
       {selected && (
         <PlanCard>
           <Text style={planStyles.heading}>Review {selected.title}</Text>

@@ -1,5 +1,7 @@
+import { AppText as Text } from '@/components/app-text';
+import { colors } from '@/theme';
 import { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { circleDiameter, pointFromTap, type MapPoint } from '@/domain/site-geometry';
 
 export type ImageMapMarker = { key: string; point: MapPoint; label: string; selected?: boolean; radiusPercent?: number | null; checkIn?: boolean };
@@ -44,14 +46,14 @@ export function SiteMapImage({ url, width, height, markers = [], onTap, onError 
 }
 
 const styles = StyleSheet.create({
-  map: { width: '100%', backgroundColor: '#E4EFF1', borderRadius: 12, overflow: 'hidden' },
-  marker: { position: 'absolute', minWidth: 24, height: 24, paddingHorizontal: 4, borderRadius: 12, backgroundColor: '#123B53', borderWidth: 2, borderColor: '#FFF', transform: [{ translateX: -12 }, { translateY: -12 }], alignItems: 'center', justifyContent: 'center' },
+  map: { width: '100%', backgroundColor: colors.accentSoft, borderRadius: 12, overflow: 'hidden' },
+  marker: { position: 'absolute', minWidth: 24, height: 24, paddingHorizontal: 4, borderRadius: 12, backgroundColor: colors.text, borderWidth: 2, borderColor: '#FFF', transform: [{ translateX: -12 }, { translateY: -12 }], alignItems: 'center', justifyContent: 'center' },
   selected: { backgroundColor: '#AF4D12', borderColor: '#FFE8A5' },
-  circle: { position: 'absolute', borderWidth: 2, borderColor: '#123B53', backgroundColor: 'rgba(18, 59, 83, 0.10)' },
+  circle: { position: 'absolute', borderWidth: 2, borderColor: colors.text, backgroundColor: 'rgba(18, 59, 83, 0.10)' },
   selectedCircle: { borderColor: '#AF4D12', backgroundColor: 'rgba(175, 77, 18, 0.12)' },
-  checkInCircle: { borderStyle: 'dashed', borderColor: '#126B79', backgroundColor: 'rgba(18, 107, 121, 0.08)' },
-  checkInMarker: { backgroundColor: '#126B79', transform: [{ translateX: -12 }, { translateY: -30 }] },
-  markerText: { color: '#FFF', fontSize: 10, fontWeight: '800' },
-  status: { backgroundColor: '#E4EFF1', alignItems: 'center', justifyContent: 'center', padding: 16 },
-  statusText: { color: '#45616E', fontSize: 14, textAlign: 'center' },
+  checkInCircle: { borderStyle: 'dashed', borderColor: colors.accent, backgroundColor: 'rgba(18, 107, 121, 0.08)' },
+  checkInMarker: { backgroundColor: colors.accent, transform: [{ translateX: -12 }, { translateY: -30 }] },
+  markerText: { color: '#FFF', fontSize: 10, fontWeight: '600' },
+  status: { backgroundColor: colors.accentSoft, alignItems: 'center', justifyContent: 'center', padding: 16 },
+  statusText: { color: colors.secondary, fontSize: 14, textAlign: 'center' },
 });

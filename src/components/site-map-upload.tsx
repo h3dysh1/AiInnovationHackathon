@@ -1,5 +1,7 @@
+import { AppText as Text } from '@/components/app-text';
+import { colors } from '@/theme';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Button, Loading, Notice } from '@/components/ui';
 import { SiteMapImage } from '@/components/site-map-image';
 import type { SiteMapState } from '@/hooks/site-map';
@@ -27,7 +29,7 @@ export function SiteMapUpload({ state, onUploaded, preview = true, disabled = fa
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: '#FFF', borderRadius: 14, padding: 16, gap: 12, borderWidth: 1, borderColor: '#D6E3E6' },
-  title: { color: '#123B53', fontSize: 19, fontWeight: '800' },
-  help: { color: '#45616E', fontSize: 14, lineHeight: 21 },
+  card: { backgroundColor: colors.surface, borderRadius: 4, padding: 16, gap: 12, borderWidth: 0, borderColor: colors.border },
+  title: { color: colors.text, fontSize: 19, fontWeight: '600' },
+  help: { color: colors.secondary, fontSize: 14, lineHeight: 21 },
 });

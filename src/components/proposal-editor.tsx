@@ -1,5 +1,6 @@
+import { AppText as Text } from '@/components/app-text';
 import { useState } from 'react';
-import { Text } from 'react-native';
+
 import { Button, Field } from './ui';
 import { PlanCard, planStyles, SourceLabel } from './plan-ui';
 import type { OperatingPlan, Source } from '@/domain/operating-plan';

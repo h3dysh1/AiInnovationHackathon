@@ -1,11 +1,13 @@
+import { AppText as Text } from '@/components/app-text';
 import { useEffect, useState } from 'react';
-import { Text } from 'react-native';
-import { Button, Field, Notice } from '@/components/ui';
+import { View } from 'react-native';
+import { Button, Disclosure, Field, Notice } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
 import type { IntelligenceSnapshot, LiveResponse, ResponseCandidate } from '@/domain/live';
 import { approveResponse, completeResponse, dismissResponse, modifyResponse, responseCandidates, retryResponse } from '@/services/staffing';
 
 export function ResponseReview({response:r,snapshot,run,pending}:{response:LiveResponse;snapshot:IntelligenceSnapshot;run:(operation:()=>Promise<unknown>)=>Promise<unknown>;pending:boolean}) {
+  const [expanded, setExpanded] = useState(false);
   const [shift,setShift]=useState(r.target_shift_id ?? '');
   const [instruction,setInstruction]=useState(r.instruction ?? '');
   const [actions,setActions]=useState(r.actions.join('\n'));
@@ -16,20 +18,25 @@ export function ResponseReview({response:r,snapshot,run,pending}:{response:LiveR
   const [showBlocked,setShowBlocked]=useState(false);
   const [notes,setNotes]=useState('');
   useEffect(()=>{
-    if (r.processing_status==='complete' && ['proposed','modified'].includes(r.status)) {
+    if (expanded && r.processing_status==='complete' && ['proposed','modified'].includes(r.status)) {
       responseCandidates(r.id).then(setCandidates).catch(()=>setError('Candidates could not be loaded. Refresh and try again.'));
     }
-  },[r.id,r.revision,r.processing_status,r.status]);
+  },[expanded,r.id,r.revision,r.processing_status,r.status]);
   const editable=['proposed','modified'].includes(r.status);
-  const dirty=shift!==r.target_shift_id || instruction!==r.instruction || actions!==r.actions.join('\n') || JSON.stringify(resources)!==JSON.stringify(r.resources);
+  const dirty=shift!==(r.target_shift_id ?? '') || instruction!==(r.instruction ?? '') || actions!==r.actions.join('\n') || JSON.stringify(resources)!==JSON.stringify(r.resources);
   const enough=resources.length>0 && resources.every((resource,index)=>selected.filter(s=>s.resourceIndex===index).length===resource.count);
   return <PlanCard>
     <Text style={planStyles.heading}>{r.title}</Text><Text style={planStyles.text}>{r.rationale}</Text>
     <Text style={planStyles.badge}>{r.status.toUpperCase()} · {r.processing_status}</Text>
-    {r.processing_error?<Notice message={r.processing_error}/>:null}
-    {error?<Notice message={error}/>:null}
+    {r.processing_error?<Notice tone="error" message={r.processing_error}/>:null}
+    {error?<Notice tone="error" message={error}/>:null}
     {r.procedure_ids.map(id=>{const p=snapshot.procedures.find(p=>p.id===id);return p?<Text key={id} style={planStyles.help}>Procedure: {p.title} · {p.content}</Text>:null;})}
+    {editable ? <Button title={expanded ? 'Close response review' : 'Review response and crew'} secondary onPress={() => setExpanded(!expanded)} /> : null}
+    <View accessibilityElementsHidden={editable && !expanded} importantForAccessibility={editable && !expanded ? 'no-hide-descendants' : 'auto'} style={editable && !expanded ? { display: 'none' } : undefined}>
     {editable?<>
+      <Text style={planStyles.text}>Destination: {snapshot.activeShifts.find(s => s.id === shift)?.post ?? 'Choose a post'}</Text>
+      <Text style={planStyles.text}>{instruction || 'No instruction drafted yet.'}</Text>
+      <Disclosure title='Edit destination, instructions and resources'>
       <Text style={planStyles.text}>Destination post</Text>
       {snapshot.activeShifts.map(s=><Button key={s.id} title={`${shift===s.id?'✓ ':''}${s.post} · ${s.location}`} secondary compact onPress={()=>setShift(s.id)}/>)}
       <Field label='Actions (one per line)' value={actions} onChangeText={setActions} multiline/>
@@ -45,6 +52,7 @@ export function ResponseReview({response:r,snapshot,run,pending}:{response:LiveR
       </PlanCard>)}
       {resources.length<6?<Button title='Add one general volunteer' secondary compact onPress={()=>setResources([...resources,{label:'General support',certificationType:null,experienceRequirement:null,count:1}])}/>:null}
       <Button title='Save reviewed destination and instructions' disabled={pending||!shift||!instruction.trim()||!actions.trim()||!resources.length} onPress={()=>{void run(()=>modifyResponse(r.id,r.revision,shift,instruction,resources,actions.split('\n').filter(s=>s.trim())));}}/>
+      </Disclosure>
       {!dirty && r.processing_status==='complete'?resources.map((resource,index)=><PlanCard key={`c-${index}`}>
         <Text style={planStyles.heading}>Choose {resource.count} · {resource.label}</Text>
         {candidates.filter(c=>c.resourceIndex===index&&(showBlocked||c.eligible)).sort((a,b)=>a.rank-b.rank||a.name.localeCompare(b.name)).map(c=>{
@@ -62,6 +70,7 @@ export function ResponseReview({response:r,snapshot,run,pending}:{response:LiveR
       {r.processing_status==='failed'?<Button title='Retry AI draft' secondary onPress={()=>{void run(()=>retryResponse(r.id));}}/>:null}
       <Button title='Dismiss response' secondary disabled={pending} onPress={()=>{void run(()=>dismissResponse(r.id,r.revision));}}/>
     </>:null}
+    </View>
     {snapshot.dispatches.filter(d=>d.response_plan_id===r.id).map(d=><Text key={d.id} style={planStyles.text}>{d.name} · {d.status}</Text>)}
     {r.status==='approved'?<><Field label='Completion notes' value={notes} onChangeText={setNotes}/><Button title='Confirm response completed' disabled={pending||!notes.trim()} onPress={()=>{void run(()=>completeResponse(r.id,notes));}}/></>:null}
   </PlanCard>;

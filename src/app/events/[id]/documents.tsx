@@ -1,9 +1,10 @@
+import { AppText as Text } from '@/components/app-text';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { type DocumentPickerAsset, getDocumentAsync } from 'expo-document-picker';
 import { randomUUID } from 'expo-crypto';
 import { openURL } from 'expo-linking';
-import { Text } from 'react-native';
+
 import { EventManagerGate } from '@/components/event-manager-gate';
 import { Button, Field, Loading, Notice, Page, Title } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
@@ -92,7 +93,7 @@ function Documents({ id }: { id: string }) {
       <Title subtitle='Original files are retained privately for this event.'>
         Event documents
       </Title>
-      {s.error ? <Notice message={s.error} /> : null}
+      {s.error ? <Notice tone="error" message={s.error} /> : null}
       <Text style={planStyles.help}>
         PDF, TXT, Markdown, CSV, TSV, JPEG or PNG · up to 10 MB per file. Export Word/Excel files to
         PDF or CSV first. Include up to 10 files / 12 MB in one AI analysis.

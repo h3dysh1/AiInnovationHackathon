@@ -1,4 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { AppText as Text } from '@/components/app-text';
+import { colors } from '@/theme';
+import { StyleSheet, View } from 'react-native';
 import { Button, Field } from '@/components/ui';
 import type { MapItemDraft, SiteStructure } from '@/domain/site-geometry';
 
@@ -41,7 +43,7 @@ export function MapItemForm({ draft, structure, disabled, saving, onChange, onTa
     </> : null}
     {draft.kind === 'post' ? <View style={styles.checkIn}>
       <Text style={styles.heading}>Post check-in area</Text>
-      <Text style={styles.help}>A separate dashed circle marks where people should check in for this post. Volunteer check-in will be added in the attendance phase.</Text>
+      <Text style={styles.help}>A separate dashed circle marks where people should check in for this post. Volunteers check in from their assignment. Map positions help locate posts; they do not confirm attendance.</Text>
       {draft.checkIn ? <>
         <Text style={styles.help}>Check-in radius: {draft.checkIn.radiusPercent}% of the shorter image edge. CI labels identify check-in areas.</Text>
         <View style={styles.row}>
@@ -61,10 +63,10 @@ export function MapItemForm({ draft, structure, disabled, saving, onChange, onTa
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: '#FFF', borderRadius: 14, padding: 16, gap: 12, borderWidth: 1, borderColor: '#D6E3E6' },
-  heading: { color: '#123B53', fontSize: 19, fontWeight: '800' },
-  label: { color: '#234759', fontSize: 15, fontWeight: '700' },
-  help: { color: '#45616E', fontSize: 14, lineHeight: 21 },
+  card: { backgroundColor: colors.surface, borderRadius: 4, padding: 16, gap: 12, borderWidth: 0, borderColor: colors.border },
+  heading: { color: colors.text, fontSize: 19, fontWeight: '600' },
+  label: { color: colors.text, fontSize: 15, fontWeight: '600' },
+  help: { color: colors.secondary, fontSize: 14, lineHeight: 21 },
   row: { flexDirection: 'row', gap: 8 }, flex: { flex: 1 },
-  checkIn: { borderTopWidth: 1, borderTopColor: '#D6E3E6', paddingTop: 12, gap: 12 },
+  checkIn: { borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 12, gap: 12 },
 });

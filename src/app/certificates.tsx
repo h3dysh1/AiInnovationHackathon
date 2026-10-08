@@ -1,6 +1,8 @@
+import { AppText as Text } from '@/components/app-text';
+import { confirmAction } from '@/services/confirm-action';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { router } from 'expo-router';
-import { Linking, Text } from 'react-native';
+import { Linking } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { randomUUID } from 'expo-crypto';
 import { Button, Field, Loading, Notice, Page, Title } from '@/components/ui';
@@ -44,10 +46,10 @@ export default function CertificatesScreen() {
   if (s.loading) return <Loading label='Loading certificates…' />;
   return (
     <Page>
-      <Title subtitle='Upload every certificate you already hold. Originals remain private to you and event managers; event-specific requests will appear when a requirement is missing.'>
+      <Title subtitle='Your reusable certificate library. Each event asks for the qualifications it needs; originals remain private to you and authorised event managers.'>
         My certificates
       </Title>
-      {s.error && <Notice message={s.error} />}
+      {s.error && <Notice tone="error" message={s.error} />}
       <Button
         title='Choose PDF or image'
         disabled={s.pending}
@@ -82,7 +84,7 @@ export default function CertificatesScreen() {
         </>
       )}
       {!s.data?.length && (
-        <Notice message='Upload your qualifications before the coordinator generates a roster.' />
+        <Notice message='No certificates saved yet. Your event onboarding will ask for relevant qualifications.' />
       )}
       {s.data?.map((c) => (
         <PlanCard key={c.id}>
@@ -125,7 +127,7 @@ export default function CertificatesScreen() {
               secondary
               disabled={s.pending}
               onPress={() => {
-                void s.run(() => setupRpc('archive_certification', { p_id: c.id }));
+                confirmAction('Archive this certificate?', 'Archived certificates are not used to establish eligibility for future assignments. The original evidence remains retained.', () => { void s.run(() => setupRpc('archive_certification', { p_id: c.id })); }, true);
               }}
             />
           )}

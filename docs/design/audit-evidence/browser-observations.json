@@ -1,0 +1,2355 @@
+{
+  "summary": [
+    {
+      "text": "Ground Control\nSign in to your event crew account.\nEmail\nPassword\nSign in\nNew here? Create an account",
+      "buttons": [
+        {
+          "label": "Sign in",
+          "disabled": "true",
+          "height": 52,
+          "y": 338
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Email",
+          "type": "email",
+          "height": 46
+        },
+        {
+          "label": "Password",
+          "type": "password",
+          "height": 46
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "public-sign-in",
+      "url": "http://localhost:8084/sign-in"
+    },
+    {
+      "text": "Join the crew\nCreate your volunteer account. After you confirm your email, Ground Control will guide you through your profile and certificates.\nName\nEmail\nPassword (at least 6 characters)\nCreate account\nAlready have an account? Sign in",
+      "buttons": [
+        {
+          "label": "Create account",
+          "disabled": "true",
+          "height": 52,
+          "y": 468
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Name",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Email",
+          "type": "email",
+          "height": 46
+        },
+        {
+          "label": "Password (at least 6 characters)",
+          "type": "password",
+          "height": 46
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "public-sign-up",
+      "url": "http://localhost:8084/sign-up"
+    },
+    {
+      "text": "Ground Control\nWelcome, Mo Demo.\nCreate event\nYour events\nRiverside - automated acceptance\n2026-10-07 – 2026-10-07\nCOMPLETED\nRiverside Live Operations - Demo\n2026-10-07 – 2026-10-07\nLIVE\nRiverside Automatic Scheduling - Demo\n2026-10-14 – 2026-10-14\nRECRUITING\nRiverside 2026 - Demo\n2026-12-12 – 2026-12-14\nPUBLISHED\nAccount\nMy volunteer participation\nMy profile\nSign out",
+      "buttons": [
+        {
+          "label": "Create event",
+          "disabled": false,
+          "height": 52,
+          "y": 166
+        },
+        {
+          "label": "Riverside - automated acceptance\n2026-10-07 – 2026-10-07\nCOMPLETED",
+          "disabled": false,
+          "height": 104,
+          "y": 265
+        },
+        {
+          "label": "Riverside Live Operations - Demo\n2026-10-07 – 2026-10-07\nLIVE",
+          "disabled": false,
+          "height": 82,
+          "y": 379
+        },
+        {
+          "label": "Riverside Automatic Scheduling - Demo\n2026-10-14 – 2026-10-14\nRECRUITING",
+          "disabled": false,
+          "height": 104,
+          "y": 471
+        },
+        {
+          "label": "Riverside 2026 - Demo\n2026-12-12 – 2026-12-14\nPUBLISHED",
+          "disabled": false,
+          "height": 82,
+          "y": 585
+        },
+        {
+          "label": "My volunteer participation",
+          "disabled": false,
+          "height": 40,
+          "y": 714
+        },
+        {
+          "label": "My profile",
+          "disabled": false,
+          "height": 40,
+          "y": 764
+        },
+        {
+          "label": "Sign out",
+          "disabled": false,
+          "height": 40,
+          "y": 814
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 878,
+      "scrollContainers": [],
+      "name": "mo-home",
+      "url": "http://localhost:8084/coordinator"
+    },
+    {
+      "text": "Create event\nStep 1 of 4\nOrganisation\nChoose the organisation running this event.\nGround Control Demo\nOr create a new organisation\nCreate organisation\nNext: event details\nCancel",
+      "buttons": [
+        {
+          "label": "Create organisation",
+          "disabled": "true",
+          "height": 52,
+          "y": 395
+        },
+        {
+          "label": "Next: event details",
+          "disabled": false,
+          "height": 52,
+          "y": 463
+        },
+        {
+          "label": "Cancel",
+          "disabled": false,
+          "height": 52,
+          "y": 531
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Or create a new organisation",
+          "type": "text",
+          "height": 46
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "mo-create-organisation",
+      "url": "http://localhost:8084/events/new"
+    },
+    {
+      "text": "Create event\nStep 2 of 4\nEvent details\nOrganisation: Ground Control Demo\nEvent name\nDescription (optional)\nVenue name\nAddress (optional)\nApproximate workforce (optional)\nExpected attendance (optional)\nNext: dates and hours\nBack",
+      "buttons": [
+        {
+          "label": "Next: dates and hours",
+          "disabled": false,
+          "height": 52,
+          "y": 775
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 843
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Event name",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Description (optional)",
+          "type": "textarea",
+          "height": 64
+        },
+        {
+          "label": "Venue name",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Address (optional)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Approximate workforce (optional)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Expected attendance (optional)",
+          "type": "text",
+          "height": 46
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 919,
+      "scrollContainers": [],
+      "name": "mo-create-basics",
+      "url": "http://localhost:8084/events/new"
+    },
+    {
+      "text": "Create event\nStep 3 of 4\nDates and hours\nEnter local dates and daily operating hours for the event.\nStart date (YYYY-MM-DD)\nEnd date (YYYY-MM-DD)\nDaily opening time (HH:MM)\nDaily closing time (HH:MM)\nTimezone\nReview event\nBack",
+      "buttons": [
+        {
+          "label": "Review event",
+          "disabled": false,
+          "height": 52,
+          "y": 691
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 759
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Start date (YYYY-MM-DD)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "End date (YYYY-MM-DD)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Daily opening time (HH:MM)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Daily closing time (HH:MM)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Timezone",
+          "type": "text",
+          "height": 46
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "mo-create-dates",
+      "url": "http://localhost:8084/events/new"
+    },
+    {
+      "text": "Riverside 2026 - Demo\nYour event role: coordinator\nPUBLISHED\nBirrarung Marr\nMelbourne VIC\n2026-12-12–2026-12-14\n09:00–17:00 · Australia/Melbourne\nSynthetic demo: Water B with four volunteers including Sarah, a First Aid holder. All records are fictional.\nEvent plan ready\nSetup · Complete\nRecruitment · Open\nRoster · Started\nView roster and shifts\nEvent workspace\nSet up and review plan\nCrew and roster\nRecruitment and join code\nLive operations\nEvent settings\nTeam and roles",
+      "buttons": [
+        {
+          "label": "View roster and shifts",
+          "disabled": false,
+          "height": 52,
+          "y": 595
+        },
+        {
+          "label": "Set up and review plan",
+          "disabled": false,
+          "height": 40,
+          "y": 711
+        },
+        {
+          "label": "Crew and roster",
+          "disabled": false,
+          "height": 40,
+          "y": 761
+        },
+        {
+          "label": "Recruitment and join code",
+          "disabled": false,
+          "height": 40,
+          "y": 811
+        },
+        {
+          "label": "Live operations",
+          "disabled": false,
+          "height": 40,
+          "y": 861
+        },
+        {
+          "label": "Team and roles",
+          "disabled": false,
+          "height": 40,
+          "y": 948
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 1012,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 1012
+        }
+      ],
+      "name": "mo-event",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001"
+    },
+    {
+      "text": "Set up Riverside 2026 - Demo\nBuild your operating plan\nSetup context · 1 of 2 steps\n✓ Describe how the event works — saved\n○ Review your setup notes\nThese steps capture your knowledge. Open the assistant to generate a candidate, then review and verify its operational requirements.\nTell us how the event works\nDescribe the areas, what volunteers do, how many you need, when they work, and any qualifications or responsibilities. Start with what you know.\n183 / 20,000 characters · Saved to this event\nSave description\nReview setup notes\nContinue setup\nGenerate plan / answer questions\nReview items needing attention\nAdd supporting material\nGround Control can use your existing plans and site map. These are optional; add them when they are ready.\nUpload documents\nEvent site map\nUpload the event site plan as an image, up to 10 MB.\nUpload map image\nCorrect details manually\nUse these tools only when the generated plan needs a direct correction.\nEdit areas, posts & qualifications\nEdit map positions\nEdit hours & procedures\nBack to event",
+      "buttons": [
+        {
+          "label": "Save description",
+          "disabled": "true",
+          "height": 52,
+          "y": 813
+        },
+        {
+          "label": "Review setup notes",
+          "disabled": false,
+          "height": 52,
+          "y": 881
+        },
+        {
+          "label": "Generate plan / answer questions",
+          "disabled": false,
+          "height": 52,
+          "y": 980
+        },
+        {
+          "label": "Review items needing attention",
+          "disabled": false,
+          "height": 52,
+          "y": 1042
+        },
+        {
+          "label": "Upload documents",
+          "disabled": false,
+          "height": 40,
+          "y": 1214
+        },
+        {
+          "label": "Upload map image",
+          "disabled": false,
+          "height": 52,
+          "y": 1369
+        },
+        {
+          "label": "Edit areas, posts & qualifications",
+          "disabled": false,
+          "height": 40,
+          "y": 1537
+        },
+        {
+          "label": "Edit map positions",
+          "disabled": false,
+          "height": 40,
+          "y": 1587
+        },
+        {
+          "label": "Edit hours & procedures",
+          "disabled": false,
+          "height": 40,
+          "y": 1637
+        },
+        {
+          "label": "Back to event",
+          "disabled": false,
+          "height": 52,
+          "y": 1693
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Event setup description",
+          "type": "textarea",
+          "height": 220
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 1769,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 1769
+        }
+      ],
+      "name": "mo-setup",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/setup"
+    },
+    {
+      "text": "Event documents\nOriginal files are retained privately for this event.\nPDF, TXT, Markdown, CSV, TSV, JPEG or PNG · up to 10 MB per file. Export Word/Excel files to PDF or CSV first. Include up to 10 files / 12 MB in one AI analysis.\nChoose document\nAnalyse setup with AI\nBack to setup",
+      "buttons": [
+        {
+          "label": "Choose document",
+          "disabled": false,
+          "height": 52,
+          "y": 261
+        },
+        {
+          "label": "Analyse setup with AI",
+          "disabled": false,
+          "height": 52,
+          "y": 329
+        },
+        {
+          "label": "Back to setup",
+          "disabled": false,
+          "height": 52,
+          "y": 397
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "mo-documents",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/documents"
+    },
+    {
+      "text": "Setup assistant\nAnswers are saved before AI runs. Every result remains a proposal.\nGemini drafts the plan and identifies ambiguity. You review staffing and safety requirements before the event can be verified.\nGenerate candidate operating plan\nOne thing to clarify\nWhat else should Ground Control know about staffing, hours, qualifications, supervision or safety procedures?\nYour answer\n0 / 4,000 characters · Answer in your own words.\nSave answer & update candidate\nUse manual editor\nRefresh status\nBack to setup",
+      "buttons": [
+        {
+          "label": "Generate candidate operating plan",
+          "disabled": false,
+          "height": 52,
+          "y": 292
+        },
+        {
+          "label": "Save answer & update candidate",
+          "disabled": "true",
+          "height": 52,
+          "y": 620
+        },
+        {
+          "label": "Use manual editor",
+          "disabled": false,
+          "height": 52,
+          "y": 705
+        },
+        {
+          "label": "Refresh status",
+          "disabled": false,
+          "height": 52,
+          "y": 773
+        },
+        {
+          "label": "Back to setup",
+          "disabled": false,
+          "height": 52,
+          "y": 841
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Your answer",
+          "type": "textarea",
+          "height": 64
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 917,
+      "scrollContainers": [],
+      "name": "mo-assistant",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/assistant"
+    },
+    {
+      "text": "Review operating plan\nRiverside 2026 - Demo\nVERIFIED\n4 / 4 operational records confirmed\n1 locations · 1 posts · 1 procedures\nConfirm staffing, qualification coverage, hours and escalation against the sources. Extraction confidence describes the AI’s reading, and is not a safety approval.\nFull operating plan\nLawn\nDemo location near the main stage.\nSource: Manually entered. Confidence does not confirm operational accuracy.\nWater Station B\nIMPORTANT · 4 total volunteers\nSupervisor: Mo Demo\nEscalation: Radio channel 1\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nQualified counts are included in the total; the same volunteer may meet multiple requirements.\n1 × First Aid\nSource: Manually entered. Confidence does not confirm operational accuracy.\n✓ CONFIRMED\n2026-12-12–2026-12-14 · 09:00–17:00 (Australia/Melbourne)\n4 minimum volunteers\nSource: Manually entered. Confidence does not confirm operational accuracy.\n✓ CONFIRMED\nSource: Manually entered. Confidence does not confirm operational accuracy.\n✓ CONFIRMED\nDemo incident escalation\nSoftware demo only: report exact observations and location to Mo on radio channel 1. Mo reviews the evidence and approves any operational response.\nSource: Manually entered. Confidence does not confirm operational accuracy.\n✓ CONFIRMED\nEdit locations, posts & qualifications\nEdit operating hours & procedures\nResolve issues\nOperating plan verified\nPublish volunteer recruitment\nView change history\nRefresh plan\nBack to setup",
+      "buttons": [
+        {
+          "label": "Edit locations, posts & qualifications",
+          "disabled": false,
+          "height": 52,
+          "y": 1567
+        },
+        {
+          "label": "Edit operating hours & procedures",
+          "disabled": false,
+          "height": 52,
+          "y": 1635
+        },
+        {
+          "label": "Operating plan verified",
+          "disabled": "true",
+          "height": 52,
+          "y": 1741
+        },
+        {
+          "label": "Publish volunteer recruitment",
+          "disabled": false,
+          "height": 52,
+          "y": 1809
+        },
+        {
+          "label": "View change history",
+          "disabled": false,
+          "height": 40,
+          "y": 1877
+        },
+        {
+          "label": "Refresh plan",
+          "disabled": false,
+          "height": 40,
+          "y": 1933
+        },
+        {
+          "label": "Back to setup",
+          "disabled": false,
+          "height": 52,
+          "y": 1989
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 2065,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 2065
+        }
+      ],
+      "name": "mo-review",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/review"
+    },
+    {
+      "text": "Operating hours & procedures\nRiverside 2026 - Demo\nEach window applies daily from the first date through the last, in the event timezone. Qualified counts must fit every window. Changes require a new review.\nWater Station B\nLawn · 4 volunteers by default\n2026-12-12–2026-12-14 · 09:00–17:00\n4 minimum volunteers\nEdit operating window\nRemove operating window\nAdd operating window\nProcedures\nDemo incident escalation\nSoftware demo only: report exact observations and location to Mo on radio channel 1. Mo reviews the evidence and approves any operational response.\nEdit procedure\nRemove procedure\nAdd procedure\nReview plan\nBack",
+      "buttons": [
+        {
+          "label": "Edit operating window",
+          "disabled": false,
+          "height": 52,
+          "y": 432
+        },
+        {
+          "label": "Remove operating window",
+          "disabled": false,
+          "height": 52,
+          "y": 496
+        },
+        {
+          "label": "Add operating window",
+          "disabled": false,
+          "height": 52,
+          "y": 577
+        },
+        {
+          "label": "Edit procedure",
+          "disabled": false,
+          "height": 52,
+          "y": 851
+        },
+        {
+          "label": "Remove procedure",
+          "disabled": false,
+          "height": 52,
+          "y": 915
+        },
+        {
+          "label": "Add procedure",
+          "disabled": false,
+          "height": 52,
+          "y": 1000
+        },
+        {
+          "label": "Review plan",
+          "disabled": false,
+          "height": 52,
+          "y": 1068
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 1136
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 1212,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 1212
+        }
+      ],
+      "name": "mo-operations",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/operations"
+    },
+    {
+      "text": "Locations & posts\nRiverside 2026 - Demo\nEvent site map\nUpload the event site plan as an image, up to 10 MB.\nUpload map image\nPlace locations & posts on the map\nLocations\nLocations are physical places, such as Gate A. Each can have several posts for different staffed tasks.\nLawn\nDemo location near the main stage.\nAdd location\nBack to setup",
+      "buttons": [
+        {
+          "label": "Upload map image",
+          "disabled": false,
+          "height": 52,
+          "y": 271
+        },
+        {
+          "label": "Place locations & posts on the map",
+          "disabled": false,
+          "height": 52,
+          "y": 356
+        },
+        {
+          "label": "Lawn\nDemo location near the main stage.",
+          "disabled": false,
+          "height": 82,
+          "y": 527
+        },
+        {
+          "label": "Add location",
+          "disabled": false,
+          "height": 52,
+          "y": 625
+        },
+        {
+          "label": "Back to setup",
+          "disabled": false,
+          "height": 52,
+          "y": 693
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "mo-site",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/site"
+    },
+    {
+      "text": "Site map\nRiverside 2026 - Demo\nEvent site map\nUpload the event site plan as an image, up to 10 MB.\nUpload map image\nLocations & their posts\nL1 · Lawn · not placed\nP2 · Water Station B\nRefresh site map\nStaffing & qualifications editor\nBack to setup",
+      "buttons": [
+        {
+          "label": "Upload map image",
+          "disabled": false,
+          "height": 52,
+          "y": 271
+        },
+        {
+          "label": "L1 · Lawn · not placed",
+          "disabled": "true",
+          "height": 52,
+          "y": 407
+        },
+        {
+          "label": "P2 · Water Station B",
+          "disabled": "true",
+          "height": 52,
+          "y": 467
+        },
+        {
+          "label": "Refresh site map",
+          "disabled": false,
+          "height": 52,
+          "y": 548
+        },
+        {
+          "label": "Staffing & qualifications editor",
+          "disabled": false,
+          "height": 52,
+          "y": 616
+        },
+        {
+          "label": "Back to setup",
+          "disabled": false,
+          "height": 52,
+          "y": 684
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "mo-map",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/map"
+    },
+    {
+      "text": "Open volunteer recruitment\nRiverside 2026 - Demo\nPublishing allows signed-in volunteers to preview the event and join. It does not publish a roster or start live operations.\nJoin code (6–20 letters or numbers)\nGenerate a join code\nPublish recruitment with this code\nBack to review",
+      "buttons": [
+        {
+          "label": "Generate a join code",
+          "disabled": false,
+          "height": 52,
+          "y": 394
+        },
+        {
+          "label": "Publish recruitment with this code",
+          "disabled": false,
+          "height": 52,
+          "y": 462
+        },
+        {
+          "label": "Back to review",
+          "disabled": false,
+          "height": 52,
+          "y": 530
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Join code (6–20 letters or numbers)",
+          "type": "text",
+          "height": 46
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "mo-publish",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/publish"
+    },
+    {
+      "text": "Event team\nEvent roles apply to this event only. Only its owner can assign coordinator or safety lead access.\nLoad / refresh team\nBack",
+      "buttons": [
+        {
+          "label": "Load / refresh team",
+          "disabled": false,
+          "height": 52,
+          "y": 190
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 258
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "mo-team",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/team"
+    },
+    {
+      "text": "Event team\nEvent roles apply to this event only. Only its owner can assign coordinator or safety lead access.\nLoad / refresh team\nMo Demo (you)\nCOORDINATOR · active\nSarah Demo\nVOLUNTEER · active\nSet role: volunteer\nSet role: safety lead\nSet role: coordinator\nAlex Demo\nVOLUNTEER · active\nSet role: volunteer\nSet role: safety lead\nSet role: coordinator\nJamie Demo\nVOLUNTEER · active\nSet role: volunteer\nSet role: safety lead\nSet role: coordinator\nTaylor Demo\nVOLUNTEER · active\nSet role: volunteer\nSet role: safety lead\nSet role: coordinator\ncamera\nSAFETY LEAD · active\nSet role: volunteer\nSet role: safety lead\nSet role: coordinator\nBack",
+      "buttons": [
+        {
+          "label": "Load / refresh team",
+          "disabled": false,
+          "height": 52,
+          "y": 190
+        },
+        {
+          "label": "Set role: volunteer",
+          "disabled": "true",
+          "height": 52,
+          "y": 437
+        },
+        {
+          "label": "Set role: safety lead",
+          "disabled": false,
+          "height": 52,
+          "y": 501
+        },
+        {
+          "label": "Set role: coordinator",
+          "disabled": false,
+          "height": 52,
+          "y": 565
+        },
+        {
+          "label": "Set role: volunteer",
+          "disabled": "true",
+          "height": 52,
+          "y": 729
+        },
+        {
+          "label": "Set role: safety lead",
+          "disabled": false,
+          "height": 52,
+          "y": 793
+        },
+        {
+          "label": "Set role: coordinator",
+          "disabled": false,
+          "height": 52,
+          "y": 857
+        },
+        {
+          "label": "Set role: volunteer",
+          "disabled": "true",
+          "height": 52,
+          "y": 1021
+        },
+        {
+          "label": "Set role: safety lead",
+          "disabled": false,
+          "height": 52,
+          "y": 1085
+        },
+        {
+          "label": "Set role: coordinator",
+          "disabled": false,
+          "height": 52,
+          "y": 1149
+        },
+        {
+          "label": "Set role: volunteer",
+          "disabled": "true",
+          "height": 52,
+          "y": 1313
+        },
+        {
+          "label": "Set role: safety lead",
+          "disabled": false,
+          "height": 52,
+          "y": 1377
+        },
+        {
+          "label": "Set role: coordinator",
+          "disabled": false,
+          "height": 52,
+          "y": 1441
+        },
+        {
+          "label": "Set role: volunteer",
+          "disabled": false,
+          "height": 52,
+          "y": 1605
+        },
+        {
+          "label": "Set role: safety lead",
+          "disabled": "true",
+          "height": 52,
+          "y": 1669
+        },
+        {
+          "label": "Set role: coordinator",
+          "disabled": false,
+          "height": 52,
+          "y": 1733
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 1818
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 1894,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 1894
+        }
+      ],
+      "name": "mo-team-loaded",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/team"
+    },
+    {
+      "text": "Crew qualifications\nReview original evidence before confirming. Qualifications must cover the whole event.\nMo Demo\nAvailability not submitted\nNo certificates uploaded.\nSarah Demo\nAvailability submitted\nFirst Aid - SYNTHETIC DEMO · verified\nHLTAID011 · Expiry: 2028-12-31\nValid for this full event\nView original\nReview / correct certificate\nAlex Demo\nAvailability submitted\nSYNTHETIC DEMO qualification · verified\nFirst Aid · Expiry: 2028-12-31\nValid for this full event\nView original\nReview / correct certificate\nJamie Demo\nAvailability submitted\nNo certificates uploaded.\nTaylor Demo\nAvailability submitted\nNo certificates uploaded.\ncamera\nAvailability not submitted\nNo certificates uploaded.\nRefresh\nBack",
+      "buttons": [
+        {
+          "label": "View original",
+          "disabled": false,
+          "height": 52,
+          "y": 502
+        },
+        {
+          "label": "Review / correct certificate",
+          "disabled": false,
+          "height": 52,
+          "y": 566
+        },
+        {
+          "label": "View original",
+          "disabled": false,
+          "height": 52,
+          "y": 852
+        },
+        {
+          "label": "Review / correct certificate",
+          "disabled": false,
+          "height": 52,
+          "y": 916
+        },
+        {
+          "label": "Refresh",
+          "disabled": false,
+          "height": 52,
+          "y": 1408
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 1476
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 1552,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 1552
+        }
+      ],
+      "name": "mo-qualifications",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/qualifications"
+    },
+    {
+      "text": "Roster & shifts\n1. Generate shift times. 2. Automatically assign eligible crew. 3. Review and publish.\nReview crew qualifications\nShift length (hours, 1–12)\n1. Create replacement shift draft\nSUPERSEDED · 07/10/2026\nPUBLISHED · 07/10/2026 · selected\nPUBLISHED · 6 shifts\n24 assignments · 0 unfilled places\nReview: Mo Demo has not submitted availability\nReview: camera has not submitted availability\nThis roster is published. Create a replacement shift draft above to try automatic assignment; the current roster stays published until you approve its replacement.\nMo Demo: 0.0h assigned / ?h desired (max ?)\nSarah Demo: 24.0h assigned / 24h desired (max 24)\nAlex Demo: 24.0h assigned / 24h desired (max 24)\nJamie Demo: 24.0h assigned / 24h desired (max 24)\nTaylor Demo: 24.0h assigned / 24h desired (max 24)\ncamera: 0.0h assigned / ?h desired (max ?)\nShow only coverage gaps\nLawn · Water Station B\n2026-12-12 09:00 – 13:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-12 13:00 – 17:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-13 09:00 – 13:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-13 13:00 – 17:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-14 09:00 – 13:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-14 13:00 – 17:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nRefresh\nBack",
+      "buttons": [
+        {
+          "label": "Review crew qualifications",
+          "disabled": false,
+          "height": 40,
+          "y": 188
+        },
+        {
+          "label": "1. Create replacement shift draft",
+          "disabled": false,
+          "height": 52,
+          "y": 343
+        },
+        {
+          "label": "SUPERSEDED · 07/10/2026",
+          "disabled": false,
+          "height": 52,
+          "y": 428
+        },
+        {
+          "label": "PUBLISHED · 07/10/2026 · selected",
+          "disabled": false,
+          "height": 52,
+          "y": 496
+        },
+        {
+          "label": "Show only coverage gaps",
+          "disabled": false,
+          "height": 40,
+          "y": 1045
+        },
+        {
+          "label": "Refresh",
+          "disabled": false,
+          "height": 40,
+          "y": 4077
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 40,
+          "y": 4133
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Shift length (hours, 1–12)",
+          "type": "text",
+          "height": 46
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 4197,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 4197
+        }
+      ],
+      "name": "mo-roster",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/roster"
+    },
+    {
+      "text": "Live operations\nRiverside Live Operations - Demo\nEVENT STATUS · LIVE\n0 checked in · 0 missing\n0 assigned · 0 late · 0 completed\nCoverage now\nNo published shifts are active right now.\nIncident intelligence · 0\nNo unresolved incidents.\nRisk alerts · 0\nCheck for emerging risks\nResponse drafts and status\nReplace missing crew at Water Station B\nAttendance and qualification coverage show a gap after the configured grace period. Review eligible reserves and protect source posts.\nPROPOSED · complete\nDestination post\nActions (one per line)\nVolunteer instruction\nFirst Aid · 1 needed\nResource label\nRequired qualification (optional)\nRequired reviewed experience (optional)\nRemove resource group\nIncrease requested crew\nDecrease requested crew\nAdd one general volunteer\nSave reviewed destination and instructions\nChoose 1 · First Aid\nShow unavailable crew and reasons\nApprove selected volunteers and send instructions\nDismiss response\nEvent procedures\nHeat and water response · operating procedure\nNo-show and radio procedure · operating procedure\nOperational readiness\n0 certificates need attention · 0 volunteers missing onboarding · 10 briefings to acknowledge · 2 procedures\nManual operational observations\nObservation (include location and measured facts)\nRecord observation and reassess risks\nOperational timeline\n01:34:07 · demo baseline · SYNTHETIC simulation: initial check-ins and standby states prepared; Alex absent at Water B. No safety response has been approved.\nRefresh live status\nReviewed closeout\nGenerate event summary draft\nAI summary: not_requested\nReview and edit event summary\nConfirm summary and close event\nBack to event",
+      "buttons": [
+        {
+          "label": "Check for emerging risks",
+          "disabled": false,
+          "height": 40,
+          "y": 521
+        },
+        {
+          "label": "Remove resource group",
+          "disabled": false,
+          "height": 40,
+          "y": 1357
+        },
+        {
+          "label": "Increase requested crew",
+          "disabled": false,
+          "height": 40,
+          "y": 1409
+        },
+        {
+          "label": "Decrease requested crew",
+          "disabled": "true",
+          "height": 40,
+          "y": 1461
+        },
+        {
+          "label": "Add one general volunteer",
+          "disabled": false,
+          "height": 40,
+          "y": 1530
+        },
+        {
+          "label": "Save reviewed destination and instructions",
+          "disabled": false,
+          "height": 66,
+          "y": 1582
+        },
+        {
+          "label": "Show unavailable crew and reasons",
+          "disabled": false,
+          "height": 40,
+          "y": 1728
+        },
+        {
+          "label": "Approve selected volunteers and send instructions",
+          "disabled": "true",
+          "height": 66,
+          "y": 1780
+        },
+        {
+          "label": "Dismiss response",
+          "disabled": false,
+          "height": 52,
+          "y": 1858
+        },
+        {
+          "label": "Record observation and reassess risks",
+          "disabled": "true",
+          "height": 52,
+          "y": 2325
+        },
+        {
+          "label": "Refresh live status",
+          "disabled": false,
+          "height": 52,
+          "y": 2528
+        },
+        {
+          "label": "Generate event summary draft",
+          "disabled": false,
+          "height": 52,
+          "y": 2627
+        },
+        {
+          "label": "Confirm summary and close event",
+          "disabled": "true",
+          "height": 52,
+          "y": 2816
+        },
+        {
+          "label": "Back to event",
+          "disabled": false,
+          "height": 52,
+          "y": 2884
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Actions (one per line)",
+          "type": "textarea",
+          "height": 64
+        },
+        {
+          "label": "Volunteer instruction",
+          "type": "textarea",
+          "height": 64
+        },
+        {
+          "label": "Resource label",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Required qualification (optional)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Required reviewed experience (optional)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Observation (include location and measured facts)",
+          "type": "textarea",
+          "height": 64
+        },
+        {
+          "label": "Review and edit event summary",
+          "type": "textarea",
+          "height": 64
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 2960,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 2960
+        }
+      ],
+      "name": "mo-live",
+      "url": "http://localhost:8084/events/d1000000-0000-4000-8000-000000000001/live"
+    },
+    {
+      "text": "Roster & shifts\n1. Generate shift times. 2. Automatically assign eligible crew. 3. Review and publish.\nReview crew qualifications\nShift length (hours, 1–12)\n1. Generate shift times\nRefresh\nBack",
+      "buttons": [
+        {
+          "label": "Review crew qualifications",
+          "disabled": false,
+          "height": 40,
+          "y": 188
+        },
+        {
+          "label": "1. Generate shift times",
+          "disabled": false,
+          "height": 52,
+          "y": 343
+        },
+        {
+          "label": "Refresh",
+          "disabled": false,
+          "height": 40,
+          "y": 428
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 40,
+          "y": 484
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Shift length (hours, 1–12)",
+          "type": "text",
+          "height": 46
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "mo-automatic-roster",
+      "url": "http://localhost:8084/events/d2000000-0000-4000-8000-000000000001/roster"
+    },
+    {
+      "text": "Roster & shifts\n1. Generate shift times. 2. Automatically assign eligible crew. 3. Review and publish.\nReview crew qualifications\nShift length (hours, 1–12)\n1. Create replacement shift draft\nSUPERSEDED · 07/10/2026\nPUBLISHED · 07/10/2026 · selected\nPUBLISHED · 6 shifts\n24 assignments · 0 unfilled places\nReview: Mo Demo has not submitted availability\nReview: camera has not submitted availability\nThis roster is published. Create a replacement shift draft above to try automatic assignment; the current roster stays published until you approve its replacement.\nMo Demo: 0.0h assigned / ?h desired (max ?)\nSarah Demo: 24.0h assigned / 24h desired (max 24)\nAlex Demo: 24.0h assigned / 24h desired (max 24)\nJamie Demo: 24.0h assigned / 24h desired (max 24)\nTaylor Demo: 24.0h assigned / 24h desired (max 24)\ncamera: 0.0h assigned / ?h desired (max ?)\nShow only coverage gaps\nLawn · Water Station B\n2026-12-12 09:00 – 13:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-12 13:00 – 17:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-13 09:00 – 13:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-13 13:00 – 17:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-14 09:00 – 13:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-14 13:00 – 17:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nRefresh\nBack",
+      "buttons": [
+        {
+          "label": "Review crew qualifications",
+          "disabled": false,
+          "height": 40,
+          "y": 166
+        },
+        {
+          "label": "1. Create replacement shift draft",
+          "disabled": false,
+          "height": 52,
+          "y": 321
+        },
+        {
+          "label": "SUPERSEDED · 07/10/2026",
+          "disabled": false,
+          "height": 52,
+          "y": 406
+        },
+        {
+          "label": "PUBLISHED · 07/10/2026 · selected",
+          "disabled": false,
+          "height": 52,
+          "y": 474
+        },
+        {
+          "label": "Show only coverage gaps",
+          "disabled": false,
+          "height": 40,
+          "y": 983
+        },
+        {
+          "label": "Refresh",
+          "disabled": false,
+          "height": 40,
+          "y": 3505
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 40,
+          "y": 3561
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Shift length (hours, 1–12)",
+          "type": "text",
+          "height": 46
+        }
+      ],
+      "width": 768,
+      "docWidth": 768,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 3625,
+      "scrollContainers": [
+        {
+          "height": 1024,
+          "scrollHeight": 3625
+        }
+      ],
+      "name": "mo-roster-tablet",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/roster"
+    },
+    {
+      "text": "Live operations\nRiverside Live Operations - Demo\nEVENT STATUS · LIVE\n0 checked in · 0 missing\n0 assigned · 0 late · 0 completed\nCoverage now\nNo published shifts are active right now.\nIncident intelligence · 0\nNo unresolved incidents.\nRisk alerts · 0\nCheck for emerging risks\nResponse drafts and status\nReplace missing crew at Water Station B\nAttendance and qualification coverage show a gap after the configured grace period. Review eligible reserves and protect source posts.\nPROPOSED · complete\nDestination post\nActions (one per line)\nVolunteer instruction\nFirst Aid · 1 needed\nResource label\nRequired qualification (optional)\nRequired reviewed experience (optional)\nRemove resource group\nIncrease requested crew\nDecrease requested crew\nAdd one general volunteer\nSave reviewed destination and instructions\nChoose 1 · First Aid\nShow unavailable crew and reasons\nApprove selected volunteers and send instructions\nDismiss response\nEvent procedures\nHeat and water response · operating procedure\nNo-show and radio procedure · operating procedure\nOperational readiness\n0 certificates need attention · 0 volunteers missing onboarding · 10 briefings to acknowledge · 2 procedures\nManual operational observations\nObservation (include location and measured facts)\nRecord observation and reassess risks\nOperational timeline\n01:34:07 · demo baseline · SYNTHETIC simulation: initial check-ins and standby states prepared; Alex absent at Water B. No safety response has been approved.\nRefresh live status\nReviewed closeout\nGenerate event summary draft\nAI summary: not_requested\nReview and edit event summary\nConfirm summary and close event\nBack to event",
+      "buttons": [
+        {
+          "label": "Check for emerging risks",
+          "disabled": false,
+          "height": 40,
+          "y": 521
+        },
+        {
+          "label": "Remove resource group",
+          "disabled": false,
+          "height": 40,
+          "y": 1252
+        },
+        {
+          "label": "Increase requested crew",
+          "disabled": false,
+          "height": 40,
+          "y": 1304
+        },
+        {
+          "label": "Decrease requested crew",
+          "disabled": "true",
+          "height": 40,
+          "y": 1356
+        },
+        {
+          "label": "Add one general volunteer",
+          "disabled": false,
+          "height": 40,
+          "y": 1425
+        },
+        {
+          "label": "Save reviewed destination and instructions",
+          "disabled": false,
+          "height": 52,
+          "y": 1477
+        },
+        {
+          "label": "Show unavailable crew and reasons",
+          "disabled": false,
+          "height": 40,
+          "y": 1609
+        },
+        {
+          "label": "Approve selected volunteers and send instructions",
+          "disabled": "true",
+          "height": 52,
+          "y": 1661
+        },
+        {
+          "label": "Dismiss response",
+          "disabled": false,
+          "height": 52,
+          "y": 1725
+        },
+        {
+          "label": "Record observation and reassess risks",
+          "disabled": "true",
+          "height": 52,
+          "y": 2109
+        },
+        {
+          "label": "Refresh live status",
+          "disabled": false,
+          "height": 52,
+          "y": 2246
+        },
+        {
+          "label": "Generate event summary draft",
+          "disabled": false,
+          "height": 52,
+          "y": 2345
+        },
+        {
+          "label": "Confirm summary and close event",
+          "disabled": "true",
+          "height": 52,
+          "y": 2534
+        },
+        {
+          "label": "Back to event",
+          "disabled": false,
+          "height": 52,
+          "y": 2602
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Actions (one per line)",
+          "type": "textarea",
+          "height": 64
+        },
+        {
+          "label": "Volunteer instruction",
+          "type": "textarea",
+          "height": 64
+        },
+        {
+          "label": "Resource label",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Required qualification (optional)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Required reviewed experience (optional)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Observation (include location and measured facts)",
+          "type": "textarea",
+          "height": 64
+        },
+        {
+          "label": "Review and edit event summary",
+          "type": "textarea",
+          "height": 64
+        }
+      ],
+      "width": 1440,
+      "docWidth": 1440,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 2678,
+      "scrollContainers": [
+        {
+          "height": 900,
+          "scrollHeight": 2678
+        }
+      ],
+      "name": "mo-live-desktop",
+      "url": "http://localhost:8084/events/d1000000-0000-4000-8000-000000000001/live"
+    },
+    {
+      "text": "Roster & shifts\n1. Generate shift times. 2. Automatically assign eligible crew. 3. Review and publish.\nReview crew qualifications\nShift length (hours, 1–12)\n1. Create replacement shift draft\nSUPERSEDED · 07/10/2026\nPUBLISHED · 07/10/2026 · selected\nPUBLISHED · 6 shifts\n24 assignments · 0 unfilled places\nReview: Mo Demo has not submitted availability\nReview: camera has not submitted availability\nThis roster is published. Create a replacement shift draft above to try automatic assignment; the current roster stays published until you approve its replacement.\nMo Demo: 0.0h assigned / ?h desired (max ?)\nSarah Demo: 24.0h assigned / 24h desired (max 24)\nAlex Demo: 24.0h assigned / 24h desired (max 24)\nJamie Demo: 24.0h assigned / 24h desired (max 24)\nTaylor Demo: 24.0h assigned / 24h desired (max 24)\ncamera: 0.0h assigned / ?h desired (max ?)\nShow only coverage gaps\nLawn · Water Station B\n2026-12-12 09:00 – 13:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-12 13:00 – 17:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-13 09:00 – 13:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-13 13:00 – 17:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-14 09:00 – 13:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nLawn · Water Station B\n2026-12-14 13:00 – 17:00 · Australia/Melbourne\n4 / 4 staffed · important\nFirst Aid: 2 / 1 qualified within total staffing\nSarah Demo · Manual assignment kept on regeneration\nAlex Demo · Manual assignment kept on regeneration\nJamie Demo · Manual assignment kept on regeneration\nTaylor Demo · Manual assignment kept on regeneration\nRefresh\nBack",
+      "buttons": [
+        {
+          "label": "Review crew qualifications",
+          "disabled": false,
+          "height": 40,
+          "y": 210
+        },
+        {
+          "label": "1. Create replacement shift draft",
+          "disabled": false,
+          "height": 66,
+          "y": 365
+        },
+        {
+          "label": "SUPERSEDED · 07/10/2026",
+          "disabled": false,
+          "height": 52,
+          "y": 464
+        },
+        {
+          "label": "PUBLISHED · 07/10/2026 · selected",
+          "disabled": false,
+          "height": 66,
+          "y": 532
+        },
+        {
+          "label": "Show only coverage gaps",
+          "disabled": false,
+          "height": 40,
+          "y": 1251
+        },
+        {
+          "label": "Refresh",
+          "disabled": false,
+          "height": 40,
+          "y": 4793
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 40,
+          "y": 4849
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Shift length (hours, 1–12)",
+          "type": "text",
+          "height": 46
+        }
+      ],
+      "width": 320,
+      "docWidth": 320,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 4913,
+      "scrollContainers": [
+        {
+          "height": 568,
+          "scrollHeight": 4913
+        }
+      ],
+      "name": "mo-roster-small",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/roster"
+    },
+    {
+      "text": "My profile\nYour coordinator account details.\nName\nPhone\nEmergency contact name\nEmergency contact phone\nExperience\nSave profile\nBack",
+      "buttons": [
+        {
+          "label": "Save profile",
+          "disabled": false,
+          "height": 52,
+          "y": 596
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 664
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Name",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Phone",
+          "type": "tel",
+          "height": 46
+        },
+        {
+          "label": "Emergency contact name",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Emergency contact phone",
+          "type": "tel",
+          "height": 46
+        },
+        {
+          "label": "Experience",
+          "type": "text",
+          "height": 46
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "mo-profile",
+      "url": "http://localhost:8084/profile"
+    },
+    {
+      "text": "Riverside Automatic Scheduling - Demo\nYour event role: coordinator\nRECRUITING\nBirrarung Marr\n2026-10-14–2026-10-14\n09:00–17:00 · UTC\nSYNTHETIC DEMO ONLY. Generate shift times, automatically assign crew, review and publish.\nRecruiting volunteers\nSetup · Complete\nRecruitment · Open\nRoster · Not started\nBuild the roster\nEvent workspace\nSet up and review plan\nCrew and roster\nRecruitment and join code\nLive operations\nEvent settings\nTeam and roles\nEdit event details",
+      "buttons": [
+        {
+          "label": "Build the roster",
+          "disabled": false,
+          "height": 52,
+          "y": 561
+        },
+        {
+          "label": "Set up and review plan",
+          "disabled": false,
+          "height": 40,
+          "y": 677
+        },
+        {
+          "label": "Crew and roster",
+          "disabled": false,
+          "height": 40,
+          "y": 727
+        },
+        {
+          "label": "Recruitment and join code",
+          "disabled": false,
+          "height": 40,
+          "y": 777
+        },
+        {
+          "label": "Live operations",
+          "disabled": false,
+          "height": 40,
+          "y": 827
+        },
+        {
+          "label": "Team and roles",
+          "disabled": false,
+          "height": 40,
+          "y": 914
+        },
+        {
+          "label": "Edit event details",
+          "disabled": false,
+          "height": 40,
+          "y": 964
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 1028,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 1028
+        }
+      ],
+      "name": "mo-recruiting-event",
+      "url": "http://localhost:8084/events/d2000000-0000-4000-8000-000000000001"
+    },
+    {
+      "text": "My events\nWelcome, Sarah Demo.\nGet ready before joining shifts\nComplete your profile and upload every certificate you already hold. Ground Control will use them when coordinators build event rosters.\nProfile · Complete\nCertificates · 1 uploaded\nComplete my profile\nAdd my certificates\nJoin an event\nYour events\nRiverside Live Operations - Demo\nBirrarung Marr · 2026-10-07\nYour role: volunteer\nOpen event\nRiverside - automated acceptance\nBirrarung Marr · 2026-10-07\nYour role: volunteer\nOpen event\nRiverside Automatic Scheduling - Demo\nBirrarung Marr · 2026-10-14\nYour role: volunteer\nOpen event\nRiverside 2026 - Demo\nBirrarung Marr · 2026-12-12\nYour role: volunteer\nOpen event\nAccount\nMy profile\nSign out\nRefresh events",
+      "buttons": [
+        {
+          "label": "Complete my profile",
+          "disabled": false,
+          "height": 52,
+          "y": 361
+        },
+        {
+          "label": "Add my certificates",
+          "disabled": false,
+          "height": 52,
+          "y": 425
+        },
+        {
+          "label": "Join an event",
+          "disabled": false,
+          "height": 52,
+          "y": 510
+        },
+        {
+          "label": "Open event",
+          "disabled": false,
+          "height": 52,
+          "y": 716
+        },
+        {
+          "label": "Open event",
+          "disabled": false,
+          "height": 52,
+          "y": 924
+        },
+        {
+          "label": "Open event",
+          "disabled": false,
+          "height": 52,
+          "y": 1132
+        },
+        {
+          "label": "Open event",
+          "disabled": false,
+          "height": 52,
+          "y": 1318
+        },
+        {
+          "label": "My profile",
+          "disabled": false,
+          "height": 40,
+          "y": 1434
+        },
+        {
+          "label": "Sign out",
+          "disabled": false,
+          "height": 40,
+          "y": 1484
+        },
+        {
+          "label": "Refresh events",
+          "disabled": false,
+          "height": 40,
+          "y": 1540
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 1604,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 1604
+        }
+      ],
+      "name": "sarah-home",
+      "url": "http://localhost:8084/volunteer"
+    },
+    {
+      "text": "My profile\nKeep your contact and experience details up to date.\nOrganisation (to manage your own events)\nCreate my coordinator workspace\nName\nPhone\nEmergency contact name\nEmergency contact phone\nExperience\nSave profile\nMy certificates\nBack",
+      "buttons": [
+        {
+          "label": "Create my coordinator workspace",
+          "disabled": "true",
+          "height": 52,
+          "y": 274
+        },
+        {
+          "label": "Save profile",
+          "disabled": false,
+          "height": 52,
+          "y": 772
+        },
+        {
+          "label": "My certificates",
+          "disabled": false,
+          "height": 52,
+          "y": 840
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 908
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Organisation (to manage your own events)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Name",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Phone",
+          "type": "tel",
+          "height": 46
+        },
+        {
+          "label": "Emergency contact name",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Emergency contact phone",
+          "type": "tel",
+          "height": 46
+        },
+        {
+          "label": "Experience",
+          "type": "text",
+          "height": 46
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 984,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 984
+        }
+      ],
+      "name": "sarah-profile",
+      "url": "http://localhost:8084/profile"
+    },
+    {
+      "text": "My certificates\nUpload every certificate you already hold. Originals remain private to you and event managers; event-specific requests will appear when a requirement is missing.\nChoose PDF or image\nFirst Aid - SYNTHETIC DEMO\nVERIFIED\nHLTAID011 · Sarah Demo\nIssued: 2026-01-01 · Expires: 2028-12-31\nSynthetic seed fixture, pre-verified for software demonstration only; no AI extraction or human credential review is claimed.\nView original\nArchive certificate\nBack",
+      "buttons": [
+        {
+          "label": "Choose PDF or image",
+          "disabled": false,
+          "height": 52,
+          "y": 232
+        },
+        {
+          "label": "View original",
+          "disabled": false,
+          "height": 52,
+          "y": 500
+        },
+        {
+          "label": "Archive certificate",
+          "disabled": false,
+          "height": 52,
+          "y": 564
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 649
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "sarah-certificates",
+      "url": "http://localhost:8084/certificates"
+    },
+    {
+      "text": "Join an event\nEnter the code your coordinator shared.\nEvent join code\nPreview event\nBack",
+      "buttons": [
+        {
+          "label": "Preview event",
+          "disabled": "true",
+          "height": 52,
+          "y": 252
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 320
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Event join code",
+          "type": "text",
+          "height": 46
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "sarah-join",
+      "url": "http://localhost:8084/join"
+    },
+    {
+      "text": "Riverside 2026 - Demo\nYour event role: volunteer\nPUBLISHED\nBirrarung Marr\nMelbourne VIC\n2026-12-12–2026-12-14\n09:00–17:00 · Australia/Melbourne\nSynthetic demo: Water B with four volunteers including Sarah, a First Aid holder. All records are fictional.\nYou have joined this event. Your coordinator will share your assignments once the roster is ready.\nMy participation\nWater Station B\nLawn\n12/12/2026, 9:00:00 am – 01:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n12/12/2026, 1:00:00 pm – 05:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n13/12/2026, 9:00:00 am – 01:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n13/12/2026, 1:00:00 pm – 05:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n14/12/2026, 9:00:00 am – 01:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n14/12/2026, 1:00:00 pm – 05:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nReport an incident\nAvailability & preferences\nMy shifts\nMy events",
+      "buttons": [
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 772
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 1036
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 1300
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 1564
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 1828
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 2092
+        },
+        {
+          "label": "Report an incident",
+          "disabled": false,
+          "height": 52,
+          "y": 2171
+        },
+        {
+          "label": "Availability & preferences",
+          "disabled": false,
+          "height": 52,
+          "y": 2233
+        },
+        {
+          "label": "My shifts",
+          "disabled": false,
+          "height": 52,
+          "y": 2295
+        },
+        {
+          "label": "My events",
+          "disabled": false,
+          "height": 52,
+          "y": 2363
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 2439,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 2439
+        }
+      ],
+      "name": "sarah-event",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001"
+    },
+    {
+      "text": "Availability & preferences\nRiverside 2026 - Demo · All times in Australia/Melbourne\nOnly shifts fully within your availability can be assigned. Preferences guide the roster; maximum hours are enforced.\nWhen can you help?\nstart date\nstart time\nend date\nend time\nRemove window\nstart date\nstart time\nend date\nend time\nRemove window\nstart date\nstart time\nend date\nend time\nRemove window\nAdd availability window\nHow much would you like to work?\nDesired total hours\nMaximum total hours\nMaximum daily hours\nOptional preferences\nPreferred start time (optional)\nPreferred end time (optional)\nExperience labels (comma separated)\nExperience requirements count only after a manager reviews them.\nLawn · Water Station B\nPrefer this post\nPrefer to avoid this post\nEvent briefing\nDemo incident escalation\nSoftware demo only: report exact observations and location to Mo on radio channel 1. Mo reviews the evidence and approves any operational response.\nI have read the event procedures and will follow coordinator instructions\nSave availability\nMy certificates\nBack",
+      "buttons": [
+        {
+          "label": "Remove window",
+          "disabled": false,
+          "height": 40,
+          "y": 706
+        },
+        {
+          "label": "Remove window",
+          "disabled": false,
+          "height": 40,
+          "y": 1118
+        },
+        {
+          "label": "Remove window",
+          "disabled": false,
+          "height": 40,
+          "y": 1530
+        },
+        {
+          "label": "Add availability window",
+          "disabled": false,
+          "height": 40,
+          "y": 1597
+        },
+        {
+          "label": "Prefer this post",
+          "disabled": false,
+          "height": 40,
+          "y": 2291
+        },
+        {
+          "label": "Prefer to avoid this post",
+          "disabled": false,
+          "height": 40,
+          "y": 2343
+        },
+        {
+          "label": "I have read the event procedures and will follow coordinator instructions",
+          "disabled": false,
+          "height": 66,
+          "y": 2588
+        },
+        {
+          "label": "Save availability",
+          "disabled": false,
+          "height": 52,
+          "y": 2670
+        },
+        {
+          "label": "My certificates",
+          "disabled": false,
+          "height": 52,
+          "y": 2738
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 2806
+        }
+      ],
+      "inputs": [
+        {
+          "label": "start date",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "start time",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "end date",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "end time",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "start date",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "start time",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "end date",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "end time",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "start date",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "start time",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "end date",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "end time",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Desired total hours",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Maximum total hours",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Maximum daily hours",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Preferred start time (optional)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Preferred end time (optional)",
+          "type": "text",
+          "height": 46
+        },
+        {
+          "label": "Experience labels (comma separated)",
+          "type": "text",
+          "height": 46
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 2882,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 2882
+        }
+      ],
+      "name": "sarah-availability",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/availability"
+    },
+    {
+      "text": "My shifts\nRiverside 2026 - Demo · Australia/Melbourne\nWater Station B\nLawn\n12/12/2026, 9:00:00 am – 12/12/2026, 1:00:00 pm\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nSupervisor: Mo Demo · Escalation: Radio channel 1\nWater Station B\nLawn\n12/12/2026, 1:00:00 pm – 12/12/2026, 5:00:00 pm\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nSupervisor: Mo Demo · Escalation: Radio channel 1\nWater Station B\nLawn\n13/12/2026, 9:00:00 am – 13/12/2026, 1:00:00 pm\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nSupervisor: Mo Demo · Escalation: Radio channel 1\nWater Station B\nLawn\n13/12/2026, 1:00:00 pm – 13/12/2026, 5:00:00 pm\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nSupervisor: Mo Demo · Escalation: Radio channel 1\nWater Station B\nLawn\n14/12/2026, 9:00:00 am – 14/12/2026, 1:00:00 pm\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nSupervisor: Mo Demo · Escalation: Radio channel 1\nWater Station B\nLawn\n14/12/2026, 1:00:00 pm – 14/12/2026, 5:00:00 pm\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nSupervisor: Mo Demo · Escalation: Radio channel 1\nRefresh\nBack",
+      "buttons": [
+        {
+          "label": "Refresh",
+          "disabled": false,
+          "height": 52,
+          "y": 1600
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 1668
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 1744,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 1744
+        }
+      ],
+      "name": "sarah-schedule",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/schedule"
+    },
+    {
+      "text": "Report an incident\nHold the radio button, speak clearly, then send. Your report is saved immediately.\nMicrophone access is off. Enable it in device settings or type the report below.\nWhich shift are you reporting from? This helps your coordinator locate the report.\nLawn · Gate C\nHold to record voice\nOr type the report\nSend report\nCancel\nYour recent reports\nRefresh report receipts",
+      "buttons": [
+        {
+          "label": "Lawn · Gate C",
+          "disabled": false,
+          "height": 40,
+          "y": 356
+        },
+        {
+          "label": "Hold to record voice",
+          "disabled": "true",
+          "height": 52,
+          "y": 412
+        },
+        {
+          "label": "Send report",
+          "disabled": "true",
+          "height": 52,
+          "y": 584
+        },
+        {
+          "label": "Cancel",
+          "disabled": false,
+          "height": 52,
+          "y": 652
+        },
+        {
+          "label": "Refresh report receipts",
+          "disabled": false,
+          "height": 52,
+          "y": 751
+        }
+      ],
+      "inputs": [
+        {
+          "label": "Or type the report",
+          "type": "textarea",
+          "height": 64
+        }
+      ],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "sarah-incident",
+      "url": "http://localhost:8084/events/d1000000-0000-4000-8000-000000000001/incident"
+    },
+    {
+      "text": "Event access\nOnly this event’s coordinator or safety lead can manage its operating plan.\nRetry\nBack",
+      "buttons": [
+        {
+          "label": "Retry",
+          "disabled": false,
+          "height": 52,
+          "y": 220
+        },
+        {
+          "label": "Back",
+          "disabled": false,
+          "height": 52,
+          "y": 288
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 844,
+      "scrollContainers": [],
+      "name": "sarah-manager-denied",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001/live"
+    },
+    {
+      "text": "Riverside 2026 - Demo\nYour event role: volunteer\nPUBLISHED\nBirrarung Marr\nMelbourne VIC\n2026-12-12–2026-12-14\n09:00–17:00 · Australia/Melbourne\nSynthetic demo: Water B with four volunteers including Sarah, a First Aid holder. All records are fictional.\nYou have joined this event. Your coordinator will share your assignments once the roster is ready.\nMy participation\nWater Station B\nLawn\n12/12/2026, 9:00:00 am – 01:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n12/12/2026, 1:00:00 pm – 05:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n13/12/2026, 9:00:00 am – 01:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n13/12/2026, 1:00:00 pm – 05:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n14/12/2026, 9:00:00 am – 01:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n14/12/2026, 1:00:00 pm – 05:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nReport an incident\nAvailability & preferences\nMy shifts\nMy events",
+      "buttons": [
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 772
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 1036
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 1300
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 1564
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 1828
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 2092
+        },
+        {
+          "label": "Report an incident",
+          "disabled": false,
+          "height": 52,
+          "y": 2171
+        },
+        {
+          "label": "Availability & preferences",
+          "disabled": false,
+          "height": 52,
+          "y": 2233
+        },
+        {
+          "label": "My shifts",
+          "disabled": false,
+          "height": 52,
+          "y": 2295
+        },
+        {
+          "label": "My events",
+          "disabled": false,
+          "height": 52,
+          "y": 2363
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 2439,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 2439
+        }
+      ],
+      "name": "sarah-offline-event",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001"
+    },
+    {
+      "text": "Riverside 2026 - Demo\nYour event role: volunteer\nPUBLISHED\nBirrarung Marr\nMelbourne VIC\n2026-12-12–2026-12-14\n09:00–17:00 · Australia/Melbourne\nSynthetic demo: Water B with four volunteers including Sarah, a First Aid holder. All records are fictional.\nYou have joined this event. Your coordinator will share your assignments once the roster is ready.\nMy participation\nWater Station B\nLawn\n12/12/2026, 9:00:00 am – 01:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n12/12/2026, 1:00:00 pm – 05:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n13/12/2026, 9:00:00 am – 01:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n13/12/2026, 1:00:00 pm – 05:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n14/12/2026, 9:00:00 am – 01:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nWater Station B\nLawn\n14/12/2026, 1:00:00 pm – 05:00 pm\nSHIFT · SCHEDULED\nKeep access clear. Report incidents to Mo; wait for human approval of safety responses.\nCheck in\nReport an incident\nAvailability & preferences\nMy shifts\nMy events",
+      "buttons": [
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 772
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 1036
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 1300
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 1564
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 1828
+        },
+        {
+          "label": "Check in",
+          "disabled": false,
+          "height": 52,
+          "y": 2092
+        },
+        {
+          "label": "Report an incident",
+          "disabled": false,
+          "height": 52,
+          "y": 2171
+        },
+        {
+          "label": "Availability & preferences",
+          "disabled": false,
+          "height": 52,
+          "y": 2233
+        },
+        {
+          "label": "My shifts",
+          "disabled": false,
+          "height": 52,
+          "y": 2295
+        },
+        {
+          "label": "My events",
+          "disabled": false,
+          "height": 52,
+          "y": 2363
+        }
+      ],
+      "inputs": [],
+      "width": 390,
+      "docWidth": 390,
+      "headings": 0,
+      "alerts": 0,
+      "scrollHeight": 2439,
+      "scrollContainers": [
+        {
+          "height": 844,
+          "scrollHeight": 2439
+        }
+      ],
+      "name": "sarah-offline-existing",
+      "url": "http://localhost:8084/events/d0000000-0000-4000-8000-000000000001"
+    }
+  ],
+  "blocked": [],
+  "rpcNames": [
+    "get_event_readiness",
+    "get_site_structure",
+    "list_event_team",
+    "event_crew_context",
+    "get_roster_context",
+    "get_roster_readiness",
+    "live_event_snapshot",
+    "intelligence_snapshot",
+    "response_candidates",
+    "my_joined_events",
+    "event_onboarding_context",
+    "my_live_assignments",
+    "my_dispatch_requests",
+    "event_briefing",
+    "my_event_schedule"
+  ]
+}

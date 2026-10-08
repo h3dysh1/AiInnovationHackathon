@@ -1,7 +1,8 @@
+import { AppText as Text } from '@/components/app-text';
 import { useCallback, useEffect, useState } from 'react';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { randomUUID } from 'expo-crypto';
-import { Text } from 'react-native';
+
 import { EventManagerGate } from '@/components/event-manager-gate';
 import { Button, Field, Loading, Notice, Page, Title } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
@@ -119,7 +120,7 @@ function Assistant({ id }: { id: string }) {
       <Title subtitle='Answers are saved before AI runs. Every result remains a proposal.'>
         Setup assistant
       </Title>
-      {s.error ? <Notice message={s.error} /> : null}
+      {s.error ? <Notice tone="error" message={s.error} /> : null}
       {draftError ? <Notice message={draftError} /> : null}
       <Notice message='Gemini drafts the plan and identifies ambiguity. You review staffing and safety requirements before the event can be verified.' />
       {latest

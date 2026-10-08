@@ -1,7 +1,8 @@
+import { AppText as Text } from '@/components/app-text';
 import { randomUUID } from 'expo-crypto';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Text } from 'react-native';
+import { Share } from 'react-native';
 import { EventManagerGate } from '@/components/event-manager-gate';
 import { Button, Field, Loading, Notice, Page, Title } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
@@ -25,13 +26,14 @@ function Publish({ id }: { id: string }) {
   return (
     <Page>
       <Title subtitle={s.data?.event.name}>Open volunteer recruitment</Title>
-      {s.error ? <Notice message={s.error} /> : null}
+      {s.error ? <Notice tone="error" message={s.error} /> : null}
       <Notice message='Publishing allows signed-in volunteers to preview the event and join. It does not publish a roster or start live operations.' />
       {s.data?.event.status === 'recruiting'
         ? (
           <PlanCard>
             <Text style={planStyles.heading}>Recruitment published</Text>
             <Text selectable style={planStyles.heading}>{s.data.event.join_code}</Text>
+            <Button title='Share join code' secondary onPress={() => { void Share.share({ message: `Join ${s.data!.event.name} in Ground Control with code ${s.data!.event.join_code}.` }).catch(() => undefined); }} />
             <Text style={planStyles.help}>
               {ready
                 ? 'Share this code with your volunteers.'
@@ -45,6 +47,7 @@ function Publish({ id }: { id: string }) {
           <Notice message='Verify the latest operating plan before publishing or changing its join code.' />
         )
         : null}
+      {editedCode && s.data?.event.join_code && editedCode !== s.data.event.join_code ? <Notice tone='warning' message='Changing the code makes the previous code stop working. Existing memberships remain unchanged.' /> : null}
       <Field
         label='Join code (6–20 letters or numbers)'
         value={code}

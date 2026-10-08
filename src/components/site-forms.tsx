@@ -1,4 +1,6 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { AppText as Text } from '@/components/app-text';
+import { colors } from '@/theme';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Button, Field } from '@/components/ui';
 import type { LocationDraft, PostCriticality, PostDraft, RequirementDraft } from '@/domain/site';
 
@@ -43,16 +45,16 @@ export function RequirementForm({ value, onChange, onSave, onCancel, pending, sa
 }
 
 const styles = StyleSheet.create({
-  form: { backgroundColor: '#FFF', borderRadius: 14, padding: 16, gap: 14, borderWidth: 1, borderColor: '#D6E3E6' },
-  help: { color: '#45616E', fontSize: 14, lineHeight: 20 },
-  label: { color: '#234759', fontSize: 14, fontWeight: '700' },
+  form: { backgroundColor: colors.surface, borderRadius: 4, padding: 16, gap: 14, borderWidth: 0, borderColor: colors.border },
+  help: { color: colors.secondary, fontSize: 14, lineHeight: 20 },
+  label: { color: colors.text, fontSize: 14, fontWeight: '600' },
   row: { flexDirection: 'row', gap: 8 },
   half: { flex: 1 },
-  choice: { flex: 1, borderWidth: 1, borderColor: '#B9CDD3', borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
-  selected: { borderColor: '#126B79', borderWidth: 2, backgroundColor: '#E4EFF1' },
-  choiceText: { color: '#123B53', fontSize: 12, fontWeight: '700', textTransform: 'capitalize' },
-  card: { backgroundColor: '#FFF', borderRadius: 14, padding: 16, gap: 8, borderWidth: 1, borderColor: '#D6E3E6' },
-  cardTitle: { color: '#123B53', fontSize: 17, fontWeight: '800' },
+  choice: { flex: 1, borderWidth: 1, borderColor: colors.fieldBorder, borderRadius: 4, paddingVertical: 12, alignItems: 'center' },
+  selected: { borderColor: colors.accent, borderWidth: 2, backgroundColor: colors.accentSoft },
+  choiceText: { color: colors.text, fontSize: 12, fontWeight: '600', textTransform: 'capitalize' },
+  card: { backgroundColor: colors.surface, borderRadius: 4, padding: 16, gap: 8, borderWidth: 0, borderColor: colors.border },
+  cardTitle: { color: colors.text, fontSize: 17, fontWeight: '600' },
 });
 
 export function SiteCard({ title, subtitle, onPress }: { title: string; subtitle: string; onPress: () => void }) {

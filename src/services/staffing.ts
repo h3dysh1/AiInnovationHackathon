@@ -3,6 +3,7 @@ import type { Certification } from '@/domain/certification';
 import type { IntelligenceSnapshot, LiveAssignment, LiveIncident, LiveSnapshot, ResponseCandidate } from '@/domain/live';
 import type { Availability, CrewMember, Onboarding, Roster, RosterContext } from '@/domain/roster';
 import { planningClient, setupRpc } from './planning';
+import type { SupabaseClient } from '@supabase/supabase-js';
 export type OnboardingContext = {
   posts: { id: string; name: string; location_name: string }[];
   requirements: { certification_type: string; post_name: string; location_name: string }[];
@@ -126,21 +127,25 @@ export const myLiveAssignments = (id: string) =>
   setupRpc<LiveAssignment[]>('my_live_assignments', { p_event_id: id });
 export const setCheckIn = (assignmentId: string, action: 'check_in' | 'check_out') =>
   setupRpc<unknown>('set_check_in', { p_assignment_id: assignmentId, p_action: action });
-export const reportIncident = (eventId: string, report: string, assignmentId?: string, requestId?: string) =>
-  setupRpc<{ id: string; status: string }>('report_incident', {
+export async function reportIncident(eventId: string, report: string, assignmentId?: string, requestId?: string, client: SupabaseClient = planningClient()) {
+  const { data, error } = await client.rpc('report_incident', {
     p_event_id: eventId,
     p_raw_report: report,
     p_assignment_id: assignmentId ?? null,
     p_request_id: requestId ?? null,
   });
+  if (error) throw error;
+  return data as { id: string; status: string };
+}
 export async function reportVoiceIncident(
   eventId: string,
   uri: string,
   assignmentId?: string,
   writtenContext = '',
   requestId = randomUUID(),
+  client: SupabaseClient = planningClient(),
 ) {
-  const c = planningClient();
+  const c = client;
   const { data: userData, error: userError } = await c.auth.getUser();
   if (userError || !userData.user) throw new Error('Sign in again before sending a voice report.');
   const recording = await fetch(uri);
@@ -160,7 +165,7 @@ export async function reportVoiceIncident(
     String('statusCode' in uploadError ? uploadError.statusCode : '') !== '409') throw uploadError;
   // Keep uploaded evidence on an ambiguous network failure. A retry uses the same
   // path and request ID; referenced audio is also protected by storage policy.
-  return await setupRpc<{ id: string; status: string }>('report_voice_incident', {
+  const { data, error } = await c.rpc('report_voice_incident', {
       p_event_id: eventId,
       p_audio_path: path,
       p_audio_mime_type: mimeType,
@@ -169,6 +174,8 @@ export async function reportVoiceIncident(
       p_written_context: writtenContext,
       p_request_id: requestId,
     });
+  if (error) throw error;
+  return data as { id: string; status: string };
 }
 export async function myIncidentReports(eventId: string) {
   const c = planningClient();

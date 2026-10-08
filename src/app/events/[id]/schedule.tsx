@@ -1,6 +1,7 @@
+import { AppText as Text } from '@/components/app-text';
 import { useCallback } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Text } from 'react-native';
+
 import { Button, Loading, Notice, Page, Title } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
 import { useStaffing } from '@/hooks/staffing';
@@ -19,7 +20,7 @@ export default function Schedule() {
       <Title subtitle={s.data ? `${s.data.event.name} · ${s.data.event.timezone}` : undefined}>
         My shifts
       </Title>
-      {s.error && <Notice message={s.error} />}
+      {s.error && <Notice tone="error" message={s.error} />}
       {s.data && s.data.event.model_status !== 'verified' && (
         <Notice message='The operating plan is being reviewed. These are your last published assignments; check with your coordinator for changes.' />
       )}

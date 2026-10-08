@@ -1,6 +1,8 @@
+import { AppText as Text } from '@/components/app-text';
+import { colors } from '@/theme';
 import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { EventFields } from '@/components/event-fields';
 import { Button, Field, Loading, Notice, Page, Title } from '@/components/ui';
 import { emptyEventDraft, validateEventDraft, type EventDraft, type Organisation } from '@/domain/event';
@@ -87,7 +89,7 @@ export default function NewEvent() {
   const chosenOrganisation = organisations.find(item => item.id === organisationId);
   return <Page>
     <Title subtitle={`Step ${step + 1} of 4`}>Create event</Title>
-    {error ? <Notice message={error} /> : null}
+    {error ? <Notice tone="error" message={error} /> : null}
     {step === 0 ? <>
       <Text style={styles.section}>Organisation</Text>
       <Text style={styles.help}>Choose the organisation running this event.</Text>
@@ -124,12 +126,12 @@ export default function NewEvent() {
 }
 
 const styles = StyleSheet.create({
-  section: { color: '#123B53', fontSize: 20, fontWeight: '800' },
-  help: { color: '#45616E', fontSize: 14, lineHeight: 20 },
-  choice: { backgroundColor: '#FFF', borderColor: '#B9CDD3', borderWidth: 1, borderRadius: 12, padding: 16 },
-  selected: { borderColor: '#126B79', borderWidth: 2, backgroundColor: '#E4EFF1' },
-  choiceText: { color: '#123B53', fontSize: 16, fontWeight: '700' },
-  summary: { backgroundColor: '#FFF', borderRadius: 14, padding: 16, gap: 8 },
-  summaryTitle: { color: '#123B53', fontSize: 20, fontWeight: '800' },
-  summaryText: { color: '#45616E', fontSize: 15 },
+  section: { color: colors.text, fontSize: 20, fontWeight: '600' },
+  help: { color: colors.secondary, fontSize: 14, lineHeight: 20 },
+  choice: { backgroundColor: colors.surface, borderColor: colors.fieldBorder, borderWidth: 1, borderRadius: 4, padding: 16 },
+  selected: { borderColor: colors.accent, borderWidth: 2, backgroundColor: colors.accentSoft },
+  choiceText: { color: colors.text, fontSize: 16, fontWeight: '600' },
+  summary: { backgroundColor: colors.surface, borderRadius: 4, padding: 16, gap: 8 },
+  summaryTitle: { color: colors.text, fontSize: 20, fontWeight: '600' },
+  summaryText: { color: colors.secondary, fontSize: 15 },
 });

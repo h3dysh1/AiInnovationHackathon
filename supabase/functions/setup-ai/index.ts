@@ -20,6 +20,7 @@ type Context = {
     timezone: string;
   };
   description: string | null;
+  site_map?: { id: string; storage_path: string } | null;
   documents: {
     id: string;
     title: string;
@@ -87,8 +88,15 @@ Deno.serve(async (request) => {
           throw new Error('Setup changed while starting analysis. Refresh and start again.');
         }
         const context = input as Context;
+        const documents = [
+          ...context.documents.map(doc => ({ ...doc, bucket: 'event-documents' })),
+          ...(context.site_map ? [{
+            id: context.site_map.id, title: 'Uploaded event site map', document_type: 'site_map',
+            storage_path: context.site_map.storage_path, mime_type: 'image/jpeg', size_bytes: 0, bucket: 'site-maps',
+          }] : []),
+        ];
         if (
-          context.documents.length > 10 ||
+          documents.length > 10 ||
           context.documents.reduce((sum, doc) => sum + doc.size_bytes, 0) > 12 * 1024 * 1024
         ) {
           throw new Error(
@@ -118,15 +126,16 @@ Deno.serve(async (request) => {
               procedures: context.procedures,
             },
             answers: context.answers,
-            documents: context.documents.map((doc) => ({
+            documents: documents.map((doc) => ({
               id: doc.id,
               title: doc.title,
               type: doc.document_type,
             })),
           }),
         }];
-        for (const doc of context.documents) {
-          const { data: file, error: fileError } = await client.storage.from('event-documents')
+        let totalBytes = 0;
+        for (const doc of documents) {
+          const { data: file, error: fileError } = await client.storage.from(doc.bucket)
             .download(doc.storage_path);
           if (fileError || !file) {
             throw new Error(`Could not read ${doc.title}. The original document is retained.`);
@@ -134,6 +143,8 @@ Deno.serve(async (request) => {
           if (file.size > 10485760) {
             throw new Error('Document exceeds the supported analysis size.');
           }
+          totalBytes += file.size;
+          if (totalBytes > 12 * 1024 * 1024) throw new Error('Include documents and a map totalling at most 12 MB for one analysis.');
           parts.push({
             text:
               `Source document ID ${doc.id}; title: ${doc.title}. Cite this exact ID and a page/section or row reference.`,
@@ -159,7 +170,7 @@ Deno.serve(async (request) => {
           locationIds: context.locations.map((location) => location.id),
           sources: [
             ...(context.description ? [{ id: context.event.id, type: 'description' }] : []),
-            ...context.documents.map((doc) => ({ id: doc.id, type: 'document' })),
+            ...documents.map((doc) => ({ id: doc.id, type: 'document' })),
             ...context.answers.map((answer) => ({ id: answer.id, type: 'answer' })),
           ],
         });

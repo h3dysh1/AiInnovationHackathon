@@ -1,7 +1,8 @@
+import { AppText as Text } from '@/components/app-text';
 import { errorMessage } from '@/domain/errors';
 import { useState } from 'react';
 import { router } from 'expo-router';
-import { Text } from 'react-native';
+
 import { Button, Field, Notice, Page, Title } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
 import type { JoinPreview } from '@/domain/planning';
@@ -29,7 +30,7 @@ export default function JoinScreen() {
     setError(null);
     try {
       const id = await joinEvent(code, preview.id);
-      router.replace({ pathname: '/events/[id]', params: { id } });
+      router.replace({ pathname: '/events/[id]/onboarding', params: { id } });
     } catch (e) {
       setError(
         errorMessage(
@@ -44,7 +45,7 @@ export default function JoinScreen() {
   return (
     <Page>
       <Title subtitle='Enter the code your coordinator shared.'>Join an event</Title>
-      {error ? <Notice message={error} /> : null}
+      {error ? <Notice tone="error" message={error} /> : null}
       <Field
         label='Event join code'
         value={code}

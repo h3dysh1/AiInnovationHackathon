@@ -40,9 +40,9 @@ Deno.serve(async (request) => {
     if (ctx.roster.status !== 'draft' || ctx.roster.revision !== body.revision) {
       throw new Error('Draft changed. Refresh before generating.');
     }
-    if (ctx.shifts.length > 500 || ctx.crew.length > 500) {
+    if (ctx.shifts.length > 2000 || ctx.crew.length > 1000) {
       throw new Error(
-        'Automatic generation currently supports up to 500 shifts and volunteers. Use manual assignments for larger drafts.',
+        'Automatic generation supports up to 2,000 shifts and 1,000 crew. Divide larger events into supported drafts.',
       );
     }
     const result = generateRoster(

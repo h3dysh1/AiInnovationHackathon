@@ -1,6 +1,7 @@
+import { AppText as Text } from '@/components/app-text';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Text } from 'react-native';
+
 import { EventManagerGate } from '@/components/event-manager-gate';
 import { Button, Field, Loading, Notice, Page, Title } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
@@ -62,7 +63,7 @@ function Operations({ id }: { id: string }) {
   return (
     <Page>
       <Title subtitle={data?.event.name}>Operating hours & procedures</Title>
-      {s.error ? <Notice message={s.error} /> : null}
+      {s.error ? <Notice tone="error" message={s.error} /> : null}
       <Text style={planStyles.help}>
         Each window applies daily from the first date through the last, in the event timezone.
         Qualified counts must fit every window. Changes require a new review.

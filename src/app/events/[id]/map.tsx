@@ -1,8 +1,10 @@
+import { AppText as Text } from '@/components/app-text';
+import { colors } from '@/theme';
 import { EventManagerGate } from '@/components/event-manager-gate';
 import { useCallback, useRef, useState } from 'react';
 import { randomUUID } from 'expo-crypto';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Button, Loading, Notice, Page, Title } from '@/components/ui';
 import { MapItemForm, type MapTapAction } from '@/components/map-item-form';
 import { SiteMapImage, type ImageMapMarker } from '@/components/site-map-image';
@@ -163,7 +165,7 @@ function EventMapWorkspace() {
 
   return <Page>
     <Title subtitle={event.name}>Site map</Title>
-    {error ? <Notice message={error} /> : null}
+    {error ? <Notice tone="error" message={error} /> : null}
     {draftError ? <Notice message={draftError} /> : null}
     {message ? <Notice message={message} /> : null}
     <SiteMapUpload state={siteMap} preview={false} disabled={pending || Boolean(draft)} onUploaded={() => { setAddKind(null); void loadContext(); setMessage('Map saved. Add physical locations, then give them staffing posts.'); }} />
@@ -197,11 +199,11 @@ function EventMapWorkspace() {
 }
 
 const styles = StyleSheet.create({
-  section: { color: '#123B53', fontSize: 19, fontWeight: '800' },
-  help: { color: '#45616E', fontSize: 14, lineHeight: 21 },
+  section: { color: colors.text, fontSize: 19, fontWeight: '600' },
+  help: { color: colors.secondary, fontSize: 14, lineHeight: 21 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   flex: { flex: 1, minWidth: 90 },
-  group: { gap: 8, padding: 12, borderWidth: 1, borderColor: '#D6E3E6', borderRadius: 12 },
+  group: { gap: 8, padding: 12, borderWidth: 0, borderColor: colors.border, borderRadius: 4 },
 });
 
 export default function GuardedRoute() { const { id } = useLocalSearchParams<{ id: string }>(); return <EventManagerGate id={id}><EventMapWorkspace /></EventManagerGate>; }

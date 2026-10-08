@@ -1,0 +1,69 @@
+{
+  "checks": [
+    {
+      "role": "mo",
+      "name": "home",
+      "overflow": false,
+      "font": "InterSemiBold",
+      "text": "Events\nGround Control\nWelcome, Mo Demo.\nCreate event\nYour events\nRiverside Live Operations - Demo\n2026-10-07 – 2026-10-07\nLIVE\nRiverside Aut"
+    },
+    {
+      "role": "mo",
+      "name": "overview",
+      "overflow": false,
+      "font": "InterSemiBold",
+      "text": "Event overview\nRiverside Automatic Scheduling - Demo\nYour event role: coordinator\nRecruiting volunteers\nSetup · Complete\nRecruitment · Open\n"
+    },
+    {
+      "role": "mo",
+      "name": "roster",
+      "overflow": false,
+      "font": "InterSemiBold",
+      "text": "Crew and roster\nRoster & shifts\n1. Generate shift times. 2. Automatically assign eligible crew. 3. Review and publish.\nReview crew qualifica"
+    },
+    {
+      "role": "mo",
+      "name": "setup",
+      "overflow": false,
+      "font": "InterSemiBold",
+      "text": "Event setup\nSet up Riverside Automatic Scheduling - Demo\nBuild your operating plan\nSetup context · 1 of 2 steps\n✓ Describe how the event wor"
+    },
+    {
+      "role": "mo",
+      "name": "create",
+      "overflow": false,
+      "font": "InterSemiBold",
+      "text": "Create event\nCreate event\nStep 1 of 4\nOrganisation\nChoose the organisation running this event.\nGround Control Demo\nOr create a new organisat"
+    },
+    {
+      "role": "mo",
+      "name": "live",
+      "overflow": false,
+      "font": "InterSemiBold",
+      "text": "Live operations\nLive operations\nRiverside Live Demo\nLast successful update · 10:32:02 · refreshes every 10 seconds\nEVENT STATUS · LIVE\n0 che"
+    },
+    {
+      "role": "volunteer",
+      "name": "home",
+      "overflow": false,
+      "font": "InterSemiBold",
+      "text": "My events\nMy events\nWelcome, Sarah Demo.\nYour next assignment\nWater Station B\nRiverside 2026 - Demo · Lawn\n12/12/2026, 9:00:00 am · schedule"
+    },
+    {
+      "role": "volunteer",
+      "name": "event",
+      "overflow": false,
+      "font": "InterSemiBold",
+      "text": "Event overview\nRiverside 2026 - Demo\nYour event role: volunteer\nReport an incident\nMy assignments\nWater Station B\nLawn\n12/12/2026, 9:00:00 a"
+    },
+    {
+      "role": "volunteer",
+      "name": "incident",
+      "overflow": false,
+      "font": "InterSemiBold",
+      "text": "Report incident\nReport an incident\nType or record what happened. Receipt is confirmed after you send.\nWhich shift are you reporting from? Th"
+    }
+  ],
+  "errors": [],
+  "blocked": []
+}

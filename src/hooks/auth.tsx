@@ -11,6 +11,7 @@ type AuthState = {
   profile: UserProfile | null;
   loading: boolean;
   error: string | null;
+  needsProfileSetup: boolean;
   reload: () => Promise<void>;
 };
 
@@ -80,7 +81,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }
   }, [load]);
 
-  const value = useMemo(() => ({ session, role, profile, loading, error, reload }), [session, role, profile, loading, error, reload]);
+  // Existing accounts retain access; new registrations finish their profile first.
+  // This is a UX gate, never a permission or qualification decision.
+  const needsProfileSetup = role === 'volunteer' && session?.user.user_metadata.profile_onboarding_required === true && session.user.user_metadata.profile_onboarding_complete !== true;
+  const value = useMemo(() => ({ session, role, profile, loading, error, reload, needsProfileSetup }), [session, role, profile, loading, error, reload, needsProfileSetup]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

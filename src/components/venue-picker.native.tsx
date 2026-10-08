@@ -1,6 +1,8 @@
+import { AppText as Text } from '@/components/app-text';
+import { colors } from '@/theme';
 import { useRef } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Button } from '@/components/ui';
 import type { VenuePickerProps } from '@/components/venue-picker';
 
@@ -24,5 +26,5 @@ export default function VenuePicker({ value, onChange, disabled }: VenuePickerPr
 const styles = StyleSheet.create({
   container: { gap: 12 },
   map: { width: '100%', height: 280, borderRadius: 12 },
-  help: { color: '#45616E', fontSize: 14, lineHeight: 21 },
+  help: { color: colors.secondary, fontSize: 14, lineHeight: 21 },
 });

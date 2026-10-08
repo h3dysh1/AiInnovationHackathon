@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ground Control Product Design"
+  short_description: "Operational UX and product design for Ground Control"
+  default_prompt: "Use $ground-control-product-design to plan or audit a Ground Control workflow with Impeccable and the installed Expo skills."

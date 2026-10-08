@@ -1,8 +1,10 @@
+import { AppText as Text } from '@/components/app-text';
+import { colors } from '@/theme';
 import { errorMessage } from '@/domain/errors';
 import { EventManagerGate } from '@/components/event-manager-gate';
 import { useEffect, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { LocationForm, PostForm, RequirementForm, SiteCard } from '@/components/site-forms';
 import { Button, Loading, Notice, Page, Title } from '@/components/ui';
 import { SiteMapUpload } from '@/components/site-map-upload';
@@ -156,7 +158,7 @@ function SiteScreen() {
 
   return <Page>
     <Title subtitle={event.name}>{post?.name ?? location?.name ?? 'Locations & posts'}</Title>
-    {error ? <Notice message={error} /> : null}
+    {error ? <Notice tone="error" message={error} /> : null}
     {message ? <Notice message={message} /> : null}
     {loadingChildren ? <Loading label="Loading details…" /> : null}
 
@@ -225,11 +227,11 @@ function SiteScreen() {
 }
 
 const styles = StyleSheet.create({
-  section: { color: '#123B53', fontSize: 20, fontWeight: '800', marginTop: 8 },
-  help: { color: '#45616E', fontSize: 14, lineHeight: 20 },
-  card: { backgroundColor: '#FFF', borderRadius: 14, padding: 16, gap: 8, borderWidth: 1, borderColor: '#D6E3E6' },
-  cardTitle: { color: '#123B53', fontSize: 17, fontWeight: '800' },
-  badge: { color: '#126B79', fontSize: 12, fontWeight: '800' },
+  section: { color: colors.text, fontSize: 20, fontWeight: '600', marginTop: 8 },
+  help: { color: colors.secondary, fontSize: 14, lineHeight: 20 },
+  card: { backgroundColor: colors.surface, borderRadius: 4, padding: 16, gap: 8, borderWidth: 0, borderColor: colors.border },
+  cardTitle: { color: colors.text, fontSize: 17, fontWeight: '600' },
+  badge: { color: colors.accent, fontSize: 12, fontWeight: '600' },
 });
 
 export default function GuardedRoute() { const { id } = useLocalSearchParams<{ id: string }>(); return <EventManagerGate id={id}><SiteScreen /></EventManagerGate>; }

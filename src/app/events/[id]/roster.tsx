@@ -1,15 +1,18 @@
+import { AppText as Text } from '@/components/app-text';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Text } from 'react-native';
+
 import { randomUUID } from 'expo-crypto';
 import { EventManagerGate } from '@/components/event-manager-gate';
-import { Button, Field, Loading, Notice, Page, Title } from '@/components/ui';
+import { Button, Disclosure, Field, Loading, Notice, Page, Title } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
 import { useStaffing } from '@/hooks/staffing';
 import { assignmentProblem, qualified, rosterCoverage, shiftHours } from '@/domain/roster';
 import { invokeStaffing, rosterContext, rosterReadiness, rosters } from '@/services/staffing';
 import { getEvent } from '@/services/events';
 import { setupRpc } from '@/services/planning';
+import { RosterRules } from '@/components/roster-rules';
+import type { RestRules } from '@/domain/roster-rest';
 export default function RosterScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   return (
@@ -21,12 +24,13 @@ export default function RosterScreen() {
 function RosterEditor({ id }: { id: string }) {
   const [selected, setSelected] = useState<string | null>(null);
   const load = useCallback(async () => {
-    const [list, event] = await Promise.all([rosters(id), getEvent(id)]);
+    const [list, event, rules] = await Promise.all([rosters(id), getEvent(id), setupRpc<RestRules | null>('get_roster_rules', { p_event_id: id })]);
     const r = list.find((r) => r.id === selected) ?? list.find((r) => r.status === 'draft') ??
       list.find((r) => r.status === 'published');
     return {
       list,
       event,
+      rules,
       ctx: r ? await rosterContext(r.id) : null,
       ready: r ? await rosterReadiness(r.id) : null,
     };
@@ -79,8 +83,9 @@ function RosterEditor({ id }: { id: string }) {
       <Title subtitle='1. Generate shift times. 2. Automatically assign eligible crew. 3. Review and publish.'>
         Roster & shifts
       </Title>
-      {s.error && <Notice message={s.error} />}
-      {message && <Notice message={message} />}
+      {s.error && <Notice tone="error" message={s.error} />}
+      {message ? <Notice message={message} /> : null}
+      {data ? <RosterRules eventId={id} rules={data.rules} disabled={s.pending || data.event.status === 'live' || data.event.status === 'completed'} save={change} /> : null}
       <Button
         title='Review crew qualifications'
         secondary
@@ -96,7 +101,7 @@ function RosterEditor({ id }: { id: string }) {
         />
       )}
       {data && !data.list.some((r) => r.status === 'draft') && (
-        <PlanCard>
+        <Disclosure title={data.list.some(r => r.status === 'published') ? 'Create a replacement roster' : 'Generate shift times'} initiallyOpen={!data.list.some(r => r.status === 'published')}>
           <Field
             label='Shift length (hours, 1–12)'
             value={length}
@@ -122,7 +127,7 @@ function RosterEditor({ id }: { id: string }) {
           {data.event.model_status !== 'verified' && (
             <Notice message='Verify the operating plan before generating shifts.' />
           )}
-        </PlanCard>
+        </Disclosure>
       )}
       {data?.list.map((r) => (
         <Button
@@ -193,6 +198,16 @@ function RosterEditor({ id }: { id: string }) {
           </PlanCard>
           {!draft ? <Notice message='This roster is published. Create a replacement shift draft above to try automatic assignment; the current roster stays published until you approve its replacement.' /> :
             <Notice message='Automatic assignment checks qualifications, availability, overlapping shifts and hour limits. Manual assignments are kept. You review coverage before publication.' />}
+          <Button
+            title={gapsOnly ? 'Show all shifts' : 'Show only coverage gaps'}
+            secondary
+            compact
+            onPress={() => {
+              setGapsOnly(!gapsOnly);
+              setVisible(25);
+            }}
+          />
+          <Disclosure title='Crew workload and hour limits'>
           {ctx.crew.map((m) => {
             const hours = ctx.assignments.filter((a) => a.user_id === m.user_id).reduce(
               (n, a) => n + shiftHours(ctx.shifts.find((x) => x.id === a.shift_id)!),
@@ -206,15 +221,7 @@ function RosterEditor({ id }: { id: string }) {
               </Text>
             );
           })}
-          <Button
-            title={gapsOnly ? 'Show all shifts' : 'Show only coverage gaps'}
-            secondary
-            compact
-            onPress={() => {
-              setGapsOnly(!gapsOnly);
-              setVisible(25);
-            }}
-          />
+          </Disclosure>
           {coverage.filter((c) =>
             !gapsOnly || c.missing || c.invalid.length ||
             c.qualifications.some((q) => q.actual < q.required)

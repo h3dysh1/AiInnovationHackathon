@@ -1,0 +1,201 @@
+[
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/app/coordinator.tsx",
+    "line": 56,
+    "snippet": "Undocumented color #D6E3E6 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#D6E3E6"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/app/events/[id]/map.tsx",
+    "line": 204,
+    "snippet": "Undocumented color #D6E3E6 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#D6E3E6"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/app/events/[id]/setup.tsx",
+    "line": 181,
+    "snippet": "Undocumented color #D6E3E6 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#D6E3E6"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/app/events/[id]/setup.tsx",
+    "line": 183,
+    "snippet": "Undocumented color #234759 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#234759"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/app/events/[id]/site.tsx",
+    "line": 230,
+    "snippet": "Undocumented color #D6E3E6 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#D6E3E6"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/components/map-item-form.tsx",
+    "line": 64,
+    "snippet": "Undocumented color #D6E3E6 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#D6E3E6"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/components/map-item-form.tsx",
+    "line": 66,
+    "snippet": "Undocumented color #234759 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#234759"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/components/plan-ui.tsx",
+    "line": 15,
+    "snippet": "Undocumented color #234759 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#234759",
+    "importedBy": [
+      "proposal-editor.tsx"
+    ]
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/components/site-forms.tsx",
+    "line": 46,
+    "snippet": "Undocumented color #D6E3E6 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#D6E3E6"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/components/site-forms.tsx",
+    "line": 48,
+    "snippet": "Undocumented color #234759 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#234759"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/components/site-forms.tsx",
+    "line": 54,
+    "snippet": "Undocumented color #D6E3E6 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#D6E3E6"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/components/site-map-image.tsx",
+    "line": 49,
+    "snippet": "Undocumented color #AF4D12 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#AF4D12"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/components/site-map-image.tsx",
+    "line": 49,
+    "snippet": "Undocumented color #FFE8A5 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#FFE8A5"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/components/site-map-image.tsx",
+    "line": 51,
+    "snippet": "Undocumented color rgba(175, 77, 18, 0.12) is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "rgba(175, 77, 18, 0.12)"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/components/site-map-upload.tsx",
+    "line": 30,
+    "snippet": "Undocumented color #D6E3E6 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#D6E3E6"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/Users/jakespaul/Desktop/projects/AiInnovationHackathon/src/components/ui.tsx",
+    "line": 57,
+    "snippet": "Undocumented color #234759 is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "#234759",
+    "importedBy": [
+      "event-manager-gate.tsx",
+      "proposal-editor.tsx"
+    ]
+  }
+]

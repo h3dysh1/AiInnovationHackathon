@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mo-app",
+    "name": "Ground Control",
     "slug": "mo-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,7 +17,13 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "output": "static",
@@ -25,12 +31,11 @@
     },
     "plugins": [
       "expo-router",
+      "expo-notifications",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "backgroundColor": "#FAF9F6"
         }
       ],
       "expo-sqlite",
@@ -46,11 +51,19 @@
         {
           "microphonePermission": "Allow Ground Control to use your microphone for radio incident reports."
         }
-      ]
+      ],
+      "expo-background-task"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "bfde486c-0be5-42c3-82ee-7772ad570c43"
+      }
+    },
+    "owner": "jakespaul1"
   }
 }

@@ -1,5 +1,6 @@
+import { AppText as Text } from '@/components/app-text';
 import {useState} from 'react';
-import {Text} from 'react-native';
+
 import {Button,Field,Notice} from '@/components/ui';
 import {planStyles} from '@/components/plan-ui';
 import type {LiveIncident} from '@/domain/live';

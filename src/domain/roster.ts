@@ -1,4 +1,5 @@
 import { certificateValidity, type Certification, qualificationKey } from './certification.ts';
+import { restProblem, type RestRules } from './roster-rest.ts';
 export type Availability = {
   id: string;
   event_id: string;
@@ -72,6 +73,7 @@ export type RosterContext = {
     setup_revision: number;
     model_status: string;
     staffing_revision: number;
+    rosterRules?: RestRules | null;
   };
   roster: Roster;
   shifts: Shift[];
@@ -126,6 +128,7 @@ export function assignmentProblem(
   chosen: ProposedAssignment[],
   shift: Shift,
   member: CrewMember,
+  shiftsById?: Map<string, Shift>,
 ): string | null {
   const p = member.onboarding;
   if (!p) return 'Availability not submitted';
@@ -146,10 +149,14 @@ export function assignmentProblem(
     )
   ) return 'Overlaps another event';
   const assigned = chosen.filter((a) => a.userId === member.user_id).map((a) =>
-    ctx.shifts.find((s) => s.id === a.shiftId)!
+    (shiftsById ? shiftsById.get(a.shiftId) : ctx.shifts.find((s) => s.id === a.shiftId))!
   ).filter(Boolean);
   if (assigned.some((s) => overlaps(s.starts_at, s.ends_at, shift.starts_at, shift.ends_at))) {
     return 'Overlapping shifts';
+  }
+  if (ctx.event.rosterRules) {
+    const problem = restProblem([...assigned, shift, ...ctx.externalAssignments.filter(a => a.user_id === member.user_id)], ctx.event.rosterRules, iso => localDay(iso, ctx.event.timezone));
+    if (problem) return problem;
   }
   const hours = shiftHours(shift);
   if (assigned.reduce((n, s) => n + shiftHours(s), hours) > p.maximum_hours + 1e-6) {
@@ -179,13 +186,14 @@ export function rosterCoverage(
     locked: a.locked,
   })),
 ): Coverage[] {
+  const shiftsById = new Map(ctx.shifts.map(s => [s.id, s]));
   return ctx.shifts.map((shift) => {
     const a = chosen.filter((a) => a.shiftId === shift.id);
     const invalid: string[] = [];
     for (const assignment of a) {
       const m = ctx.crew.find((m) => m.user_id === assignment.userId);
       const reason = m
-        ? assignmentProblem(ctx, chosen.filter((x) => x !== assignment), shift, m)
+        ? assignmentProblem(ctx, chosen.filter((x) => x !== assignment && x.userId === assignment.userId), shift, m, shiftsById)
         : 'Inactive event membership';
       if (reason) invalid.push(`${m?.display_name ?? 'Volunteer'}: ${reason}`);
     }
@@ -247,18 +255,68 @@ export function generateRoster(
   ) throw new Error('Correct invalid locked assignments before generating.');
   let best = [...initial], nodes = 0, complete = false;
   const chosen = [...initial];
+  const shiftsById = new Map(ctx.shifts.map(s => [s.id, s]));
+  const byUser = new Map<string, ProposedAssignment[]>(), byShift = new Map<string, ProposedAssignment[]>();
+  const usedHours = new Map<string, number>();
+  const usedDaily = new Map<string, number>();
+  const info = new Map(ctx.shifts.map(s => [s.id, { start: Date.parse(s.starts_at), end: Date.parse(s.ends_at), hours: shiftHours(s), day: localDay(s.starts_at, ctx.event.timezone) }]));
+  const availability = new Map(ctx.crew.map(m => [m.user_id, m.availability.map(w => ({ start: Date.parse(w.starts_at), end: Date.parse(w.ends_at) })).sort((a, b) => a.start - b.start)]));
+  const external = new Map<string, { start: number; end: number; interval: RosterContext['externalAssignments'][number] }[]>();
+  for (const a of ctx.externalAssignments) external.set(a.user_id, [...(external.get(a.user_id) ?? []), { start: Date.parse(a.starts_at), end: Date.parse(a.ends_at), interval: a }]);
+  const dayKey = (userId: string, day: string) => userId + '|' + day;
+  function index() {
+    byUser.clear(); byShift.clear(); usedHours.clear(); usedDaily.clear();
+    for (const a of chosen) {
+      byUser.set(a.userId, [...(byUser.get(a.userId) ?? []), a]);
+      byShift.set(a.shiftId, [...(byShift.get(a.shiftId) ?? []), a]);
+      usedHours.set(a.userId, (usedHours.get(a.userId) ?? 0) + shiftHours(shiftsById.get(a.shiftId)!));
+      const s = info.get(a.shiftId)!;
+      usedDaily.set(dayKey(a.userId, s.day), (usedDaily.get(dayKey(a.userId, s.day)) ?? 0) + s.hours);
+    }
+  }
+  function push(a: ProposedAssignment) {
+    chosen.push(a);
+    byUser.set(a.userId, [...(byUser.get(a.userId) ?? []), a]);
+    byShift.set(a.shiftId, [...(byShift.get(a.shiftId) ?? []), a]);
+    usedHours.set(a.userId, (usedHours.get(a.userId) ?? 0) + shiftHours(shiftsById.get(a.shiftId)!));
+    const s = info.get(a.shiftId)!;
+    usedDaily.set(dayKey(a.userId, s.day), (usedDaily.get(dayKey(a.userId, s.day)) ?? 0) + s.hours);
+  }
+  function pop() {
+    const a = chosen.pop()!;
+    byUser.get(a.userId)!.pop(); byShift.get(a.shiftId)!.pop();
+    usedHours.set(a.userId, (usedHours.get(a.userId) ?? 0) - shiftHours(shiftsById.get(a.shiftId)!));
+    const s = info.get(a.shiftId)!;
+    usedDaily.set(dayKey(a.userId, s.day), (usedDaily.get(dayKey(a.userId, s.day)) ?? 0) - s.hours);
+  }
+  index();
+  function feasible(shift: Shift, member: CrewMember) {
+    const p = member.onboarding;
+    if (!p) return false;
+    const s = info.get(shift.id)!;
+    let until = s.start;
+    for (const w of availability.get(member.user_id) ?? []) if (w.start <= until && w.end > until) until = w.end;
+    if (until < s.end || (usedHours.get(member.user_id) ?? 0) + s.hours > p.maximum_hours + 1e-6 ||
+      (usedDaily.get(dayKey(member.user_id, s.day)) ?? 0) + s.hours > p.maximum_daily_hours + 1e-6) return false;
+    const assigned = byUser.get(member.user_id) ?? [];
+    if (assigned.some(a => { const x = info.get(a.shiftId)!; return x.start < s.end && s.start < x.end; })) return false;
+    const other = external.get(member.user_id) ?? [];
+    if (other.some(x => x.start < s.end && s.start < x.end)) return false;
+    const rules = ctx.event.rosterRules;
+    if (rules && (rules.minimum_rest_hours > 0 || rules.maximum_continuous_hours > 0) && restProblem([
+      ...assigned.map(a => shiftsById.get(a.shiftId)!), shift, ...other.map(a => a.interval),
+    ], rules, iso => localDay(iso, ctx.event.timezone))) return false;
+    return true;
+  }
   function candidates(shift: Shift, req?: ShiftRequirement) {
     return ctx.crew.filter((m) =>
-      !chosen.some((a) => a.shiftId === shift.id && a.userId === m.user_id) &&
-      !assignmentProblem(ctx, chosen, shift, m) && (!req || meets(m, req))
+      !(byShift.get(shift.id) ?? []).some((a) => a.userId === m.user_id) &&
+      feasible(shift, m) && (!req || meets(m, req))
     );
   }
   function score(m: CrewMember, s: Shift) {
     const p = m.onboarding!;
-    const used = chosen.filter((a) => a.userId === m.user_id).reduce(
-      (n, a) => n + shiftHours(ctx.shifts.find((s) => s.id === a.shiftId)!),
-      0,
-    );
+    const used = usedHours.get(m.user_id) ?? 0;
     let scarcity = scarcityCache.get(m.user_id);
     if (scarcity === undefined) {
       scarcity = ctx.shifts.reduce(
@@ -275,13 +333,18 @@ export function generateRoster(
       (p.avoided_posts.includes(s.post_id) ? 10 : 0) -
       (p.preferred_posts.includes(s.post_id) ? 5 : 0) - (preferredTime ? 2 : 0) + scarcity * .1;
   }
+  const memberRank = new Map([...ctx.crew].sort((a, b) => a.user_id.localeCompare(b.user_id)).map((m, index) => [m.user_id, index]));
+  function orderCandidates(candidates: CrewMember[], shift: Shift) {
+    const scores = new Map(candidates.map(m => [m.user_id, score(m, shift)]));
+    candidates.sort((a, b) => scores.get(a.user_id)! - scores.get(b.user_id)! || memberRank.get(a.user_id)! - memberRank.get(b.user_id)!);
+  }
   function search() {
     if (++nodes > nodeBudget) return false;
     if (chosen.length > best.length) best = [...chosen];
     let task: { s: Shift; c: CrewMember[]; need: number } | null = null;
     let done = true;
     for (const s of ctx.shifts) {
-      const current = chosen.filter((a) => a.shiftId === s.id);
+      const current = byShift.get(s.id) ?? [];
       const free = s.minimum_coverage - current.length;
       if (free <= 0) {
         if (
@@ -320,36 +383,37 @@ export function generateRoster(
       return true;
     }
     if (!task || task.c.length < task.need) return false;
-    task.c.sort((a, b) =>
-      score(a, task!.s) - score(b, task!.s) || a.user_id.localeCompare(b.user_id)
-    );
+    orderCandidates(task.c, task.s);
     for (const m of task.c) {
-      chosen.push({ shiftId: task.s.id, userId: m.user_id, locked: false });
+      push({ shiftId: task.s.id, userId: m.user_id, locked: false });
       if (search()) return true;
-      chosen.pop();
+      pop();
       if (nodes > nodeBudget) break;
     }
     return false;
   }
-  search();
+  const large = ctx.shifts.length > 500 || ctx.crew.length > 500 || ctx.shifts.reduce((n, s) => n + s.minimum_coverage, 0) > 800;
+  // Large events use iterative assignment; avoid a call-stack-sized recursive search.
+  if (!large) search();
   if (!complete) { // Fill remaining feasible seats even when one unsatisfiable task stopped search.
     chosen.splice(0, chosen.length, ...best);
+    index();
     for (
       const s of [...ctx.shifts].sort((a, b) =>
         (a.criticality === 'critical' ? -1 : 0) - (b.criticality === 'critical' ? -1 : 0) ||
         a.starts_at.localeCompare(b.starts_at)
       )
     ) {
-      while (chosen.filter((a) => a.shiftId === s.id).length < s.minimum_coverage) {
-        const current = chosen.filter((a) => a.shiftId === s.id);
+      while ((byShift.get(s.id) ?? []).length < s.minimum_coverage) {
+        const current = byShift.get(s.id) ?? [];
         const missing = s.requirements.find((r) =>
           current.filter((a) => meets(ctx.crew.find((m) => m.user_id === a.userId)!, r))
             .length < r.minimum_count
         );
         const eligible = candidates(s, missing);
         if (!eligible.length) break;
-        eligible.sort((a, b) => score(a, s) - score(b, s) || a.user_id.localeCompare(b.user_id));
-        chosen.push({ shiftId: s.id, userId: eligible[0].user_id, locked: false });
+        orderCandidates(eligible, s);
+        push({ shiftId: s.id, userId: eligible[0].user_id, locked: false });
       }
     }
     best = [...chosen];
@@ -359,6 +423,6 @@ export function generateRoster(
     complete: rosterCoverage(ctx, best).every((c) =>
       !c.missing && !c.invalid.length && c.qualifications.every((q) => q.actual >= q.required)
     ),
-    searchLimited: nodes > nodeBudget,
+    searchLimited: large || nodes > nodeBudget,
   };
 }

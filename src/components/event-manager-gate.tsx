@@ -1,3 +1,4 @@
+import { View } from 'react-native';
 import { errorMessage } from '@/domain/errors';
 import { type PropsWithChildren, useCallback, useState } from 'react';
 import { router, useFocusEffect } from 'expo-router';
@@ -54,5 +55,5 @@ export function EventManagerGate({ id, children }: PropsWithChildren<{ id: strin
       </Page>
     );
   }
-  return children;
+  return <View style={{ flex: 1 }}><View style={{ flex: 1 }}>{children}</View></View>;
 }

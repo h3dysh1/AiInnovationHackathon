@@ -3,6 +3,7 @@ import { useFocusEffect } from 'expo-router';
 import { errorMessage } from '@/domain/errors';
 export function useStaffing<T>(loader: () => Promise<T>) {
   const [result, setResult] = useState<{ loader: () => Promise<T>; value: T } | null>(null);
+  const [updatedAt, setUpdatedAt] = useState<Date | null>(null);
   const requestNumber = useRef(0);
   const data = result?.loader === loader ? result.value : null;
   const [loading, setLoading] = useState(true);
@@ -14,6 +15,7 @@ export function useStaffing<T>(loader: () => Promise<T>) {
       const value = await loader();
       if (request !== requestNumber.current) return;
       setResult({ loader, value });
+      setUpdatedAt(new Date());
       setError(null);
     } catch (e) {
       if (request === requestNumber.current) setError(errorMessage(e, 'Could not load.'));
@@ -41,5 +43,5 @@ export function useStaffing<T>(loader: () => Promise<T>) {
       setPending(false);
     }
   };
-  return { data, loading, pending, error, refresh, run };
+  return { data, loading, pending, error, updatedAt, refresh, run };
 }

@@ -1,10 +1,12 @@
+import { AppText as Text } from '@/components/app-text';
+import { loadDraft, saveDraft } from '@/services/draft-storage';
 import { certificateValidity } from '@/domain/certification';
 import { errorMessage } from '@/domain/errors';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { Text } from 'react-native';
+import { View } from 'react-native';
 import { EventFields } from '@/components/event-fields';
-import { Button, Loading, Notice, Page, Section, Title } from '@/components/ui';
+import { Button, Disclosure, Loading, Notice, Page, Section, Title } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
 import { draftFromEvent, type Event, type EventDraft } from '@/domain/event';
 import type { Membership } from '@/domain/planning';
@@ -16,24 +18,49 @@ import type { LiveAssignment } from '@/domain/live';
 export default function EventDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { session } = useAuth();
+  const [clock, setClock] = useState(Date.now);
   const [event, setEvent] = useState<Event | null>(null);
   const [membership, setMembership] = useState<Membership | null>(null);
   const [draft, setDraft] = useState<EventDraft | null>(null);
   const [editing, setEditing] = useState(false);
+  const editingRef = useRef(false);
+  const [draftLoaded, setDraftLoaded] = useState(false);
+  const draftKey = `ground-control:event-details:${session?.user.id}:${id}`;
+  function toggleEditing(value: boolean) { editingRef.current = value; setEditing(value); }
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [certificateRequest, setCertificateRequest] = useState<string | null>(null);
+  const [showAllAssignments, setShowAllAssignments] = useState(false);
   const [liveAssignments, setLiveAssignments] = useState<LiveAssignment[]>([]);
   const [dispatches, setDispatches] = useState<{ id: string; instruction: string; status: string }[]>([]);
+  useEffect(() => {
+    let active = true;
+    void loadDraft(draftKey).then(saved => {
+      if (!active) return;
+      if (saved) {
+        const value = JSON.parse(saved) as Record<string, unknown>;
+        const keys: (keyof EventDraft)[] = ['name', 'description', 'venueName', 'address', 'startDate', 'endDate', 'operatingStartTime', 'operatingEndTime', 'timezone', 'expectedAttendance'];
+        if (value && keys.every(key => typeof value[key] === 'string')) {
+          setDraft(value as unknown as EventDraft); toggleEditing(true);
+        }
+      }
+    }).catch(() => { if (active) setError('Local draft storage is unavailable. Keep this screen open until your changes are saved.'); }).finally(() => { if (active) setDraftLoaded(true); });
+    return () => { active = false; };
+  }, [draftKey]);
+  useEffect(() => {
+    if (!draftLoaded) return;
+    void saveDraft(draftKey, editing && draft ? JSON.stringify(draft) : null).catch(() => setError('Your edits are still on this screen but could not be saved locally.'));
+  }, [draftKey, draftLoaded, editing, draft]);
   const refresh = useCallback(async (active: () => boolean = () => true) => {
     if (!session) return;
     try {
       const [e, m] = await Promise.all([getEvent(id), getMembership(id, session.user.id)]);
       if (active()) {
         setEvent(e);
+        setClock(Date.now());
         setMembership(m);
-        setDraft(draftFromEvent(e));
+        if (!editingRef.current) setDraft(draftFromEvent(e));
         setError(null);
       }
       if (m?.event_role === 'volunteer') {
@@ -75,7 +102,7 @@ export default function EventDetails() {
     setError(null);
     try {
       setEvent(await updateEvent(id, draft));
-      setEditing(false);
+      toggleEditing(false);
     } catch (e) {
       setError(errorMessage(e, 'Could not save. Your changes are still here.'));
     } finally {
@@ -99,14 +126,17 @@ export default function EventDetails() {
     );
   }
   const manager = managerRole(membership);
-  const nextAction = event.model_status !== 'verified'
+  const orderedAssignments = [...liveAssignments].sort((a,b) => Number(b.status === 'checked_in') - Number(a.status === 'checked_in') || Number(Date.parse(a.ends_at) <= clock) - Number(Date.parse(b.ends_at) <= clock) || Date.parse(a.starts_at) - Date.parse(b.starts_at));
+  const nextAction = event.status === 'live' || event.status === 'completed'
+    ? { label: event.status === 'live' ? 'Open live operations' : 'Review event history', route: '/events/[id]/live' }
+    : event.model_status !== 'verified'
     ? { label: event.model_status === 'needs_review' ? 'Review items needing attention' : 'Continue event setup', route: event.model_status === 'needs_review' ? '/events/[id]/review' : '/events/[id]/setup' }
     : event.status === 'draft'
     ? { label: 'Open volunteer recruitment', route: '/events/[id]/publish' }
     : event.status === 'recruiting'
     ? { label: 'Build the roster', route: '/events/[id]/roster' }
     : { label: 'View roster and shifts', route: '/events/[id]/roster' };
-  const stage = event.model_status !== 'verified'
+  const stage = event.status === 'live' ? 'Live operations' : event.status === 'completed' ? 'Event completed' : event.model_status !== 'verified'
     ? 'Setup in progress'
     : event.status === 'draft'
     ? 'Ready to publish recruitment'
@@ -116,14 +146,16 @@ export default function EventDetails() {
     ? 'Roster in progress'
     : 'Event plan ready';
   return (
+    <View style={{ flex: 1 }}>
     <Page>
       <Title subtitle={`Your event role: ${membership.event_role.replaceAll('_', ' ')}`}>
         {event.name}
       </Title>
-      {error ? <Notice message={error} /> : null}
+      {error ? <Notice tone="error" message={error} /> : null}
       {editing && draft && manager
         ? (
           <>
+            <Notice message='Your edit draft stays on this device until you save or cancel. Live refresh will not replace it.' />
             <EventFields value={draft} onChange={setDraft} section='basics' />
             <EventFields value={draft} onChange={setDraft} section='schedule' />
             <Notice message='Changing event details requires the operating plan to be verified again.' />
@@ -139,7 +171,7 @@ export default function EventDetails() {
               secondary
               disabled={pending}
               onPress={() => {
-                setEditing(false);
+                toggleEditing(false);
                 setDraft(draftFromEvent(event));
               }}
             />
@@ -147,19 +179,6 @@ export default function EventDetails() {
         )
         : (
           <>
-            <PlanCard>
-              <Text style={planStyles.badge}>{event.status.toUpperCase()}</Text>
-              <Text style={planStyles.heading}>{event.venue_name}</Text>
-              {event.address ? <Text style={planStyles.text}>{event.address}</Text> : null}
-              <Text style={planStyles.text}>
-                {event.start_date}–{event.end_date}
-                {'\n'}
-                {event.operating_start_time.slice(0, 5)}–{event.operating_end_time.slice(0, 5)} ·
-                {' '}
-                {event.timezone}
-              </Text>
-              {event.description ? <Text style={planStyles.text}>{event.description}</Text> : null}
-            </PlanCard>
             {manager
               ? (
                 <>
@@ -167,7 +186,7 @@ export default function EventDetails() {
                     <Text style={planStyles.badge}>{stage}</Text>
                     <Text style={planStyles.text}>
                       Setup · {event.model_status === 'verified' ? 'Complete' : 'Needs attention'}
-                      {'\n'}Recruitment · {event.status === 'draft' ? 'Not published' : 'Open'}
+                      {'\n'}Recruitment · {event.status === 'draft' ? 'Not published' : ['live', 'completed'].includes(event.status) ? 'Event underway or completed' : 'Open'}
                       {'\n'}Roster · {['rostering', 'published', 'live', 'completed'].includes(event.status) ? 'Started' : 'Not started'}
                     </Text>
                     <Button
@@ -175,13 +194,7 @@ export default function EventDetails() {
                       onPress={() => router.push({ pathname: nextAction.route as '/events/[id]/setup', params: { id } })}
                     />
                   </PlanCard>
-                  <Section title='Event workspace'>
-                    <Button title='Set up and review plan' secondary compact onPress={() => router.push({ pathname: '/events/[id]/setup', params: { id } })} />
-                    <Button title='Crew and roster' secondary compact onPress={() => router.push({ pathname: '/events/[id]/roster', params: { id } })} />
-                    <Button title='Recruitment and join code' secondary compact onPress={() => router.push({ pathname: '/events/[id]/publish', params: { id } })} />
-                    <Button title='Live operations' secondary compact onPress={() => router.push({ pathname: '/events/[id]/live', params: { id } })} />
-                  </Section>
-                  <Section title='Event settings'>
+                  <Disclosure title='Event settings'>
                     <Button title='Team and roles' secondary compact onPress={() => router.push({ pathname: '/events/[id]/team', params: { id } })} />
                   {['draft', 'recruiting'].includes(event.status)
                     ? (
@@ -189,15 +202,15 @@ export default function EventDetails() {
                         title='Edit event details'
                         secondary
                         compact
-                        onPress={() => setEditing(true)}
+                        onPress={() => { setDraft(draftFromEvent(event)); toggleEditing(true); }}
                       />
                     )
                     : null}
-                  </Section>
+                  </Disclosure>
                 </>
               )
               : (
-                <Notice message='You have joined this event. Your coordinator will share your assignments once the roster is ready.' />
+                liveAssignments.length ? null : <Notice message='You have joined this event. Assignments will appear here when your coordinator publishes the roster.' />
               )}
             {!manager
               ? (
@@ -210,8 +223,9 @@ export default function EventDetails() {
                       {(dispatch.status==='pending'?['accepted','declined']:dispatch.status==='accepted'?['en_route','declined']:dispatch.status==='en_route'?['arrived']:dispatch.status==='arrived'?['completed']:[]).map(status=><Button key={status} title={status==='accepted'?'Accept instruction':status==='declined'?'Decline (notify coordinator)':status==='en_route'?'On my way':status==='arrived'?'Arrived and checked in':'Task completed'} disabled={pending} onPress={()=>{setPending(true);void updateDispatch(dispatch.id,status).then(()=>refresh()).catch(cause=>setError(errorMessage(cause,'Could not update response. Try again.'))).finally(()=>setPending(false));}}/>)}
                     </PlanCard>
                   ))}
-                  <Section title='My participation'>
-                    {liveAssignments.map((assignment) => (
+                  <Button title='Report an incident' onPress={() => router.push({ pathname: '/events/[id]/incident', params: { id } })} />
+                  <Section title='My assignments'>
+                    {(showAllAssignments ? orderedAssignments : orderedAssignments.slice(0, 2)).map((assignment) => (
                       <PlanCard key={assignment.assignment_id}>
                         <Text style={planStyles.heading}>{assignment.post}</Text>
                         <Text style={planStyles.text}>
@@ -222,33 +236,49 @@ export default function EventDetails() {
                         {assignment.instructions ? <Text style={planStyles.help}>{assignment.instructions}</Text> : null}
                         {!assignment.response_plan_id && ['scheduled','late','missing'].includes(assignment.status)
                           ? (
-                            <Button title='Check in' onPress={() => {
+                            <Button title='Check in' disabled={pending} onPress={() => {
                               setPending(true);void setCheckIn(assignment.assignment_id, 'check_in').then(() => refresh()).catch(cause=>setError(errorMessage(cause,'Check-in failed. Try again.'))).finally(()=>setPending(false));
                             }} />
                           )
                           : assignment.status === 'checked_in'
                           ? (
-                            <Button title='Check out' secondary onPress={() => {
+                            <Button title='Check out' secondary disabled={pending} onPress={() => {
                               setPending(true);void setCheckIn(assignment.assignment_id, 'check_out').then(() => refresh()).catch(cause=>setError(errorMessage(cause,'Check-out failed. Try again.'))).finally(()=>setPending(false));
                             }} />
                           )
                           : null}
                       </PlanCard>
                     ))}
+                    {orderedAssignments.length > 2 ? <Button title={showAllAssignments ? 'Show current and next assignments' : `Show all ${orderedAssignments.length} assignments`} secondary onPress={() => setShowAllAssignments(!showAllAssignments)} /> : null}
                     {event.status==='live'?<Button title='Confirm standby availability for the next 2 hours' secondary disabled={pending} onPress={()=>{setPending(true);void setStandby(id,new Date(Date.now()+2*3600000).toISOString()).then(()=>refresh()).catch(cause=>setError(errorMessage(cause,'Could not confirm standby.'))).finally(()=>setPending(false));}}/>:null}
-                    <Button title='Report an incident' onPress={() => router.push({ pathname: '/events/[id]/incident', params: { id } })} />
-                    <Button title='Availability & preferences' onPress={() => router.push({ pathname: '/events/[id]/availability', params: { id } })} />
+
+                    <Button title='Availability & preferences' secondary onPress={() => router.push({ pathname: '/events/[id]/availability', params: { id } })} />
+                    <Button title='Prepare for this event' secondary onPress={() => router.push({ pathname: '/events/[id]/onboarding', params: { id } })} />
                     <Button title='My shifts' secondary onPress={() => router.push({ pathname: '/events/[id]/schedule', params: { id } })} />
                     {certificateRequest
-                      ? <Button title='Add missing certificate' secondary onPress={() => router.push('/certificates')} />
+                      ? <Button title='Review event qualifications' secondary onPress={() => router.push({ pathname: '/events/[id]/onboarding', params: { id } })} />
                       : null}
                   </Section>
                   <Button title='My events' secondary onPress={() => router.navigate('/volunteer')} />
                 </>
               )
               : null}
+            <Disclosure title="Venue and event details">
+              <Text style={planStyles.badge}>{event.status.toUpperCase()}</Text>
+              <Text style={planStyles.heading}>{event.venue_name}</Text>
+              {event.address ? <Text style={planStyles.text}>{event.address}</Text> : null}
+              <Text style={planStyles.text}>
+                {event.start_date}–{event.end_date}
+                {'\n'}
+                {event.operating_start_time.slice(0, 5)}–{event.operating_end_time.slice(0, 5)} ·
+                {' '}
+                {event.timezone}
+              </Text>
+              {event.description ? <Text style={planStyles.text}>{event.description}</Text> : null}
+            </Disclosure>
           </>
         )}
     </Page>
+    </View>
   );
 }

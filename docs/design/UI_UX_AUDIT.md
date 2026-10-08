@@ -1,0 +1,312 @@
+# Ground Control product and interface audit
+
+Method: dual-agent (A: /root/design_assessment · B: /root/technical_assessment)
+
+8 October 2026. Target: `src/app` and supporting components, services, domain rules, Supabase functions and migrations. This is an audit and proposed roadmap, not an approved redesign. Application files and existing tooling were preserved. No commits, pushes, PRs, deployments, seeding, operational mutations or AI-provider requests were performed.
+
+## Evidence and scope
+
+All 25 screen routes plus the navigator were inventoried. Source inspection was supplemented by authenticated Expo Web navigation as Mo and Sarah using existing demo accounts, local unsaved forms, permission-denied states, mobile widths 320/390, tablet width 768 and desktop width 1440. Expo Go 57.0.9 rendered native sign-in on an iPhone 17 Pro simulator running iOS 26.5; light, dark and maximum accessibility text screenshots were inspected. Original simulator appearance/text settings were restored. Android execution, authenticated native journeys, VoiceOver/TalkBack, hardware performance, keyboard interactions and native tablet behavior were not tested.
+
+Screenshots and measured text/control/layout observations are in [audit-evidence](audit-evidence/). The browser guard prevented operational writes. In particular, `live_event_snapshot` invokes attendance marking, so it was replaced with real event metadata and synthetic zero staffing/empty coverage. Those summary numbers are NOT product evidence. Read-only intelligence records were real. Initial overly restrictive guard errors were replaced with successful captures and excluded from findings. No event/report/approval/publication was submitted. File-picking, actual voice upload, AI generation, response dispatch and lifecycle mutations were traced in source rather than executed. The short offline experiment retained content but did not establish behavior after all request retries.
+
+The screenshots capture viewport content; React Native's inner ScrollView means filenames without “viewport” are not reliable full-scroll images. Scroll lengths below come from measured inner containers. Some development screenshots contain a React Native Web unexpected-text-node warning; its production impact was not established and it is excluded from the prioritised UX findings.
+
+## 1. Repository and design-tooling assessment
+
+- npm with `package-lock.json`; no Bun lock. Expo `~57.0.26`, React Native `0.86.3`, React `19.2.3`, Expo Router `~57.0.24`, `@expo/ui ~57.0.21`.
+- Routes in `src/app`; shared components, hooks, services and domain rules outside it. Supabase owns authoritative data, permissions and server AI. No native `ios/` or `android/` directories: Continuous Native Generation.
+- `src/app/_layout.tsx:10` uses one Stack with all headers hidden. Role/account guards and event-manager permission checks exist.
+- `AGENTS.md`, `roadmap.md`, README and historical implementation documentation existed. Roadmap is authoritative; old audit statements can be superseded by later implementation and are not evidence of a fresh provider test.
+- Initially `.agents/`, `.codex/`, `.cursor/` were already untracked user/team work. Existing Impeccable and hook manifests were preserved. No existing Ground Control custom skill or official Expo skills were present.
+- Final fingerprint comparison: all **248** baseline files unchanged, including application/backend/package files and pre-existing skills/configuration. HEAD remains `a7e116b5fb6deec19e3b9ad55d018854cda97db3` on `work/ground-control-phases`.
+
+## 2. Impeccable setup status
+
+Existing `.agents/skills/impeccable` was retained. Official `check` reports skill v4.5.0 current; `context` and `doctor --json` execute successfully, with doctor reporting no findings. Script package/binary version labels differ from skill version; this alone is not evidence of an outdated installation. Existing `.codex/hooks.json` native detector hooks remain intact; manifests alone do not prove every editor has enabled/trusted them.
+
+Applied the real critique, native audit, shape and distill instructions, including isolated independent assessments. Native/iOS/Android guidance informed interpretation. The detector scanned `src`: **16 advisory color declarations in 10 files**, all `design-system-color`; exit 0. These are missing documented palette entries, not sixteen demonstrated usability defects. Browser injection executed on sign-in/coordinator/roster and logged two anti-patterns per page, but a reliable visible overlay was unavailable in headless Chrome. Those console counts are not additional confirmed native defects.
+
+New `PRODUCT.md` and descriptive `DESIGN.md` supply Ground Control context and current interface primitives; neither approves a new design. Tool installation/provenance is documented in [TOOLING.md](TOOLING.md). No bespoke replacement for Impeccable was created.
+
+## 3. Expo skills setup status
+
+Installed only six relevant official `expo/skills` skills in project-local `.agents/skills`: `expo-overview`, `expo-router`, `expo-native-ui`, `expo-animation`, `expo-design-system`, `expo-ui`. The official README recommends the Codex plugin and documents the skills CLI alternative. The CLI alternative keeps this task project-local, unlike the plugin's global cache. `skills-lock.json` records source paths/hashes. `skills list --agent codex --json` confirms all six at project scope and both Impeccable and the custom skill; the active Codex skill catalog also discovered them.
+
+Read overview first, then native UI/router/design-system guidance. These prepare later implementation; no dependencies or app controls were replaced. SDK **57** and its matching documentation remain authoritative, including checking whether guidance requires a development build rather than assuming Expo Go support.
+
+## 4. Ground Control Product Design skill
+
+Created exactly one custom skill: [.agents/skills/ground-control-product-design/SKILL.md](../../.agents/skills/ground-control-product-design/SKILL.md), with `agents/openai.yaml`. Codex project discovery succeeds; official quick validation reports “Skill is valid!”.
+
+It captures workforce operational clarity plus consumer simplicity, mobile-first journeys, progressive disclosure without deletion, distinct setup/live jobs, deterministic constraints, contextual AI, editable generated configuration, original evidence and human safety authority. It uses actual location/post terminology, while treating zones as a future concept rather than inventing an existing entity. It delegates general design to Impeccable and version-specific implementation to official Expo skills.
+
+## 5. Current product architecture
+
+```text
+Authentication / role redirect
+├─ Coordinator home → organisation selection → create event
+├─ Volunteer home → join preview → joined event
+└─ Profile → account / coordinator activation; certificates
+Event hub
+├─ Setup → documents → AI assistant → candidate/plan review
+├─ Site structure → locations/posts; map/image placement
+├─ Operating windows / staffing requirements
+├─ Recruitment / publish; event team and permissions
+├─ Qualifications and volunteer availability
+├─ Roster → deterministic assignment → review → publication/replacement
+├─ Volunteer schedule / shift check-in
+├─ Incident report → durable receipt → asynchronous AI
+└─ Live operations → incidents / risks / responses / observations / timeline / closeout
+```
+
+Major entities: organisation, event, location, post, certification requirement, operating window, event membership, qualification/document, availability/onboarding, shift, roster revision/assignment, attendance, incident/original report/interpretation/relations, risk, response, dispatch and operational observation/history. No standalone zones screen/entity exists. People management is distributed across team, qualifications, roster and event membership rather than a unified People destination.
+
+Lifecycle includes draft/recruitment, staffing/publication, live operation and completion. These states exist but hub actions/copy do not consistently reflect them. Existing `src/social/mockPosts.ts`, `socialProcessor.ts`, `types.ts` and the empty `src/services/signalApi.ts` remain preserved; they are a partial social-processing foundation, **not an integrated social monitoring screen or deployed ingestion workflow**.
+
+## 6. Major user journeys
+
+| Existing journey / entry | Goal, steps and decisions | Feedback, recovery, completion / next action |
+|---|---|---|
+| First launch / `index`, sign-in/up | Redirect by session/role; email/password sign-in or create volunteer account; coordinator activation later in Profile | Field labels and disabled submit exist; backend error Notice; no password-recovery route. Success enters role home; role activation is poorly discoverable. |
+| Coordinator event creation / home → `events/new` | Select organisation, enter basics, then dates/timezone; six inputs in basics include optional configuration | Existing staged wizard is worth keeping. Back/Cancel available, unsaved local draft; create mutation not run. Next should be focused event setup. |
+| Join / volunteer → `join` | Enter code, preview event, confirm membership | Useful preview before consequential join; validation/error notice. Post-join enters event and readiness tasks. No join mutation run. |
+| Volunteer readiness / event → certificates + availability | Upload qualification evidence; provide windows, hour preferences and optional skills; read briefing | Parsing/review state and manual review exist; required and optional information compete before Save. Completion should clearly lead to assignment; currently repeated readiness remains prominent. |
+| Event setup / hub → setup/documents/assistant/review | Describe/upload, generate interpretation, inspect candidate, apply, review/edit structured records, resolve issues, verify | Explicit confidence/provenance and human review are strengths. Repeated review stages and multiple destinations increase recall burden. Failed generation can retain manual setup; provider not invoked in audit. |
+| Site/staffing setup / site/map/operations | Create/edit locations and posts; position markers/upload map; define windows and certification/count requirements | Typed forms, validation and manual controls exist. Save/selection behavior needs dirty-draft protection; large editor task switching. Next roster readiness. |
+| Recruit / publish/team/qualifications | Open recruitment, supply code, manage staff roles, review crew qualification evidence | Join preview/manager guard useful. Team initially needs explicit Load/refresh; permission changes deserve impact confirmation. Publication/role changes not executed. |
+| Roster / roster | Define draft shifts, choose automatic/manual assignment, inspect workload and gaps, review candidate, publish; published roster can retain service while replacement is drafted | Deterministic eligibility, hard constraints, manual locks and revision-aware replacement are strengths. Manual candidate lists and long scroll burden. Error/retry/partial-candidate explanations exist; no generation/publication executed. |
+| Shift attendance / schedule or event | Find assignment and check in | Deterministic check-in exists; event repeats future assignments and per-shift controls. Next current post/instructions. No attendance mutation run. |
+| Report / event → incident | Choose assignment/context, type or hold voice, submit | Receipt precedes asynchronous interpretation; original text/audio retained; idempotent retry. Mic denial is visible. Unsubmitted local drafts lack durability, hold-only interaction is inaccessible. No report submitted. |
+| Monitor/respond / live | Review incidents/AI relations/risks; inspect procedures; select/edit response candidates; human approval; dispatch and track | Strong feasibility/human gates/history. Full editors, coverage and logs obscure urgency; freshness implicit. Native authoritative attendance snapshot intentionally guarded. |
+| Completion / live | Review unresolved work, close out and summary | Existing closeout/summary states exist in source. Keep accountability/history; move administration out of active incident review. No lifecycle mutation run. |
+
+No CSV people-import screen or dedicated no-show replacement wizard was found. No-shows appear through live attendance/response machinery and roster reassignment; do not present imagined workflows as existing.
+
+## 7. Executive UX assessment
+
+Ground Control's safety/data foundations are substantially stronger than its interface hierarchy. It has real deterministic staffing, preserved incident evidence, explicit AI review and human authority. The main opportunity is to organise those capabilities around the user's current job rather than expose every adjacent subsystem in one vertical page.
+
+Independent design review scored Nielsen heuristics **20/40**. Independent native technical assessment scored **9/20**, provisional and source-heavy, not a device certification. No confirmed P0 was established in this non-mutating audit. P1 problems still warrant early action, especially lost edit drafts, urgency buried below other content, accessibility and volunteer task prominence.
+
+| Nielsen heuristic | Score /4 | Principal reason |
+|---|---:|---|
+| System status | 2 | Processing states exist; live freshness and lifecycle next action unclear |
+| Match real world | 3 | Operational language mostly meaningful; database/date/phase language leaks |
+| User control/freedom | 2 | Manual review strong; volatile drafts and bottom-only explicit Back |
+| Consistency/standards | 2 | Shared primitives; unconventional native shell and inconsistent states |
+| Error prevention | 3 | Strong deterministic constraints and approvals; permission/draft gaps |
+| Recognition over recall | 2 | Source/review comparisons and navigation require memory |
+| Flexibility/efficiency | 2 | Useful gap filter/manual controls; long lists and repetitive flows |
+| Aesthetic/minimalist design | 1 | Many equally weighted cards/actions and combined responsibilities |
+| Error recovery | 2 | Retry and raw report preservation; draft and account recovery gaps |
+| Help/documentation | 1 | Detailed explanatory text replaces timely guidance; stale copy |
+| **Total** | **20/40** | All ten heuristics apply |
+
+Design specificity: operational rules and evidence are purpose-built; repeated generic Page/Notice/PlanCard form composition could serve many unrelated admin products. Retain the coherent teal/ink identity; improve hierarchy before adding decorative branding.
+
+## 8. Highest-priority problems and finding register
+
+Priority: P0 safety issue/task blocker; P1 major UX issue; P2 meaningful usability issue; P3 polish. Effort estimates assume reuse of current services/permissions and are not implementation commitments. “Source” means not fully exercised by this audit.
+
+| ID / priority / effort | Location | Problem and user impact | Recommendation / preserve |
+|---|---|---|---|
+| F01 P1 Small | `events/[id].tsx:36,66` | Ten-second refresh replaces unsaved event detail inputs. Reproduced after 12 seconds; typed work disappears. | Separate dirty edit buffer from polling; flag server changes; preserve refresh outside editing. |
+| F02 P1 Medium | `live.tsx:57–140` | Coverage comes before incidents/risks; complete response editors and history share the same page. Urgent intervention requires search/scroll. | Put critical exceptions and changed items first; compact healthy coverage; response detail workflow. Keep every incident, evidence and approval control. |
+| F03 P1 Medium | `volunteer.tsx`, event hub `:150–239` | Readiness/completed tasks and venue lead; current assignment/report action appear later. Sarah event measures 2,439px, report below six shifts. | Current/next assignment and report first; outstanding readiness only; history and future shifts in Schedule. Preserve briefing access. |
+| F04 P1 Medium | `_layout.tsx:10`, shared Page | Hidden headers plus bottom Back on long pages make hierarchy and return paths unclear. | Stable role/event navigation and native detail headers; retain deep links/guards and gestures. |
+| F05 P1 Large | setup/review/assistant; `response-review.tsx` | Repeated provenance/review stages and expanded edit controls create competing decisions. Review 2,065px for one location/post/procedure. | One staged review workspace; summary→source comparison→edit→impact→approval. Preserve distinct model confidence and human verification. |
+| F06 P1 Medium | `incident.tsx:24–30,150` | Unsubmitted report text/audio/idempotency key live only in component state; Cancel/remount loses them (source). | Durable local draft through receipt; explicit discard; preserve current backend raw-report durability. |
+| F07 P1 Small | `incident.tsx:116–121`, `ui.tsx:36` | Hold recording has press-in/out but no accessible activation; hands/assistive users struggle. | Add start/stop activation and announced status alongside hold. Keep typing and permission-denial fallback. |
+| F08 P1 Medium | `ui.tsx:9,39–44,64` | Actual compact controls measure 40px; headings, status and urgent alerts lack deliberate semantics. | Minimum interactive 44pt/48dp, hit area independent of visuals; selected/busy/heading/alert semantics with restrained announcements. Keep 52px normal buttons and field labels. |
+| F09 P1 Medium | `ui.tsx:5,52`; forms | Fixed top72/bottom24 guesses insets; no explicit keyboard handling. Maximum native text makes sign-in title fragment into huge broken words. | Measured safe/keyboard insets; flexible type/layout and large-text reflow. Do not disable font scaling. Native initial notch collision was not observed; keyboard risk remains source-based. |
+| F10 P1 Medium | `team.tsx:22,40,55–69` | Initial empty screen requires Load; equally weighted role changes obscure consequences. | Auto-load genuine data, separate loading/empty; person detail plus confirmation for privilege changes. Keep server permissions. |
+| F11 P1 Medium | `live.tsx:32–36`, `useStaffing.ts:16–22` | Retained data has no last-success freshness. Mo may treat stale numbers as current. | Last updated/stale state, retry and offline explanation beside live status; retain useful cached records. |
+| F12 P1 Large | Page + `.map()` lists in live/team/qualifications | Eager rendering scales with people/history; live polls rebuild large content. Risk at hundreds of crew, not measured FPS failure. | Virtualize/paginate unbounded lists and profile real large fixtures. Keep roster's existing slice/gap filter. |
+| F13 P2 Medium | `roster.tsx:206–294` | All crew workload precedes shift gap filter; published state promotes replacement editing. Six-shift roster measures 4,197px. | Coverage exceptions first; date/post grouping; workload summary→detail; draft replacement contextual. Keep hard constraints/manual locks/revision workflow. |
+| F14 P2 Medium | roster manual candidates; qualifications | Unsearched candidate/review lists expose many people/actions at once. Eligibility explanations require scanning. | Search/filter; review-needed queue; person detail; eligible/ineligible explanations. Keep full roster and original document access. |
+| F15 P2 Medium | `availability.tsx:102,165,201,228` | Required windows, hour limits, optional skills and briefing precede Save: 18 inputs/2,882px. | Availability → hours → optional preferences; save/resume; briefing separately; summary before final save. Keep constraints and manual windows. |
+| F16 P2 Medium | event-fields, availability, operations/roster | ISO dates/IANA timezone and repeated freeform windows demand format recall. | Native date/time selection and constrained timezone; event-local display. Keep authoritative timezone and validation. |
+| F17 P2 Medium | `site.tsx`, map forms | Structure selection/map editing and long forms compete; unsaved selection changes need protection (source). | Location/post list→detail; map/list alternative; save/discard on switching. Preserve coordinates and requirements. |
+| F18 P2 Small | event hub `:108,117`; coordinator home | Lifecycle copy/actions remain plan/roster oriented even live/completed; recruitment “Open” for non-draft states. | State-specific next action and accurate recruitment/lifecycle labels; live events first; preserve switching/archive. |
+| F19 P2 Small | `incident.tsx:40–48` | Microphone permission requested on entry before choosing voice. Assignment/context still needs attention. | Ask permission on voice intent; preselect confirmed current shift with editable fallback; never fabricate location. |
+| F20 P2 Medium | `certificates.tsx:122`, qualifications | Archive lacks clear eligibility impact/undo; reviewer source opens externally and fragments comparison. | Impact/confirmation, recoverable archive; source+extraction comparison where feasible. Keep original files and manual review. |
+| F21 P2 Medium | `sign-in.tsx:23`, Profile/signup | No recovery route; coordinator activation mixed into account/organisation settings. | Account recovery and focused role/join/create branching; defer unrelated profile fields. Keep actual authorization rules. |
+| F22 P2 Small | `publish.tsx` | Recruitment code management lacks obvious share/copy/rotation consequence guidance. | Native share/copy and clear code-change effect; preserve preview-before-join. |
+| F23 P2 Medium | `ui.tsx:39`, error handling | Amber Notice renders success/info/error alike; raw service text can leak technical detail. | Semantic feedback with text/icon; field errors, retry/actionable explanation, diagnostic details separately. Keep real processing/failure states. |
+| F24 P2 Medium | `live.tsx:78–87,125` | Incident location omitted from card while correction exists; procedure titles do not provide direct source inspection. | Show location/source/confidence; open relevant procedure from response. Keep correction and original report. |
+| F25 P2 Medium | ui/screens; app.json | Light literals despite automatic appearance; tablet/desktop stretch a single column. | Semantic light/dark tokens, constrained form widths, adaptive operational list/detail. Do not shrink phone workflows. |
+| F26 P2 Small | `app.json:20` | Predictive Back explicitly disabled; ordinary Back not proven broken. | Validate SDK57/system behavior and restore platform gesture support if compatible. |
+| F27 P2 Small | map copy / assistant labels | “Attendance phase” promise contradicts existing check-in; confidence/verification copy repeats. | Product language and concise state-specific help; retain one clear evidence/approval explanation. |
+| F28 P3 Small | detector: 10 source files | Sixteen palette declarations absent from DESIGN.md; could be intentional border/text/map selections. | Inventory semantic roles before consolidation. Preserve meaningful selected marker amber; detector does not prove bad contrast. |
+
+Suggested Impeccable reasoning for F01/F06–11: harden/adapt; F02–05/F13–18: distill/shape/clarify; F12: optimize; F23–28: clarify/adapt/polish. These are later implementation passes, not changes performed in this audit.
+
+## 9. Cognitive-load findings and distillation
+
+Measured default scroll lengths at 390×844: event setup 1,769px; review 2,065; published roster 4,197; live 2,960 even with no active coverage/unresolved incidents; Sarah home 1,604; availability 2,882. Live includes 14 buttons/7 inputs, loaded Team 17 buttons, availability 10 buttons/18 inputs. Counts alone do not prove overload; unrelated responsibilities and equal visual weight do.
+
+| Surface | Distillation decision | Information that must remain immediately visible |
+|---|---|---|
+| Live | Stronger hierarchy + incident/response detail; timeline and closeout elsewhere | Urgency, location, freshness, unresolved risk, active response progress |
+| Roster | Group/filter + contextual editor; workload detail separately | Uncovered shifts, invalid assignment, certification gap, publication/draft state |
+| Review | Progressive sections and side-by-side/source detail rather than repeated narrative | Missing/invalid records, inferred vs verified, human approval boundary |
+| Availability | Split meaningful decisions; optional fields delayed | Required dates, event timezone, saving/validation/completion |
+| Team/qualifications | Queue + person detail; rare role controls contextual | Review-needed counts, qualification status, permission impact |
+| Volunteer hub | Current job first; completed readiness collapsed | Current/next assignment, check-in, urgent instructions, report entry |
+| Site/map | List/detail; map alternate view, full-screen complex edits | Selected location/post and unsaved state |
+
+Remove genuine redundancy only: repeated navigation links, repeated boilerplate and identical completed-readiness explanations. Do not remove crew workloads, original incidents, procedures, historic actions, social foundation or manual setup. Some operational density is useful; grouping is preferable to turning every fact into another tap.
+
+## 10. UI and visual-design findings
+
+Keep consistent teal/ink identity, clear readable ordinary-size typography, white grouped cards, text status labels and large normal controls. Current composition repeats rounded cards, full-width buttons, paragraph warnings and 32px headings regardless of information level. Shared `ui.tsx` is a useful consolidation point, but literals/variants are not a complete token system.
+
+Use tighter operational rows with strong urgency/time/location hierarchy; restrained healthy-state summaries; less nested card chrome; concise headings and inline help. Distinguish primary, secondary and contextual actions by state. An event creation CTA should not visually outrank a live exception. Design tokens should encode intent, contrast, focus, motion and light/dark roles rather than merely copying every existing literal. No measured WCAG contrast violation is claimed by this audit.
+
+## 11. Navigation and information architecture
+
+One hidden-header Stack is technically valid but offers no stable job destinations. “People” functions scatter across team, qualifications and roster; setup links scatter across site, operations, assistant and review. Bottom Back controls at the end of long pages worsen discoverability. Map, venue, event settings and live operation also share hub attention.
+
+A five-tab Overview/Roster/People/Incidents/More is plausible but not automatically better: current People tasks overlap roster, and “More” can become another unstructured drawer. Prefer a four-destination **event workspace** with clear ownership and role-specific views, detailed below. Organisation/event switching stays outside this workspace; do not add both global and event bottom tab bars.
+
+## 12. Onboarding and event setup
+
+The existing organisation→basics→dates event wizard already follows progressive onboarding; preserve it. Simplify basics to essential event identity/venue, defer optional content, improve date controls and save/resume. Volunteer account/join should require only information needed for participation; role choice must not itself grant privileges. Availability/qualifications belong in contextual readiness, not one giant account form.
+
+Existing AI setup already uses documents, assistant, candidate review, explicit application and verification. The target should consolidate those steps rather than build a second competing AI wizard. “Describe your event” can accept optional source documents, infer current locations/posts/requirements/windows and ask focused questions about missing facts. A generated plan is a draft. Explicit review/edit/confirm remains, with manual setup available at entry and throughout. Arbitrary zones/new entities or unsupported shift generation should not be implied by the UI without roadmap/backend support.
+
+## 13. Operational UX
+
+Today Mo can inspect rich evidence but cannot reliably answer “what needs me now?” in the first few seconds. Coverage-first ordering, equally weighted sections, full response forms and bottom navigation require sustained reading. Missing freshness is particularly concerning while moving around a site.
+
+Target overview: event/live identity + successful-update time; critical exceptions; changed-since-last-view summary; concise active coverage/response snapshot; direct investigation links. Incidents owns the actionable queue and detail. Keep urgent actions one tap away from overview and a persistent report entry for relevant roles. Show healthy aggregate counts without listing every healthy post by default. Source and target coverage consequences must be visible before approving reallocation; human-confirmed state must remain unmistakable.
+
+## 14. AI UX
+
+Keep narrow server-side AI, validated references, deterministic feasibility, persisted raw incident before AI, visible processing/failure/review, evidence/relations and human approval. Model confidence is not operational correctness; repeated warnings can be condensed but the distinction cannot be erased.
+
+AI setup belongs in setup; staffing suggestions alongside actual coverage problems; risk correlations beside related incidents; proposed actions beside affected posts/crew and procedures. Avoid adding a generic AI tab or chat-based dependency for critical actions. Inference should show its basis and allow correction. Keep original reports even when related/duplicate. Social content, if eventually integrated, needs source/time/reliability and human review; current social code is partial and was preserved, not treated as deployed monitoring.
+
+## 15. Accessibility and mobile interaction
+
+Native sign-in fits at normal text size; at maximum accessibility text, “Ground Control” wraps into oversized word fragments and pushes the form far below the opening viewport. Font scaling is enabled; the answer is reflow and hierarchy, not disabling it. Native dark appearance still shows the same light interface. This establishes missing appearance adaptation, not a measured contrast failure.
+
+Shared compact targets are 40px in browser; native interactive rectangles should reach 44pt iOS/48dp Android. Add heading semantics and selective announcement of errors/receipt/urgent changes. Hold-only voice must have accessible start/stop. Use real safe-area and keyboard handling; test large text, landscape, screen reader order, hardware/system Back, Switch Control and microphone denial on devices. Image-map markers need equivalent structured list access and larger selectable targets; 24px markers/10px text merit testing. Phone widths had no document horizontal overflow, but long vertical stacks remain. Native tablet/foldable and Android checks are still required.
+
+## 16. What should be preserved
+
+1. Deterministic qualification, availability, overlaps, hours and coverage constraints; manual locks and revision-safe replacement publication.
+2. Original incident text/audio, receipt-before-AI, idempotent retry and failure without data loss; related rather than deleted duplicate reports.
+3. AI provenance, explicit candidate review/manual editing/verification, meaningful failure states and grounded procedures.
+4. Human approval of safety responses, eligibility/coverage feasibility, dispatch acknowledgment and operational history.
+5. Manager gates/server permissions, join preview and normal button/field basics.
+6. Existing event-creation progression, map/list/site data, volunteer schedule/check-in and partially integrated social modules. Nothing was removed.
+
+## 17. Proposed information architecture
+
+**Organisation home:** active/live events first, upcoming/recruiting next, completed/archive thereafter; organisation selection and account access. Create event is primary only when no immediate operational work needs attention.
+
+**Coordinator event workspace:**
+
+- **Overview:** readiness when preparing; exceptions/changes/coverage/active response when live; completion/summary after event.
+- **Crew:** Roster default for staffing work; People and Coverage as named subviews. Person detail owns availability, qualifications and assignments; event-team permissions remain administrative and separate from volunteer staffing identity.
+- **Incidents:** unresolved queue, risks/relations, incident detail, response review/tracking, procedures and history. Report remains directly accessible.
+- **Event:** setup progress, editable plan/site/maps/windows/requirements, documents, recruitment, team permissions and event configuration. Needs-attention setup links can surface contextually elsewhere.
+
+**Volunteer:** Home, Events, Profile; Home owns current/next shift, check-in, instructions and fast report. Schedule remains a clearly visible destination within Home/event, not hidden in Profile. Add a fourth Schedule tab only if usage/testing shows cross-event schedule is a frequent independent job. This avoids inventing navigation purely to fill five tabs.
+
+This separates preparation from intervention while retaining context-specific links. It reuses existing entities/services and routes as destinations; it does not require wholesale data architecture replacement.
+
+## 18. Proposed navigation
+
+One role-appropriate bottom navigation at a time, native detail headers with Back, explicit event identity/switcher, and clear deep-link titles. Coordinator switches from organisation home into the event workspace; volunteer event details inherit lighter navigation. Detail pages preserve queue/filter/scroll context on return. Use sheets for short contextual choices; complex plan/response/shift editing gets full-screen detail to accommodate keyboard, evidence and large text. Tablet/desktop can expose a side rail and list/detail without changing task ownership. Urgent badges carry text/accessibility context, not color alone.
+
+## 19. Proposed onboarding/event setup flow
+
+```text
+Account → Join event or authorized coordinator path
+Coordinator: organisation → event identity → dates/timezone → draft event
+Setup: describe event (+ optional documents) OR manual setup
+→ interpret asynchronously → focused missing-information questions
+→ generated structure summary with review-needed items
+→ inspect source / edit locations, posts, requirements, windows
+→ explicit confirmation / verification → recruitment and staffing readiness
+→ ordinary event workspace
+Volunteer: preview join → availability → hours → qualification evidence as needed
+→ clear readiness summary → current/next assignment
+```
+
+One meaningful decision per stage, not one screen per trivial field. Every stage supports Back, immediate validation and saved progress. No forced AI step, no silent authoritative application and no new permission escalation from role selection. Roster generation stays a separate deterministic review workflow after staffing inputs are ready.
+
+## 20. Screen-by-screen recommendations
+
+Actions refer to existing screens; REMOVE applies only to redundant presentation, never underlying functionality. Important state requirements apply alongside normal loaded states: loading/empty/error/offline, permission denied, dirty draft and processing as appropriate.
+
+| Existing route | Decision; purpose and primary information/action | Secondary/disclosed content, relocation and important states |
+|---|---|---|
+| `index` | KEEP redirect | Session hydration/loading/error; no navigation flash |
+| `sign-in` | REDESIGN lightly: access account; sign in | Recovery/create account; large text/keyboard/error/disabled |
+| `sign-up` | KEEP/SPLIT focused account→intent | Join/coordinator path without bypassing permissions; confirmation/errors |
+| `profile` | SPLIT account from organisation/role activation | Account basics/save primary; security/role/organisation contextual, dirty state |
+| `certificates` | KEEP/REDESIGN list/detail | Upload primary; status/review/expiry; original evidence and archive impact in detail |
+| `join` | KEEP preview→confirm | Code entry, event summary; invalid/closed/already-joined/retry |
+| `coordinator` | REDESIGN event list by operational priority | Live event primary; create/filter/switch/archive secondary; no-event state |
+| `volunteer` | REDESIGN current task home | Current/next assignment/report; unfinished readiness contextual; history in Events/Schedule |
+| `events/new` | KEEP progressive wizard | Essential identity→dates; optional fields later; saved draft/back/validation |
+| `events/[id]` | SPLIT role-specific overview and detail ownership | Live exceptions or readiness; venue detail/settings elsewhere; protect editing from polling |
+| `setup` | MERGE setup landing with coherent progress workspace | Next unfinished step primary; manual editors contextual; generation/review/error states |
+| `documents` | KEEP/MOVE inside setup | Add evidence primary; existing files/processing/status; concise format help/contextual limits |
+| `assistant` | MERGE as describe/refine stage | Generate/refine draft primary; sources/missing answers/manual exit; no new AI tab |
+| `review` | REDESIGN staged review workspace | Issues/generated summary; inspect/edit/confirm; provenance history secondary; inferred/applied/verified distinct |
+| `site` | SPLIT structure list and location/post detail | Add contextual; selected identity/requirements; dirty/switch/save guard |
+| `map` | KEEP/MOVE under Event/site | Locate/inspect post; map/list toggle and accessible equivalent; uploads/coordinate editor contextual |
+| `operations` | MOVE configuration into Event setup | Windows/requirements summary→edit; native date controls; invalid/missing constraints |
+| `publish` | KEEP/MOVE recruitment in Event | Recruitment state/share code; rotation/closure context and confirmation; not roster publication |
+| `team` | SPLIT list/person permission detail | Loaded staff identity/role; invite/manage secondary; empty vs loading; impact confirmation |
+| `qualifications` | MERGE ownership into Crew/People, retain reviewer detail | Review-needed queue first; evidence+interpretation→human decision; valid/expired/processing/failure |
+| `availability` | SPLIT focused stages | Windows→hours→optional preferences; save/resume; briefing separate; conflicts/validation |
+| `roster` | REDESIGN within Crew | Gaps/date/post/assignment status; review/publish candidate; workload/manual edit/replacement contextual; draft/published/partial |
+| `schedule` | KEEP/REDESIGN assignment list/detail | Current/next and date grouping; check-in applicable shift; past/future/none/error |
+| `incident` | KEEP/REDESIGN fast report | Current editable context + text/voice; submit/receipt primary; durable draft, denied mic, accessible toggle, retry |
+| `live` | SPLIT overview, Incidents/response detail and history/closeout | Urgent queue/changes; inspect→impact→approve→track; coverage retained in Crew and summary; stale/critical/no-incidents |
+
+Response review component redesign: primary purpose is deciding a particular proposed operational response. First show original evidence, recommended action, procedure and feasibility/coverage impact. Editing candidates is secondary until requested; approval stays explicit, revision-aware and separate from merely editing a draft. Tracking/acknowledgment replaces editing emphasis after dispatch. Do not put safety consequences in a collapsed panel during approval.
+
+## 21. Prioritised implementation roadmap
+
+Implementation should follow Roadmap P0/P1 priorities and its canonical complete workflow. No phase below is authorised by this audit; these are reviewable recommendations. Estimated Small/Medium/Large effort in the finding register is relative, not a schedule.
+
+| Phase | Coherent work package | Dependencies and checks to run together |
+|---|---|---|
+| A — IA/navigation | Confirm role/event ownership and route mapping; native headers/event switcher; four coordinator destinations and light volunteer navigation | Map every current route/action including social foundation; test auth redirects, deep links, manager denial, Back and context retention. Avoid duplicate shells. |
+| B — Major journeys | Draft protection (F01/F06), current assignment/report path, permissions impact, recruitment and roster replacement continuity | A route ownership; test create→join→qualification→roster→check-in→report→review→approve→dispatch. Test dirty navigation/polling/retry, both roles and idempotent report receipt. Address draft safety before broad screen moves. |
+| C — Onboarding/setup | Reuse creation wizard; availability progression; consolidate describe/documents/candidate review/manual configuration | A/B + existing validation; test manual and AI paths, generated invalid references, parsing/generation failure, save/resume and edits before confirmation. Preserve explicit verification. |
+| D — Operational UX | Exceptions-first overview, incident queue/detail, response impact/approval/tracking, freshness and lifecycle states | A/B ownership + deterministic permissions; test current/stale/critical/empty, no-show/reallocation with source-post coverage, AI failure, rejected proposals, dispatch acknowledgments and closeout. Do not exercise production data. |
+| E — Screen hierarchy/interactions | Roster filters/detail, people/reviewer queue, site/map detail, contextual actions and native date/time forms | C/D settle screen responsibilities first; test search/filter/return context, incomplete coverage, invalid/expired cert, published replacement, keyboard and draft retention together. |
+| F — Design system/components | Semantic tokens, type hierarchy, Notice states, button variants, operational rows and light/dark roles | Establish component contracts alongside A, then migrate settled screens; avoid styling screens twice. Detector/color inventory, actual contrast and selected/busy/error states across both roles. |
+| G — Accessibility/edge states | Target sizes, accessible recording, headings/announcements, measured insets, large type, wider layouts, virtualization/profile | Minimum accessibility requirements apply from A, not postponed to G. Device VoiceOver/TalkBack, maximum text, keyboard, offline/retry, native Back, map alternative, tablet and large-data performance checks. |
+| H — Impeccable polish | Repeat independent critique/native audit; distill leftover competition; spacing/type/copy/motion refinement | A–G behavior stable; validate all preserved functions and complete canonical flow before polish sign-off. No decorative work should delay important operational fixes. |
+
+Group work by journey rather than repeatedly rewriting individual screens. Navigation and semantic component contracts begin together; setup screens migrate together; incident/report/response/dispatch migrate and test together; roster/people/qualifications/availability stay a coordinated staffing package. Accessibility and draft preservation are acceptance criteria throughout, not final optional polish.
+
+### Final critique of the proposal
+
+The first five-tab hypothesis was narrowed because separate Roster/People tabs could fragment the same staffing task; Crew has explicit subviews, not an opaque catch-all. “More” became Event with clear ownership. A separate AI destination was rejected in favor of contextual setup/incident assistance. The volunteer shell was narrowed to three destinations pending evidence for a frequent cross-event Schedule job.
+
+Progressive disclosure must not hide urgent incidents, current assignment, report entry, live freshness or approval consequences. Contextual links connect coverage issues directly to eligible replacements and affected shifts; nobody must return to a top-level settings page to resolve a live exception. Long editors use detail pages rather than nested sheets. Healthy coverage remains a visible summary, and one-tap investigation retains the same filter/context. Onboarding groups related decisions to avoid an excessive tap-per-field wizard. The proposal preserves original incident/procedure/history access and all manual operations; it does not promise unimplemented zones/social ingestion.
+
+Persona checks: Mo needs urgent exceptions and trustworthy freshness while walking; Sarah needs one clear next assignment/report action, not completed readiness; a first-time organiser needs simple setup without learning database structure; a screen-reader user needs announced status and accessible recording. The recommended hierarchy addresses these specifically, but device and large-fixture testing must verify tap counts, list behavior and safety information visibility before implementation completion.
+
+### Validation
+
+Expo lint and TypeScript `tsc --noEmit` ran successfully for this audit. Custom skill validation passed; Impeccable online version check/context/doctor and project Codex discovery passed. No new app tests were written because application code was untouched. No claim is made that provider, end-to-end dispatch or native assistive-technology tests ran. Fingerprint check confirmed 248 pre-existing files unchanged; HEAD unchanged; all additions remain local/uncommitted.
+
+### Official sources checked
+
+- [Impeccable official site](https://impeccable.style/) and [official repository instructions](https://github.com/pbakaus/impeccable).
+- [Official Expo skills repository/install instructions](https://github.com/expo/skills).
+- [Expo SDK 57 documentation](https://docs.expo.dev/versions/v57.0.0/) and [documentation index](https://docs.expo.dev/llms.txt).
+- [Codex skills documentation](https://developers.openai.com/codex/skills/).
+
+Questions skipped: the supplied product brief defines this audit's scope; implementation and redesign remain deferred for your review.

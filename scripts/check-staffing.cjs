@@ -26,7 +26,7 @@ function load(file, deps = {}) {
 }
 const plan = load('src/domain/operating-plan.ts');
 const cert = load('src/domain/certification.ts', { './operating-plan.ts': plan });
-const rules = load('src/domain/roster.ts', { './certification.ts': cert });
+const rules = load('src/domain/roster.ts', { './certification.ts': cert, './roster-rest.ts': load('src/domain/roster-rest.ts') });
 const iso = (h) => `2026-12-12T${String(h).padStart(2, '0')}:00:00Z`;
 function fixture() {
   const requirement = {

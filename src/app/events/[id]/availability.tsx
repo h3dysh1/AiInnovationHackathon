@@ -1,7 +1,9 @@
+import { AppText as Text } from '@/components/app-text';
 import { useCallback, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Text } from 'react-native';
-import { Button, Field, Loading, Notice, Page, Section, Title } from '@/components/ui';
+
+import { Button, Disclosure, Field, Loading, Notice, Page, Section, Title } from '@/components/ui';
+import { TemporalField } from '@/components/temporal-field';
 import { PlanCard } from '@/components/plan-ui';
 import { useStaffing } from '@/hooks/staffing';
 import { onboardingContext } from '@/services/staffing';
@@ -78,20 +80,20 @@ function AvailabilityForm({
       <Title subtitle={`${data.event.name} · All times in ${data.event.timezone}`}>
         Availability & preferences
       </Title>
-      {s.error && <Notice message={s.error} />}
+      {s.error && <Notice tone="error" message={s.error} />}
       {saved && (
-        <Notice message='Availability saved. The coordinator can now include you in the roster.' />
+        <Notice tone='success' message='Availability saved. The coordinator can now include you in the roster.' />
       )}
       <Notice message='Only shifts fully within your availability can be assigned. Preferences guide the roster; maximum hours are enforced.' />
       <Section title='When can you help?'>
       {windows.map((w, i) => (
         <PlanCard key={i}>
           {(['startDate', 'startTime', 'endDate', 'endTime'] as const).map((k) => (
-            <Field
+            <TemporalField
+              mode={k.includes('Date') ? 'date' : 'time'}
               key={k}
               label={k.replace(/[A-Z]/g, (c) => ' ' + c.toLowerCase())}
               value={w[k]}
-              placeholder={k.includes('Date') ? 'YYYY-MM-DD' : 'HH:MM'}
               onChangeText={(v) => {
                 setSaved(false);
                 setWindows(windows.map((x, n) => n === i ? { ...x, [k]: v } : x));
@@ -139,7 +141,33 @@ function AvailabilityForm({
         keyboardType='decimal-pad'
       />
       </Section>
-      <Section title='Optional preferences'>
+      <Button
+        title={s.pending ? 'Saving…' : 'Save availability'}
+        disabled={s.pending}
+        onPress={() => {
+          void s.run(async () => {
+            if (
+              [hours, max, daily].some((v) => !v.trim() || !Number.isFinite(Number(v)))
+            ) throw new Error('Enter valid hours.');
+            await setupRpc('save_event_onboarding', {
+              p_event_id: id,
+              p_windows: windows,
+              p_preferences: {
+                preferredPosts: preferred,
+                avoidedPosts: avoided,
+                preferredStart: start,
+                preferredEnd: end,
+                desiredHours: Number(hours),
+                maximumHours: Number(max),
+                maximumDailyHours: Number(daily),
+                experienceTags: tags.split(',').map((x) => x.trim()).filter(Boolean),
+              },
+            });
+            setSaved(true);
+          });
+        }}
+      />
+      <Disclosure title='Optional preferences'>
       <Field
         label='Preferred start time (optional)'
         value={start}
@@ -182,37 +210,11 @@ function AvailabilityForm({
           />
         </PlanCard>
       ))}
-      </Section>
-      <Section title='Event briefing'>
+      </Disclosure>
+      <Disclosure title='Event briefing'>
         {data.briefing.procedures.map(p=><PlanCard key={p.title}><Text>{p.title}</Text><Text>{p.content}</Text></PlanCard>)}
         <Button title={data.briefing.acknowledged?'✓ Current briefing acknowledged':'I have read the event procedures and will follow coordinator instructions'} secondary disabled={s.pending||data.briefing.acknowledged} onPress={()=>{void s.run(()=>setupRpc('acknowledge_event_briefing',{p_event_id:id,p_revision:data.briefing.revision}));}}/>
-      </Section>
-      <Button
-        title={s.pending ? 'Saving…' : 'Save availability'}
-        disabled={s.pending}
-        onPress={() => {
-          void s.run(async () => {
-            if (
-              [hours, max, daily].some((v) => !v.trim() || !Number.isFinite(Number(v)))
-            ) throw new Error('Enter valid hours.');
-            await setupRpc('save_event_onboarding', {
-              p_event_id: id,
-              p_windows: windows,
-              p_preferences: {
-                preferredPosts: preferred,
-                avoidedPosts: avoided,
-                preferredStart: start,
-                preferredEnd: end,
-                desiredHours: Number(hours),
-                maximumHours: Number(max),
-                maximumDailyHours: Number(daily),
-                experienceTags: tags.split(',').map((x) => x.trim()).filter(Boolean),
-              },
-            });
-            setSaved(true);
-          });
-        }}
-      />
+      </Disclosure>
       <Button title='My certificates' secondary onPress={() => router.push('/certificates')} />
       <Button title='Back' secondary onPress={() => router.back()} />
     </Page>

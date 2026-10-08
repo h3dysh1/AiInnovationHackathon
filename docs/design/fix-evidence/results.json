@@ -1,0 +1,612 @@
+{
+  "checks": [
+    "Coordinator event navigation visible",
+    "Event edit survives a polling interval",
+    "Event edit survives reload",
+    "Live freshness visible",
+    "Team loaded without refresh action",
+    "Incident text and idempotency identifier survive reload",
+    "Confirmed discard clears unsent draft",
+    "Volunteer denied manager workspace and navigation"
+  ],
+  "blocked": [],
+  "errors": [],
+  "measurements": [
+    {
+      "name": "sign-in",
+      "width": 390,
+      "scrollHeight": 844,
+      "headings": 1,
+      "buttons": [
+        {
+          "label": "Sign in",
+          "height": 52
+        }
+      ]
+    },
+    {
+      "name": "mo-home",
+      "width": 390,
+      "scrollHeight": 861,
+      "headings": 4,
+      "buttons": [
+        {
+          "label": "Create event",
+          "height": 52
+        },
+        {
+          "label": "Riverside Live Operations - Demo2026-10-07 – 2026-10-07LIVE",
+          "height": 82
+        },
+        {
+          "label": "Riverside Automatic Scheduling - Demo2026-10-14 – 2026-10-14RECRUITING",
+          "height": 104
+        },
+        {
+          "label": "Riverside 2026 - Demo2026-12-12 – 2026-12-14PUBLISHED",
+          "height": 82
+        },
+        {
+          "label": "Riverside - automated acceptance2026-10-07 – 2026-10-07COMPLETED",
+          "height": 104
+        },
+        {
+          "label": "My volunteer participation",
+          "height": 48
+        },
+        {
+          "label": "My profile",
+          "height": 48
+        },
+        {
+          "label": "Sign out",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "event-overview",
+      "width": 390,
+      "scrollHeight": 864,
+      "headings": 4,
+      "buttons": [
+        {
+          "label": "Build the roster",
+          "height": 52
+        },
+        {
+          "label": "Set up and review plan",
+          "height": 48
+        },
+        {
+          "label": "Crew and roster",
+          "height": 48
+        },
+        {
+          "label": "Recruitment and join code",
+          "height": 48
+        },
+        {
+          "label": "Live operations",
+          "height": 48
+        },
+        {
+          "label": "Team and roles",
+          "height": 48
+        },
+        {
+          "label": "Edit event details",
+          "height": 48
+        },
+        {
+          "label": "Venue and event detailsShow",
+          "height": 48
+        },
+        {
+          "label": "Overview",
+          "height": 56
+        },
+        {
+          "label": "Crew",
+          "height": 56
+        },
+        {
+          "label": "Incidents",
+          "height": 56
+        },
+        {
+          "label": "Event",
+          "height": 56
+        }
+      ]
+    },
+    {
+      "name": "event-edit",
+      "width": 390,
+      "scrollHeight": 1186,
+      "headings": 2,
+      "buttons": [
+        {
+          "label": "Optional event detailsShow",
+          "height": 48
+        },
+        {
+          "label": "Save event details",
+          "height": 52
+        },
+        {
+          "label": "Cancel",
+          "height": 52
+        },
+        {
+          "label": "Overview",
+          "height": 56
+        },
+        {
+          "label": "Crew",
+          "height": 56
+        },
+        {
+          "label": "Incidents",
+          "height": 56
+        },
+        {
+          "label": "Event",
+          "height": 56
+        }
+      ]
+    },
+    {
+      "name": "roster",
+      "width": 390,
+      "scrollHeight": 3986,
+      "headings": 2,
+      "buttons": [
+        {
+          "label": "Review crew qualifications",
+          "height": 48
+        },
+        {
+          "label": "Create a replacement rosterShow",
+          "height": 48
+        },
+        {
+          "label": "SUPERSEDED · 07/10/2026",
+          "height": 52
+        },
+        {
+          "label": "PUBLISHED · 07/10/2026 · selected",
+          "height": 52
+        },
+        {
+          "label": "Show only coverage gaps",
+          "height": 48
+        },
+        {
+          "label": "Crew workload and hour limitsShow",
+          "height": 48
+        },
+        {
+          "label": "Refresh",
+          "height": 48
+        },
+        {
+          "label": "Back",
+          "height": 48
+        },
+        {
+          "label": "Overview",
+          "height": 56
+        },
+        {
+          "label": "Crew",
+          "height": 56
+        },
+        {
+          "label": "Incidents",
+          "height": 56
+        },
+        {
+          "label": "Event",
+          "height": 56
+        }
+      ]
+    },
+    {
+      "name": "live",
+      "width": 390,
+      "scrollHeight": 1569,
+      "headings": 6,
+      "buttons": [
+        {
+          "label": "Check for emerging risks",
+          "height": 48
+        },
+        {
+          "label": "Review response and crew",
+          "height": 52
+        },
+        {
+          "label": "All active post coverageShow",
+          "height": 48
+        },
+        {
+          "label": "Event proceduresShow",
+          "height": 48
+        },
+        {
+          "label": "Operational readinessShow",
+          "height": 48
+        },
+        {
+          "label": "Manual operational observationsShow",
+          "height": 62
+        },
+        {
+          "label": "Operational timelineShow",
+          "height": 48
+        },
+        {
+          "label": "Live demoShow",
+          "height": 48
+        },
+        {
+          "label": "Refresh live status",
+          "height": 52
+        },
+        {
+          "label": "Reviewed closeoutShow",
+          "height": 48
+        },
+        {
+          "label": "Back to event",
+          "height": 52
+        },
+        {
+          "label": "Overview",
+          "height": 56
+        },
+        {
+          "label": "Crew",
+          "height": 56
+        },
+        {
+          "label": "Incidents",
+          "height": 56
+        },
+        {
+          "label": "Event",
+          "height": 56
+        }
+      ]
+    },
+    {
+      "name": "team",
+      "width": 390,
+      "scrollHeight": 1303,
+      "headings": 2,
+      "buttons": [
+        {
+          "label": "Refresh team",
+          "height": 48
+        },
+        {
+          "label": "Change event permissionsShow",
+          "height": 48
+        },
+        {
+          "label": "Change event permissionsShow",
+          "height": 48
+        },
+        {
+          "label": "Change event permissionsShow",
+          "height": 48
+        },
+        {
+          "label": "Change event permissionsShow",
+          "height": 48
+        },
+        {
+          "label": "Change event permissionsShow",
+          "height": 48
+        },
+        {
+          "label": "Back",
+          "height": 52
+        },
+        {
+          "label": "Overview",
+          "height": 56
+        },
+        {
+          "label": "Crew",
+          "height": 56
+        },
+        {
+          "label": "Incidents",
+          "height": 56
+        },
+        {
+          "label": "Event",
+          "height": 56
+        }
+      ]
+    },
+    {
+      "name": "setup",
+      "width": 390,
+      "scrollHeight": 1415,
+      "headings": 3,
+      "buttons": [
+        {
+          "label": "Save description",
+          "height": 52
+        },
+        {
+          "label": "Review setup notes",
+          "height": 52
+        },
+        {
+          "label": "Generate plan / answer questions",
+          "height": 52
+        },
+        {
+          "label": "Review items needing attention",
+          "height": 52
+        },
+        {
+          "label": "Add supporting materialShow",
+          "height": 48
+        },
+        {
+          "label": "Recruitment and event permissionsShow",
+          "height": 62
+        },
+        {
+          "label": "Correct details manuallyShow",
+          "height": 48
+        },
+        {
+          "label": "Back to event",
+          "height": 52
+        },
+        {
+          "label": "Overview",
+          "height": 56
+        },
+        {
+          "label": "Crew",
+          "height": 56
+        },
+        {
+          "label": "Incidents",
+          "height": 56
+        },
+        {
+          "label": "Event",
+          "height": 56
+        }
+      ]
+    },
+    {
+      "name": "roster-tablet",
+      "width": 768,
+      "scrollHeight": 3414,
+      "headings": 2,
+      "buttons": [
+        {
+          "label": "Review crew qualifications",
+          "height": 48
+        },
+        {
+          "label": "Create a replacement rosterShow",
+          "height": 48
+        },
+        {
+          "label": "SUPERSEDED · 07/10/2026",
+          "height": 52
+        },
+        {
+          "label": "PUBLISHED · 07/10/2026 · selected",
+          "height": 52
+        },
+        {
+          "label": "Show only coverage gaps",
+          "height": 48
+        },
+        {
+          "label": "Crew workload and hour limitsShow",
+          "height": 48
+        },
+        {
+          "label": "Refresh",
+          "height": 48
+        },
+        {
+          "label": "Back",
+          "height": 48
+        },
+        {
+          "label": "Overview",
+          "height": 56
+        },
+        {
+          "label": "Crew",
+          "height": 56
+        },
+        {
+          "label": "Incidents",
+          "height": 56
+        },
+        {
+          "label": "Event",
+          "height": 56
+        }
+      ]
+    },
+    {
+      "name": "volunteer-home",
+      "width": 390,
+      "scrollHeight": 1674,
+      "headings": 5,
+      "buttons": [
+        {
+          "label": "Open assignment and check-in",
+          "height": 52
+        },
+        {
+          "label": "Report an incident",
+          "height": 52
+        },
+        {
+          "label": "Join an event",
+          "height": 52
+        },
+        {
+          "label": "Open event",
+          "height": 52
+        },
+        {
+          "label": "Open event",
+          "height": 52
+        },
+        {
+          "label": "Open event",
+          "height": 52
+        },
+        {
+          "label": "Open event",
+          "height": 52
+        },
+        {
+          "label": "Profile and certificatesShow",
+          "height": 48
+        },
+        {
+          "label": "My profile",
+          "height": 48
+        },
+        {
+          "label": "Sign out",
+          "height": 48
+        },
+        {
+          "label": "Refresh events",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "incident",
+      "width": 390,
+      "scrollHeight": 844,
+      "headings": 2,
+      "buttons": [
+        {
+          "label": "Lawn · Gate C",
+          "height": 48
+        },
+        {
+          "label": "Record voice report",
+          "height": 52
+        },
+        {
+          "label": "Send report",
+          "height": 52
+        },
+        {
+          "label": "Back to event · keep draft",
+          "height": 52
+        },
+        {
+          "label": "Your recent reportsShow",
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "availability",
+      "width": 390,
+      "scrollHeight": 2317,
+      "headings": 4,
+      "buttons": [
+        {
+          "label": "Remove window",
+          "height": 48
+        },
+        {
+          "label": "Remove window",
+          "height": 48
+        },
+        {
+          "label": "Remove window",
+          "height": 48
+        },
+        {
+          "label": "Add availability window",
+          "height": 48
+        },
+        {
+          "label": "Save availability",
+          "height": 52
+        },
+        {
+          "label": "Optional preferencesShow",
+          "height": 48
+        },
+        {
+          "label": "Event briefingShow",
+          "height": 48
+        },
+        {
+          "label": "My certificates",
+          "height": 52
+        },
+        {
+          "label": "Back",
+          "height": 52
+        }
+      ]
+    },
+    {
+      "name": "volunteer-event",
+      "width": 390,
+      "scrollHeight": 1088,
+      "headings": 3,
+      "buttons": [
+        {
+          "label": "Report an incident",
+          "height": 52
+        },
+        {
+          "label": "Check in",
+          "height": 52
+        },
+        {
+          "label": "Check in",
+          "height": 52
+        },
+        {
+          "label": "Show all 6 assignments",
+          "height": 52
+        },
+        {
+          "label": "Availability & preferences",
+          "height": 52
+        },
+        {
+          "label": "My shifts",
+          "height": 52
+        },
+        {
+          "label": "My events",
+          "height": 52
+        },
+        {
+          "label": "Venue and event detailsShow",
+          "height": 48
+        }
+      ]
+    }
+  ]
+}

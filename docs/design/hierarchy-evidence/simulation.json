@@ -1,0 +1,162 @@
+{
+  "description": "Browser-local fixture only; no actual incident or safety action was created.",
+  "live": {
+    "event": {
+      "id": "d1000000-0000-4000-8000-000000000001",
+      "name": "Riverside · simulated incidents",
+      "status": "live",
+      "timezone": "Australia/Melbourne",
+      "is_demo": true
+    },
+    "staffing": {
+      "assigned": 24,
+      "checked_in": 21,
+      "late": 1,
+      "missing": 2,
+      "completed": 0
+    },
+    "coverage": [],
+    "incidents": [
+      {
+        "id": "simulation-medical",
+        "raw_report": "Someone has collapsed by the east entrance. They are not responding. Can we get first aid here now?",
+        "status": "needs_review",
+        "severity": "critical",
+        "category": "medical",
+        "summary": "Attendee collapsed near the east gate. First-aid assistance requested.",
+        "location_id": "east",
+        "created_at": "2026-10-08T00:14:40.827Z",
+        "processing_status": "complete",
+        "processing_failures": 0,
+        "ai_evidence": "Reporter describes collapse and lack of response. AI urgency assessment requires human confirmation."
+      },
+      {
+        "id": "simulation-crowd",
+        "raw_report": "Crowd is backing up at the main-stage entrance. Exit lane is narrowing.",
+        "status": "open",
+        "severity": "high",
+        "category": "crowd",
+        "summary": "Crowd is backing up at the main-stage entrance. Exit lane is narrowing.",
+        "location_id": "stage",
+        "created_at": "2026-10-08T00:11:40.827Z",
+        "processing_status": "complete",
+        "processing_failures": 0,
+        "ai_evidence": "Two reports mention restricted movement at the same entrance."
+      },
+      {
+        "id": "simulation-water",
+        "raw_report": "Water refill station is empty at the south lawn.",
+        "status": "open",
+        "severity": "medium",
+        "category": "welfare",
+        "summary": null,
+        "location_id": "lawn",
+        "created_at": "2026-10-08T00:08:40.827Z",
+        "processing_status": "queued",
+        "processing_failures": 0
+      }
+    ]
+  },
+  "intelligence": {
+    "incidents": [
+      {
+        "id": "simulation-medical",
+        "raw_report": "Someone has collapsed by the east entrance. They are not responding. Can we get first aid here now?",
+        "status": "needs_review",
+        "severity": "critical",
+        "category": "medical",
+        "summary": "Attendee collapsed near the east gate. First-aid assistance requested.",
+        "location_id": "east",
+        "created_at": "2026-10-08T00:14:40.827Z",
+        "processing_status": "complete",
+        "processing_failures": 0,
+        "ai_evidence": "Reporter describes collapse and lack of response. AI urgency assessment requires human confirmation."
+      },
+      {
+        "id": "simulation-crowd",
+        "raw_report": "Crowd is backing up at the main-stage entrance. Exit lane is narrowing.",
+        "status": "open",
+        "severity": "high",
+        "category": "crowd",
+        "summary": "Crowd is backing up at the main-stage entrance. Exit lane is narrowing.",
+        "location_id": "stage",
+        "created_at": "2026-10-08T00:11:40.827Z",
+        "processing_status": "complete",
+        "processing_failures": 0,
+        "ai_evidence": "Two reports mention restricted movement at the same entrance."
+      },
+      {
+        "id": "simulation-water",
+        "raw_report": "Water refill station is empty at the south lawn.",
+        "status": "open",
+        "severity": "medium",
+        "category": "welfare",
+        "summary": null,
+        "location_id": "lawn",
+        "created_at": "2026-10-08T00:08:40.827Z",
+        "processing_status": "queued",
+        "processing_failures": 0
+      }
+    ],
+    "relations": [],
+    "risks": [
+      {
+        "id": "simulation-risk",
+        "severity": "high",
+        "title": "Crowd pressure at main-stage entrance",
+        "explanation": "Reports indicate restricted movement and a narrowing exit lane. Review conditions on site before approving a response.",
+        "status": "open",
+        "evidence": {
+          "incidentIds": [
+            "simulation-crowd"
+          ],
+          "shiftIds": [
+            "simulation-shift"
+          ]
+        }
+      }
+    ],
+    "responses": [],
+    "activeShifts": [],
+    "locations": [
+      {
+        "id": "east",
+        "name": "East gate"
+      },
+      {
+        "id": "stage",
+        "name": "Main stage"
+      },
+      {
+        "id": "lawn",
+        "name": "South lawn"
+      }
+    ],
+    "coverage": [
+      {
+        "shift_id": "simulation-shift",
+        "post": "Main-stage crowd support",
+        "required": 4,
+        "checked_in": 2,
+        "qualifications": []
+      }
+    ],
+    "observations": [],
+    "dispatches": [],
+    "timeline": [],
+    "summary": {
+      "status": "not_requested",
+      "summary": null,
+      "error": null
+    },
+    "readiness": {
+      "missingAcknowledgements": 0,
+      "pendingCertificates": 0,
+      "onboardingMissing": 0,
+      "safetyProcedures": 3
+    },
+    "procedures": []
+  },
+  "errors": [],
+  "blocked": []
+}

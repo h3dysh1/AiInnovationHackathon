@@ -1,0 +1,18 @@
+{
+  "checks": [
+    {
+      "role": "volunteer",
+      "name": "incident",
+      "overflow": false,
+      "font": "InterSemiBold",
+      "text": "Report incident\nReport an incident\nType or record what happened. Receipt is confirmed after you send.\nAdd your shift (optional)\n\nRecord voi"
+    },
+    {
+      "name": "selected-shift",
+      "selected": null,
+      "color": "rgb(54, 89, 217)"
+    }
+  ],
+  "errors": [],
+  "blocked": []
+}

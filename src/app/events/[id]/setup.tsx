@@ -1,9 +1,11 @@
+import { AppText as Text } from '@/components/app-text';
+import { colors } from '@/theme';
 import { errorMessage } from '@/domain/errors';
 import { EventManagerGate } from '@/components/event-manager-gate';
 import { useEffect, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { Button, Loading, Notice, Page, Section, Title } from '@/components/ui';
+import { StyleSheet, TextInput, View } from 'react-native';
+import { Button, Disclosure, Loading, Notice, Page, Section, Title } from '@/components/ui';
 import { SiteMapUpload } from '@/components/site-map-upload';
 import type { Event } from '@/domain/event';
 import type { SetupSession } from '@/domain/setup';
@@ -120,7 +122,7 @@ function SetupWorkspace() {
 
   return <Page>
     <Title subtitle={reviewing ? 'Review setup notes' : 'Build your operating plan'}>Set up {event.name}</Title>
-    {error ? <Notice message={error} /> : null}
+    {error ? <Notice tone="error" message={error} /> : null}
     {message ? <Notice message={message} /> : null}
     {draftError ? <Notice message={draftError} /> : null}
     <View style={styles.card}>
@@ -148,7 +150,7 @@ function SetupWorkspace() {
         textAlignVertical="top"
         editable={!pending}
         placeholder="Riverside has Lawn, Riverside and Entry areas. Water Station B needs four volunteers while gates are open, including one with First Aid…"
-        placeholderTextColor="#789"
+        placeholderTextColor={colors.placeholder}
       />
       <Text style={styles.help}>{description.length.toLocaleString()} / 20,000 characters · {dirty ? (draftError ? 'Unsaved changes' : 'Draft kept on this device') : setup ? 'Saved to this event' : 'No description saved yet'}</Text>
       <Button title={pending ? 'Saving…' : 'Save description'} disabled={pending || !dirty} onPress={() => { void save(); }} />
@@ -162,28 +164,32 @@ function SetupWorkspace() {
       <Button title="Generate plan / answer questions" disabled={pending || dirty} onPress={() => router.push({ pathname: '/events/[id]/assistant', params: { id } })} />
       <Button title="Review items needing attention" secondary disabled={pending || dirty} onPress={() => router.push({ pathname: '/events/[id]/review', params: { id } })} />
     </Section>
-    <Section title="Add supporting material">
+    <Disclosure title="Add supporting material">
       <Text style={styles.help}>Ground Control can use your existing plans and site map. These are optional; add them when they are ready.</Text>
       <Button title="Upload documents" secondary compact disabled={pending || dirty} onPress={() => router.push({ pathname: '/events/[id]/documents', params: { id } })} />
       <SiteMapUpload state={siteMap} disabled={pending} />
-    </Section>
-    <Section title="Correct details manually">
+    </Disclosure>
+    <Disclosure title="Recruitment and event permissions">
+      <Button title="Recruitment and join code" secondary disabled={pending || dirty} onPress={() => router.push({ pathname: '/events/[id]/publish', params: { id } })} />
+      <Button title="Team permissions" secondary disabled={pending || dirty} onPress={() => router.push({ pathname: '/events/[id]/team', params: { id } })} />
+    </Disclosure>
+    <Disclosure title="Correct details manually">
       <Text style={styles.help}>Use these tools only when the generated plan needs a direct correction.</Text>
       <Button title="Edit areas, posts & qualifications" secondary compact disabled={pending || dirty || siteMap.uploading} onPress={() => router.push({ pathname: '/events/[id]/site', params: { id: event.id } })} />
       <Button title="Edit map positions" secondary compact disabled={pending || dirty || siteMap.uploading} onPress={() => router.push({ pathname: '/events/[id]/map', params: { id: event.id } })} />
       <Button title="Edit hours & procedures" secondary compact disabled={pending || dirty} onPress={() => router.push({ pathname: '/events/[id]/operations', params: { id } })} />
-    </Section>
+    </Disclosure>
     <Button title="Back to event" secondary disabled={pending || dirty || siteMap.uploading} onPress={() => router.dismissTo({ pathname: '/events/[id]', params: { id: event.id } })} />
   </Page>;
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: '#FFF', borderRadius: 14, padding: 18, gap: 12, borderWidth: 1, borderColor: '#D6E3E6' },
-  section: { color: '#123B53', fontSize: 19, fontWeight: '800' },
-  info: { color: '#234759', fontSize: 15, lineHeight: 22 },
-  help: { color: '#45616E', fontSize: 14, lineHeight: 21 },
-  description: { color: '#234759', fontSize: 16, lineHeight: 25 },
-  input: { minHeight: 220, borderWidth: 1, borderColor: '#B9CDD3', borderRadius: 12, backgroundColor: '#FFF', padding: 15, fontSize: 16, lineHeight: 24, color: '#123B53' },
+  card: { backgroundColor: colors.surface, borderRadius: 4, padding: 18, gap: 12, borderWidth: 0, borderColor: colors.border },
+  section: { color: colors.text, fontSize: 19, fontWeight: '600' },
+  info: { color: colors.text, fontSize: 15, lineHeight: 22 },
+  help: { color: colors.secondary, fontSize: 14, lineHeight: 21 },
+  description: { color: colors.text, fontSize: 16, lineHeight: 25 },
+  input: { minHeight: 220, borderWidth: 1, borderColor: colors.fieldBorder, borderRadius: 4, backgroundColor: colors.surface, padding: 15, fontFamily: 'DMSansRegular', fontSize: 16, lineHeight: 24, color: colors.text },
 });
 
 export default function GuardedRoute() { const { id } = useLocalSearchParams<{ id: string }>(); return <EventManagerGate id={id}><SetupWorkspace /></EventManagerGate>; }

@@ -1,0 +1,140 @@
+{
+  "checkedAt": "2026-10-08T00:33:20.785Z",
+  "readOnly": true,
+  "schema": [
+    {
+      "staged_intelligence_installed": true,
+      "reviewed_approval_installed": true,
+      "latest_demo_function_installed": true
+    }
+  ],
+  "worker": [
+    {
+      "jobname": "ground-control-incident-processing",
+      "schedule": "* * * * *",
+      "active": true
+    }
+  ],
+  "worker_runs": [
+    {
+      "status": "succeeded",
+      "start_time": "2026-10-08 00:33:00.015807+00",
+      "end_time": "2026-10-08 00:33:00.026803+00"
+    },
+    {
+      "status": "succeeded",
+      "start_time": "2026-10-08 00:32:00.033478+00",
+      "end_time": "2026-10-08 00:32:00.047931+00"
+    },
+    {
+      "status": "succeeded",
+      "start_time": "2026-10-08 00:31:00.026254+00",
+      "end_time": "2026-10-08 00:31:00.038465+00"
+    }
+  ],
+  "config": [
+    {
+      "wakeup_url_configured": true
+    }
+  ],
+  "incidents": [
+    {
+      "processing_status": "complete",
+      "intelligence_stage": "risk",
+      "reports": 5,
+      "voice_reports": 1,
+      "transcribed_voice_reports": 1,
+      "interpreted_reports": 5,
+      "latest_update": "2026-10-07 15:09:21.811045+00"
+    },
+    {
+      "processing_status": "complete",
+      "intelligence_stage": "interpret",
+      "reports": 5,
+      "voice_reports": 2,
+      "transcribed_voice_reports": 2,
+      "interpreted_reports": 0,
+      "latest_update": "2026-10-07 13:58:19.873877+00"
+    }
+  ],
+  "responses": [
+    {
+      "planning_stage": "retrieve",
+      "processing_status": "complete",
+      "status": "proposed",
+      "plans": 1,
+      "latest_created": "2026-10-07 14:35:01.065547+00",
+      "recorded_error": null
+    },
+    {
+      "planning_stage": "retrieve",
+      "processing_status": "complete",
+      "status": "approved",
+      "plans": 1,
+      "latest_created": "2026-10-07 14:37:38.207505+00",
+      "recorded_error": null
+    },
+    {
+      "planning_stage": "draft",
+      "processing_status": "failed",
+      "status": "proposed",
+      "plans": 1,
+      "latest_created": "2026-10-07 14:53:08.912355+00",
+      "recorded_error": "AI provider unavailable (HTTP 503). Your inputs are saved."
+    },
+    {
+      "planning_stage": "retrieve",
+      "processing_status": "complete",
+      "status": "dismissed",
+      "plans": 1,
+      "latest_created": "2026-10-07 14:36:30.815891+00",
+      "recorded_error": null
+    }
+  ],
+  "dispatches": [
+    {
+      "status": "arrived",
+      "requests": 1
+    }
+  ],
+  "ai_jobs": [
+    {
+      "status": "running",
+      "jobs": 1,
+      "latest_update": "2026-10-07 15:03:40.215641+00",
+      "longest_running_age_minutes": "569.8240483000000000"
+    },
+    {
+      "status": "failed",
+      "jobs": 1,
+      "latest_update": "2026-10-07 08:42:48.802376+00",
+      "longest_running_age_minutes": null
+    }
+  ],
+  "function": [
+    {
+      "slug": "setup-ai",
+      "status": "ACTIVE",
+      "version": 3,
+      "updated_at": 1791356143031
+    },
+    {
+      "slug": "certificate-ai",
+      "status": "ACTIVE",
+      "version": 3,
+      "updated_at": 1791356148211
+    },
+    {
+      "slug": "roster-generate",
+      "status": "ACTIVE",
+      "version": 3,
+      "updated_at": 1791356152331
+    },
+    {
+      "slug": "incident-ai",
+      "status": "ACTIVE",
+      "version": 13,
+      "updated_at": 1791386854766
+    }
+  ]
+}
