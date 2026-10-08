@@ -232,7 +232,7 @@ function Assistant({ id }: { id: string }) {
           void s.refresh();
         }}
       />
-      <Button title='Back to setup' secondary disabled={s.pending} onPress={() => router.back()} />
+      <Button title='Back' secondary disabled={s.pending} onPress={() => router.back()} />
     </Page>
   );
 }

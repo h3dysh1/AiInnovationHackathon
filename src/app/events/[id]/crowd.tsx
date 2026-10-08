@@ -85,7 +85,7 @@ function CrowdDashboard({ id }: { id: string }) {
         )
         : <Notice message='Crowd readings are unavailable.' />}
       <Button title='Alerts' secondary onPress={() => router.push({ pathname: '/events/[id]/live', params: { id } })} />
-      <Button title='Back to event tools' secondary onPress={() => router.back()} />
+      <Button title='Back' secondary onPress={() => router.back()} />
     </Page>
   );
 }

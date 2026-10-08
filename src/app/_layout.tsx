@@ -28,7 +28,7 @@ function Routes() {
         headerStyle: { backgroundColor: colors.canvas },
         headerShadowVisible: false,
         headerTitleStyle: { fontFamily: 'DMSansMedium', fontSize: 16 },
-        animation: reducedMotion ? 'fade' : 'default',
+        animation: mainSection ? 'none' : reducedMotion ? 'fade' : 'default',
         contentStyle: { backgroundColor: colors.canvas },
       };
     }}>

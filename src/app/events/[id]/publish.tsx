@@ -63,7 +63,7 @@ function Publish({ id }: { id: string }) {
           void s.run(() => publishRecruitment(id, code, s.data!.readiness.revision));
         }}
       />
-      <Button title='Back to review' secondary disabled={s.pending} onPress={() => router.back()} />
+      <Button title='Back' secondary disabled={s.pending} onPress={() => router.back()} />
     </Page>
   );
 }
