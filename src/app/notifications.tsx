@@ -3,24 +3,39 @@ import { router } from 'expo-router';
 import { Button, Disclosure, Notice, Page, Section, Title } from '@/components/ui';
 import { AppText as Text } from '@/components/app-text';
 import { useAuth } from '@/hooks/auth';
+import { useNavigationContext } from '@/hooks/navigation';
 import { useStaffing } from '@/hooks/staffing';
 import { useOperations } from '@/hooks/operations';
-import { myNotifications, notificationDestination, readNotification } from '@/services/notifications';
+import { myNotifications, notificationDestination, pushTestStatus, readNotification, requestPushTest, type PushTestDelivery } from '@/services/notifications';
 import { enablePush, revokePush } from '@/services/push';
 import { readOutbox, retryQueuedIncident, flushIncidentOutbox } from '@/services/incident-outbox';
 import { planStyles } from '@/components/plan-ui';
 
 export default function NotificationsInbox() {
   const { session } = useAuth();
+  const { selected } = useNavigationContext();
   const { refresh: refreshCount } = useOperations();
   const userId = session!.user.id;
   const s = useStaffing(useCallback(async () => ({ notifications: await myNotifications(), reports: await readOutbox(userId) }), [userId]));
   const [permissionMessage, setPermissionMessage] = useState<string | null>(null);
+  const [pushTest, setPushTest] = useState<{ notificationId: string; deliveries: PushTestDelivery[] } | null>(null);
+  const pushTestId = pushTest?.notificationId;
   const { refresh } = s;
   useEffect(() => {
     const timer = setInterval(() => { void refresh(); }, 15000);
     return () => clearInterval(timer);
   }, [refresh]);
+  useEffect(() => {
+    if (!pushTestId) return;
+    const poll = () => {
+      void pushTestStatus(pushTestId)
+        .then(deliveries => setPushTest(previous => previous ? { ...previous, deliveries } : previous))
+        .catch(() => {});
+    };
+    poll();
+    const timer = setInterval(poll, 5000);
+    return () => clearInterval(timer);
+  }, [pushTestId]);
   return <Page>
     <Title subtitle='Reports, instructions and updates across your events.'>Notifications</Title>
     {s.error ? <Notice tone='error' message={s.error} /> : null}
@@ -51,6 +66,16 @@ export default function NotificationsInbox() {
       <Notice message='Enable phone alerts for this account. Push delivery needs a configured installed build. Saved report retries run while the app is open; supported mobile builds also request background retries, whose timing is controlled by your phone.' />
       {permissionMessage ? <Notice message={permissionMessage} /> : null}
       <Button title='Enable phone notifications' secondary disabled={s.pending} onPress={() => { void s.run(async () => setPermissionMessage(await enablePush())); }} />
+      <Button title='Send test phone notification' secondary disabled={s.pending || !selected} onPress={() => { void s.run(async () => {
+        if (!selected) return;
+        const result = await requestPushTest(selected.id);
+        setPushTest({ notificationId: result.notificationId, deliveries: [] });
+      }); }} />
+      {pushTest ? <Text style={planStyles.help}>
+        Push test for {selected?.name ?? 'selected event'}: {pushTest.deliveries.length
+          ? pushTest.deliveries.map(delivery => `${delivery.status}${delivery.error ? ` (${delivery.error})` : ''}`).join(', ')
+          : 'queued; no registered device delivery yet'}
+      </Text> : null}
       <Button title='Disable phone notifications' secondary disabled={s.pending} onPress={() => { void s.run(async () => { await revokePush(); setPermissionMessage('Phone notifications disabled on this device.'); }); }} />
     </Disclosure>
   </Page>;
