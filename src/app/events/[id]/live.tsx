@@ -1,13 +1,14 @@
 import { AppText as Text } from '@/components/app-text';
 import { IncidentReview } from '@/components/incident-review';
 import { setupRpc } from '@/services/planning';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 
 import { Button, Disclosure, Field, Loading, Notice, Page, Section, Title } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
 import { EventManagerGate } from '@/components/event-manager-gate';
+import { usePolling } from '@/hooks/polling';
 import { useStaffing } from '@/hooks/staffing';
 import { ResponseReview } from '@/components/response-review';
 import { incidentProcessingLabel } from '@/domain/live';
@@ -30,12 +31,7 @@ function LiveDashboard({ id }: { id: string }) {
   const [closeout,setCloseout]=useState('');
   const [grace,setGrace]=useState('30');
   const { refresh } = s;
-  useEffect(() => {
-    const timer = setInterval(() => {
-      void refresh();
-    }, 10000);
-    return () => clearInterval(timer);
-  }, [refresh]);
+  usePolling(refresh, 10000);
   if (s.loading) return <Loading label='Loading live operations…' />;
   const snapshot = s.data?.live;
   const intelligence = s.data?.intelligence;

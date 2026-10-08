@@ -15,6 +15,7 @@ import { parseIncidentDraft } from '@/domain/incident-draft';
 import { confirmAction } from '@/services/confirm-action';
 import { loadDraft, saveDraft } from '@/services/draft-storage';
 import { incidentProcessingLabel } from '@/domain/live';
+import { usePolling } from '@/hooks/polling';
 import { useStaffing } from '@/hooks/staffing';
 import { myIncidentReports, myLiveAssignments, retryIncidentProcessing } from '@/services/staffing';
 import { queueIncident, readOutbox, flushIncidentOutbox, subscribeOutbox, retryQueuedIncident } from '@/services/incident-outbox';
@@ -58,11 +59,7 @@ export default function IncidentReport() {
     const unsubscribe = subscribeOutbox(update);
     return () => { active = false; unsubscribe(); };
   }, [requestId, session?.user.id]);
-  useEffect(() => {
-    if (!sent) return;
-    const timer = setInterval(() => { void refresh(); }, 5000);
-    return () => clearInterval(timer);
-  }, [sent, refresh]);
+  usePolling(refresh, 5000, sent);
   useEffect(() => {
     let active = true;
     void loadDraft(draftKey).then(value => {

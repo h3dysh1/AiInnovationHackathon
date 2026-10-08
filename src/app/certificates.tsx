@@ -1,6 +1,6 @@
 import { AppText as Text } from '@/components/app-text';
 import { confirmAction } from '@/services/confirm-action';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { router } from 'expo-router';
 import { Linking } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
@@ -8,6 +8,7 @@ import { randomUUID } from 'expo-crypto';
 import { Button, Field, Loading, Notice, Page, Title } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
 import { useAuth } from '@/hooks/auth';
+import { usePolling } from '@/hooks/polling';
 import { useStaffing } from '@/hooks/staffing';
 import {
   certificates,
@@ -25,13 +26,7 @@ export default function CertificatesScreen() {
   const [file, setFile] = useState<DocumentPicker.DocumentPickerAsset | null>(null);
   const uploadId = useRef(randomUUID());
   const { data, refresh } = s;
-  useEffect(() => {
-    if (!data?.some((c) => c.status === 'processing')) return;
-    const timer = setInterval(() => {
-      void refresh();
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [data, refresh]);
+  usePolling(refresh, 5000, Boolean(data?.some((c) => c.status === 'processing')));
   async function pick() {
     const result = await DocumentPicker.getDocumentAsync({
       type: ['application/pdf', 'image/jpeg', 'image/png'],

@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { router } from 'expo-router';
 import { Button, Disclosure, Notice, Page, Section, Title } from '@/components/ui';
 import { AppText as Text } from '@/components/app-text';
 import { useAuth } from '@/hooks/auth';
+import { usePolling } from '@/hooks/polling';
 import { useStaffing } from '@/hooks/staffing';
 import { useOperations } from '@/hooks/operations';
 import { myNotifications, notificationDestination, readNotification } from '@/services/notifications';
@@ -17,10 +18,7 @@ export default function NotificationsInbox() {
   const s = useStaffing(useCallback(async () => ({ notifications: await myNotifications(), reports: await readOutbox(userId) }), [userId]));
   const [permissionMessage, setPermissionMessage] = useState<string | null>(null);
   const { refresh } = s;
-  useEffect(() => {
-    const timer = setInterval(() => { void refresh(); }, 15000);
-    return () => clearInterval(timer);
-  }, [refresh]);
+  usePolling(refresh, 15000);
   return <Page>
     <Title subtitle='Reports, instructions and updates across your events.'>Notifications</Title>
     {s.error ? <Notice tone='error' message={s.error} /> : null}
