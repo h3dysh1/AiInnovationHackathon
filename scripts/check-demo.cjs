@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const ts = require('typescript');
 const Module = require('node:module');
-const { PGlite } = require(process.env.PGLITE_MODULE || '/tmp/ground-control-validation/node_modules/@electric-sql/pglite');
+const { PGlite } = require(process.env.PGLITE_MODULE || '@electric-sql/pglite');
 const filename = path.join(__dirname, 'demo-fixture.ts');
 const fixture = new Module(filename, module);
 fixture._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {

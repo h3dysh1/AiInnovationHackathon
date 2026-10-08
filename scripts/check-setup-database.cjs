@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 const { PGlite } = require(
-  process.env.PGLITE_MODULE || '/tmp/ground-control-validation/node_modules/@electric-sql/pglite',
+  process.env.PGLITE_MODULE || '@electric-sql/pglite',
 );
 (async () => {
   const db = new PGlite();
