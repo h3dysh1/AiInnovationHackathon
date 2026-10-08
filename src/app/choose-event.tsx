@@ -11,8 +11,8 @@ export default function ChooseEvent() {
     choose(event);
     if (destination === 'crew' || destination === 'alerts' || destination === 'more' || destination === 'shifts') {
       const pathname = { crew: '/events/[id]/roster', alerts: '/events/[id]/live', more: '/events/[id]/more', shifts: '/events/[id]/schedule' }[destination] as '/events/[id]/roster';
-      router.replace({ pathname, params: { id: event.id } });
-    } else router.replace(destination === 'profile' ? '/profile' : destination === 'events' ? '/my-events' : mode === 'coordinator' && role === 'coordinator' ? '/coordinator' : '/volunteer');
+      router.replace({ pathname, params: { id: event.id, mainSection: 'true' } });
+    } else router.replace({ pathname: destination === 'profile' ? '/profile' : destination === 'events' ? '/my-events' : mode === 'coordinator' && role === 'coordinator' ? '/coordinator' : '/volunteer', params: { mainSection: 'true' } });
   };
   return <Page><Title subtitle={mode === 'coordinator' ? 'Crew and Alerts will use the event you choose.' : 'Choose the event for your shifts and preparation.'}>Choose event</Title>
     {loading ? <Loading label='Loading your events…' /> : null}

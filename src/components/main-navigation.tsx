@@ -42,7 +42,7 @@ export function MainNavigation() {
         {unread || queued || error ? <Text style={{ fontSize: 11, lineHeight: 15, color: colors.text }}>{queued ? `${queued} unsent` : unread ? `${unread} new` : 'Offline'}</Text> : null}
       </Pressable>
       </View>
-      <View style={{ flexDirection: 'row', paddingTop: 4 }}>{destinations.map(item => <Pressable key={item.label} accessibilityRole='button' accessibilityLabel={`${item.label}, main navigation`} accessibilityState={{ selected: active === item.label }} onPress={() => { setMode(mode); router.navigate(item.route); }} style={({ pressed }) => ({ flex: 1, minHeight: 64, padding: 8, alignItems: 'center', justifyContent: 'center', gap: 4, opacity: pressed ? 0.6 : 1 })}>
+      <View style={{ flexDirection: 'row', paddingTop: 4 }}>{destinations.map(item => <Pressable key={item.label} accessibilityRole='button' accessibilityLabel={`${item.label}, main navigation`} accessibilityState={{ selected: active === item.label }} onPress={() => { setMode(mode); router.replace({ pathname: item.route, params: { mainSection: 'true' } }); }} style={({ pressed }) => ({ flex: 1, minHeight: 64, padding: 8, alignItems: 'center', justifyContent: 'center', gap: 4, opacity: pressed ? 0.6 : 1 })}>
         <SymbolView accessible={false} name={item.icon} size={23} tintColor={active === item.label ? colors.text : colors.secondary} />
         <Text style={{ fontSize: 12, lineHeight: 18, fontWeight: active === item.label ? '600' : '500', color: active === item.label ? colors.text : colors.secondary }}>{item.label}</Text>
         <View style={{ width: 16, height: 3, borderRadius: 2, backgroundColor: active === item.label ? colors.text : 'transparent' }} />

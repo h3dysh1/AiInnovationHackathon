@@ -16,7 +16,22 @@ function Routes() {
   if (loading) return <Loading label='Opening Ground Control…' />;
   return (
     <View style={{ flex: 1 }}>
-    <Stack screenOptions={{ headerShown: true, headerBackButtonDisplayMode: 'minimal', headerTintColor: colors.text, headerStyle: { backgroundColor: colors.canvas }, headerShadowVisible: false, headerTitleStyle: { fontFamily: 'DMSansMedium', fontSize: 16 }, animation: reducedMotion ? 'fade' : 'default', contentStyle: { backgroundColor: colors.canvas } }}>
+    <Stack screenOptions={({ route }) => {
+      const mainSection = ['coordinator', 'volunteer', 'crew', 'alerts', 'more', 'my-events', 'my-shifts'].includes(route.name)
+        || Boolean(route.params && 'mainSection' in route.params && route.params.mainSection === 'true');
+      return {
+        headerShown: true,
+        headerBackVisible: !mainSection,
+        headerLeft: mainSection ? () => null : undefined,
+        headerBackButtonDisplayMode: 'minimal',
+        headerTintColor: colors.text,
+        headerStyle: { backgroundColor: colors.canvas },
+        headerShadowVisible: false,
+        headerTitleStyle: { fontFamily: 'DMSansMedium', fontSize: 16 },
+        animation: reducedMotion ? 'fade' : 'default',
+        contentStyle: { backgroundColor: colors.canvas },
+      };
+    }}>
       <Stack.Screen name='index' options={{ headerShown: false }} />
       <Stack.Protected guard={!session}>
         <Stack.Screen name='sign-in' options={{ headerShown: false }} />
