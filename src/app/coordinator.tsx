@@ -45,6 +45,7 @@ export default function CoordinatorHome() {
     </Pressable>)}
     </Section>
     <Section title="Account">
+      <Button title="My volunteer participation" secondary compact onPress={()=>router.push('/volunteer')}/>
       <Button title="My profile" secondary compact onPress={() => router.push('/profile')} />
       <Button title="Sign out" secondary compact onPress={() => { void supabase?.auth.signOut(); }} />
     </Section>

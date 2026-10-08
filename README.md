@@ -1,5 +1,19 @@
 # Ground Control
 
+## Prepared Riverside demo
+
+`npm run demo:seed` creates a separate **Riverside 2026 - Demo** in the configured Ground Control Supabase project. It needs `SUPABASE_ACCESS_TOKEN` in the ignored `.ground-control-backend-secrets` file or command environment; it does not need a local Gemini key. Public app credentials alone cannot create confirmed demo accounts. The command stops before remote changes when administrative credentials are missing.
+
+The fixture includes Mo Demo, Sarah Demo and three supporting volunteers; a private PDF explicitly labelled **synthetic demo certificate**; Sarah's pre-verified `HLTAID011` First Aid fixture valid through 2028; availability for 12–14 December 2026; Water Station B with four staff including one First Aid holder; and a fully covered published roster with six shifts per volunteer. Join code: **RIVERDEMO26**. This is a reduced Riverside scenario for skipping setup, not the complete festival staffing plan. No incidents, check-ins or safety approvals are fabricated. Certificate extraction can be demonstrated separately with a new upload.
+
+The standalone synthetic certificate is also available at [`demo/sarah-first-aid.pdf`](demo/sarah-first-aid.pdf). Its holder is **Sarah Demo**; use that profile name when demonstrating extraction and holder matching.
+
+Random passwords and account emails are saved only in the ignored `.ground-control-demo-logins.json` file with owner-only permissions. Sign in as Mo to view the event, or Sarah to view shifts, check in and report incidents. The event belongs to the separate Mo demo account. Repeating the command retains the existing event and its operational history, rather than resetting it. Partial account/upload failures retain credentials for retry; the event/roster seed is transactional. `node scripts/check-demo.cjs` checks the fixture against the local migration harness (requires its PGlite dependency).
+
+**Hosted demo:** the fixture has been created on project `vpkedekkwbzfpaseycuc`, and Mo/Sarah logins, volunteer schedules, private certificate download, and coordinator dashboard access have been checked. The existing `incident-ai` function has also been deployed. Migration `202610070019_fix_live_snapshot.sql` repairs an undefined-alias error in the live dashboard summary without changing event data or role permissions. Real-device interaction and live Gemini transcription remain unverified.
+
+**Gemini key location:** server functions read the `GEMINI_API_KEY` Supabase Edge Function secret for project `vpkedekkwbzfpaseycuc`. Hosted secret presence has been verified without reading its value. Administrative access is in the ignored `.ground-control-backend-secrets` file; `.env.local` contains only public Supabase client configuration.
+
 Ground Control is an Expo 57 / React Native app for event coordinators and volunteers. The existing foundation includes account registration, persisted sign-in, role-specific home screens, profiles, coordinator-owned organisations, and event creation/editing. Phases 3–12 implement event setup, maps, operational document ingestion, Gemini-assisted extraction and clarification, human review, a manual operating-plan editor, verification, recruitment publishing, and joining. Phases 13–18 add reusable certificates, Gemini extraction with human review, availability, deterministic shift/roster generation, coverage review, and published volunteer schedules.
 
 ## Connect Supabase
@@ -150,15 +164,18 @@ Migrations 012–014 contain the certificate, onboarding, shift, assignment and 
 
 Volunteers can open a published assignment from their event page, check in and check out without GPS, and hold a radio-style button to record a voice incident immediately. Audio is stored privately before processing; coordinators can play it from **Live operations**, and the server attempts a Gemini transcript for classification while preserving the recording if transcription fails. Typed reporting remains available as a fallback. Coordinators can open **Live operations** to see current staffing, late/missing attendance, active coverage and unresolved reports. The live dashboard applies the deterministic 30-minute late/missing rule when refreshed.
 
-Migrations 017–018 add persisted incident classification, incident relationships, explainable risk alerts, event-procedure references, response proposals, human approval and dispatch requests, operational timeline entries, resolution, event closeout and private incident audio storage. The current intelligence implementation uses a deterministic server-side baseline so it remains usable without an AI provider; voice reports use Gemini for transcription when configured, but preserve the recording and remain playable if transcription is unavailable. Consequential responses require coordinator approval. Volunteers can acknowledge dispatched instructions from their event page.
+## Current implementation — 8 October 2026
 
-Local verification (41 tests passed, PostgreSQL scenarios passed, and iOS/Android/web exports succeeded):
+The ordered audit plan is implemented across the app, database and server worker. See [implementation status and remaining acceptance gaps](IMPLEMENTATION_AUDIT.md) and the [Mo/Sarah demo walkthrough](demo/DEMO_WALKTHROUGH.md).
 
-```sh
-npx expo lint
-npx tsc --noEmit
-node --test scripts/check-staffing.cjs scripts/check-staffing-workers.cjs scripts/check-setup-ai.cjs scripts/check-map-services.cjs
-node scripts/check-setup-database.cjs
-```
+- Incident receipt is durable and idempotent. Raw text, private recordings and transcripts stay separate. Asynchronous interpretation, correlation and risk stages preserve progress and expose retries/failures.
+- Gemini runs only on the backend. Structured outputs and referenced locations, procedures, qualifications and reports are validated before persistence. Reports remain available during AI failures.
+- Mo reviews response instructions, destinations, requirements and explicitly selected volunteers. Database checks protect availability, qualifications, overlaps, hours and source/target coverage. Approval is atomic and idempotent; volunteers acknowledge and track their instructions.
+- Readiness, briefing acknowledgements, no-show recommendations, operational history and reviewed closeout support the complete flow. Consequential actions require a human.
+- Separate prepared live and unrostered scheduling demos avoid confusing fixture assignments with automatic scheduling. The live screen can create a fresh synthetic scenario and preserve the old one's history.
 
-The database suite runs real PostgreSQL via PGlite, including migration reruns, permissions, original retention, low-confidence/failed extraction, date validity, availability rollback, coverage gaps, generation retries, publication and private schedules. It requires `@electric-sql/pglite`; use `PGLITE_MODULE` to point to an installed copy. The Edge Functions have separate Deno typechecks. Hosted AI, migrations 016–018 and an Expo Go device walkthrough remain unverified because administrative/Gemini credentials are unavailable in this workspace. Semantic AI correlation, real-time subscriptions, weather/crowd integrations and richer replacement optimization remain future enhancements.
+Important implementation files: `src/domain/live-intelligence.ts`, `src/components/response-review.tsx`, `src/app/events/[id]/live.tsx`, `supabase/functions/incident-ai/index.ts`, and migrations 020–028. Migrations through 028 and the incident worker are deployed to Ground Control. `scripts/deploy-incidents.cjs` scopes deployment to that project and keeps credentials out of logs. Worker wakeups use short-lived, single-use tickets and a scheduled recovery job.
+
+Validation passed: `npx expo lint`, `npx tsc --noEmit`, Deno worker typechecking, 53 domain/worker tests, PostgreSQL scenarios including migration reruns and role isolation, and iOS/Android/web exports. Database scripts use PGlite; set `PGLITE_MODULE` to its installation if needed. Mobile web checks covered Mo and Sarah.
+
+Hosted acceptance passed for real Gemini text/voice interpretation, correlation and risk evidence, plus deterministic no-show recommendations and Sarah's approved reassignment through arrival. **Remaining limitations:** Gemini response drafting exhausted retries with HTTP 503/timeouts after procedure retrieval succeeded. A fresh setup extraction stayed running, so downstream fresh certificate and automatic roster acceptance were not reached. Native microphone/device interaction remains unverified. Prepared plans/certificates are synthetic fixtures. P2 integrations, including live weather feeds, remain deferred.

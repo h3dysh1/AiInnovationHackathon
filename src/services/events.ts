@@ -18,6 +18,7 @@ function eventValues(draft: EventDraft) {
     operating_start_time: draft.operatingStartTime,
     operating_end_time: draft.operatingEndTime,
     timezone: draft.timezone.trim(),
+    approximate_workforce:draft.approximateWorkforce?.trim()?Number(draft.approximateWorkforce):null,
     expected_attendance: draft.expectedAttendance.trim() ? Number(draft.expectedAttendance.trim()) : null,
   };
 }

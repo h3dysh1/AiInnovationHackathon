@@ -76,7 +76,7 @@ function RosterEditor({ id }: { id: string }) {
   }
   return (
     <Page>
-      <Title subtitle='Review shifts, qualification coverage and gaps before publishing.'>
+      <Title subtitle='1. Generate shift times. 2. Automatically assign eligible crew. 3. Review and publish.'>
         Roster & shifts
       </Title>
       {s.error && <Notice message={s.error} />}
@@ -104,7 +104,7 @@ function RosterEditor({ id }: { id: string }) {
             keyboardType='number-pad'
           />
           <Button
-            title='Generate shift draft from verified plan'
+            title={data.list.some((r) => r.status === 'published') ? '1. Create replacement shift draft' : '1. Generate shift times'}
             disabled={s.pending || data.event.model_status !== 'verified'}
             onPress={() => {
               void change(async () => {
@@ -170,7 +170,7 @@ function RosterEditor({ id }: { id: string }) {
             {data?.ready?.warnings.map((w, n) => <Text key={n}>Review: {w}</Text>)}
             {draft && (
               <Button
-                title={s.pending ? 'Working…' : 'Generate / improve roster'}
+                title={s.pending ? 'Assigning crew…' : '2. Automatically assign / improve crew'}
                 disabled={s.pending}
                 onPress={() => {
                   void s.run(async () => {
@@ -184,13 +184,15 @@ function RosterEditor({ id }: { id: string }) {
                     setMessage(
                       result.complete
                         ? 'A complete candidate is ready for your review.'
-                        : 'Partial candidate saved. Review coverage gaps and volunteer availability.',
+                        : `Partial candidate saved. Review coverage gaps and volunteer availability.${result.searchLimited ? ' The search limit was reached; this does not prove a complete roster is impossible.' : ''}`,
                     );
                   });
                 }}
               />
             )}
           </PlanCard>
+          {!draft ? <Notice message='This roster is published. Create a replacement shift draft above to try automatic assignment; the current roster stays published until you approve its replacement.' /> :
+            <Notice message='Automatic assignment checks qualifications, availability, overlapping shifts and hour limits. Manual assignments are kept. You review coverage before publication.' />}
           {ctx.crew.map((m) => {
             const hours = ctx.assignments.filter((a) => a.user_id === m.user_id).reduce(
               (n, a) => n + shiftHours(ctx.shifts.find((x) => x.id === a.shift_id)!),

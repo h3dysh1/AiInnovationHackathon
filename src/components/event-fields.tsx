@@ -18,6 +18,7 @@ export function EventFields({ value, onChange, section }: Props) {
       <Field label="Description (optional)" value={value.description} onChangeText={text => set('description', text)} placeholder="Three-day riverfront festival" multiline />
       <Field label="Venue name" value={value.venueName} onChangeText={text => set('venueName', text)} placeholder="Riverside Park" />
       <Field label="Address (optional)" value={value.address} onChangeText={text => set('address', text)} placeholder="Street address" />
+      <Field label="Approximate workforce (optional)" value={value.approximateWorkforce??''} onChangeText={text=>set('approximateWorkforce',text)} keyboardType="number-pad"/>
       <Field label="Expected attendance (optional)" value={value.expectedAttendance} onChangeText={text => set('expectedAttendance', text)} keyboardType="number-pad" placeholder="300" />
     </>;
   }

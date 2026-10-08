@@ -1,4 +1,4 @@
-import 'expo-sqlite/localStorage/install';
+import './local-storage';
 
 function draftKey(eventId: string, userId: string) {
   return `ground-control:setup-draft:${userId}:${eventId}`;

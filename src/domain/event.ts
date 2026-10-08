@@ -20,6 +20,7 @@ export type Event = {
   operating_end_time: string;
   timezone: string;
   expected_attendance: number | null;
+  approximate_workforce?:number|null;
   status: EventStatus;
   join_code: string | null;
   created_by: string;
@@ -41,6 +42,7 @@ export type EventDraft = {
   operatingEndTime: string;
   timezone: string;
   expectedAttendance: string;
+  approximateWorkforce?:string;
 };
 
 export const emptyEventDraft: EventDraft = {
@@ -60,6 +62,7 @@ export function draftFromEvent(event: Event): EventDraft {
     operatingStartTime: event.operating_start_time.slice(0, 5),
     operatingEndTime: event.operating_end_time.slice(0, 5),
     timezone: event.timezone,
+    approximateWorkforce:event.approximate_workforce?String(event.approximate_workforce):'',
     expectedAttendance: event.expected_attendance?.toString() ?? '',
   };
 }
@@ -90,6 +93,7 @@ export function validateEventDraft(draft: EventDraft): string | null {
   if (draft.operatingEndTime <= draft.operatingStartTime) return 'Operating end time must be after start time.';
   try { new Intl.DateTimeFormat('en', { timeZone: draft.timezone.trim() }); }
   catch { return 'Enter a valid timezone, such as Australia/Melbourne.'; }
+  if(draft.approximateWorkforce?.trim() && (!/^\d+$/.test(draft.approximateWorkforce.trim()) || Number(draft.approximateWorkforce)<1 || Number(draft.approximateWorkforce)>1000000))return 'Approximate workforce must be a whole number between 1 and 1,000,000.';
   if (draft.expectedAttendance.trim() && (!/^\d+$/.test(draft.expectedAttendance.trim()) || Number(draft.expectedAttendance) < 1 || Number(draft.expectedAttendance) > 2147483647)) {
     return 'Expected attendance must be a positive whole number.';
   }

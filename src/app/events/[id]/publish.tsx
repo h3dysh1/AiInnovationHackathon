@@ -1,3 +1,4 @@
+import { randomUUID } from 'expo-crypto';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Text } from 'react-native';
@@ -51,6 +52,7 @@ function Publish({ id }: { id: string }) {
         onChangeText={(v) => setCode(v.toUpperCase().replace(/\s/g, ''))}
         placeholder='RIVERSIDE26'
       />
+      <Button title='Generate a join code' secondary disabled={s.pending} onPress={()=>setCode(`GC${randomUUID().replaceAll('-','').slice(0,10).toUpperCase()}`)}/>
       <Button
         title={s.pending ? 'Publishing…' : 'Publish recruitment with this code'}
         disabled={s.pending || !ready || !/^[A-Z0-9]{6,20}$/.test(code)}

@@ -4,7 +4,7 @@ export interface SetupAiProvider {
   generate(parts: AiPart[], schema: unknown): Promise<unknown>;
 }
 export function createSetupProvider(
-  settings: { provider: string; key: string; model: string; instruction?: string },
+  settings: { provider: string; key: string; model: string; instruction?: string; timeoutMs?: number; maxOutputTokens?: number },
   fetcher: typeof fetch = fetch,
 ): SetupAiProvider {
   if (settings.provider !== 'gemini') {
@@ -24,7 +24,7 @@ export function createSetupProvider(
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'x-goog-api-key': settings.key },
-          signal: AbortSignal.timeout(90000),
+          signal: AbortSignal.timeout(settings.timeoutMs ?? 90000),
           body: JSON.stringify({
             contents: [{ role: 'user', parts }],
             systemInstruction: {
@@ -37,7 +37,7 @@ export function createSetupProvider(
               responseMimeType: 'application/json',
               responseJsonSchema: schema,
               temperature: 0.1,
-              maxOutputTokens: 16384,
+              maxOutputTokens: settings.maxOutputTokens ?? 16384,
             },
           }),
         },

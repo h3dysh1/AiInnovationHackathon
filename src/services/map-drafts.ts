@@ -1,4 +1,4 @@
-import 'expo-sqlite/localStorage/install';
+import './local-storage';
 import { validMapCircle, validMapPoint, validRadius, type MapItemDraft } from '@/domain/site-geometry';
 
 export type SavedMapDraft = { path: string; item: MapItemDraft };

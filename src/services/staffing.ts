@@ -1,6 +1,6 @@
 import { randomUUID } from 'expo-crypto';
 import type { Certification } from '@/domain/certification';
-import type { IntelligenceSnapshot, LiveAssignment, LiveSnapshot } from '@/domain/live';
+import type { IntelligenceSnapshot, LiveAssignment, LiveIncident, LiveSnapshot, ResponseCandidate } from '@/domain/live';
 import type { Availability, CrewMember, Onboarding, Roster, RosterContext } from '@/domain/roster';
 import { planningClient, setupRpc } from './planning';
 export type OnboardingContext = {
@@ -126,47 +126,62 @@ export const myLiveAssignments = (id: string) =>
   setupRpc<LiveAssignment[]>('my_live_assignments', { p_event_id: id });
 export const setCheckIn = (assignmentId: string, action: 'check_in' | 'check_out') =>
   setupRpc<unknown>('set_check_in', { p_assignment_id: assignmentId, p_action: action });
-export const reportIncident = (eventId: string, report: string, assignmentId?: string) =>
+export const reportIncident = (eventId: string, report: string, assignmentId?: string, requestId?: string) =>
   setupRpc<{ id: string; status: string }>('report_incident', {
     p_event_id: eventId,
     p_raw_report: report,
     p_assignment_id: assignmentId ?? null,
+    p_request_id: requestId ?? null,
   });
 export async function reportVoiceIncident(
   eventId: string,
   uri: string,
   assignmentId?: string,
+  writtenContext = '',
+  requestId = randomUUID(),
 ) {
   const c = planningClient();
   const { data: userData, error: userError } = await c.auth.getUser();
   if (userError || !userData.user) throw new Error('Sign in again before sending a voice report.');
-  const bytes = await fetch(uri).then((response) => {
-    if (!response.ok) throw new Error('Could not read the voice recording.');
-    return response.arrayBuffer();
-  });
+  const recording = await fetch(uri);
+  if (!recording.ok) throw new Error('Could not read the voice recording.');
+  const mimeType = recording.headers.get('content-type')?.split(';')[0] === 'audio/webm'
+    ? 'audio/webm' : 'audio/mp4';
+  const bytes = await recording.arrayBuffer();
   if (!bytes.byteLength || bytes.byteLength > 10485760) {
     throw new Error('Keep voice reports under 10 MB.');
   }
-  const incidentId = randomUUID();
-  const path = `${userData.user.id}/${eventId}/${incidentId}.m4a`;
+  const path = `${userData.user.id}/${eventId}/${requestId}.${mimeType === 'audio/webm' ? 'webm' : 'm4a'}`;
   const { error: uploadError } = await c.storage.from('incident-audio').upload(path, bytes, {
-    contentType: 'audio/mp4',
+    contentType: mimeType,
     upsert: false,
   });
-  if (uploadError) throw uploadError;
-  try {
-    return await setupRpc<{ id: string; status: string }>('report_voice_incident', {
+  if (uploadError && uploadError.message !== 'The resource already exists' &&
+    String('statusCode' in uploadError ? uploadError.statusCode : '') !== '409') throw uploadError;
+  // Keep uploaded evidence on an ambiguous network failure. A retry uses the same
+  // path and request ID; referenced audio is also protected by storage policy.
+  return await setupRpc<{ id: string; status: string }>('report_voice_incident', {
       p_event_id: eventId,
       p_audio_path: path,
-      p_audio_mime_type: 'audio/mp4',
+      p_audio_mime_type: mimeType,
       p_audio_size_bytes: bytes.byteLength,
       p_assignment_id: assignmentId ?? null,
+      p_written_context: writtenContext,
+      p_request_id: requestId,
     });
-  } catch (error) {
-    await c.storage.from('incident-audio').remove([path]);
-    throw error;
-  }
 }
+export async function myIncidentReports(eventId: string) {
+  const c = planningClient();
+  const { data: user, error: authError } = await c.auth.getUser();
+  if (authError || !user.user) throw new Error('Sign in again to see your reports.');
+  const { data, error } = await c.from('incidents').select('*')
+    .eq('event_id', eventId).eq('reporter_id', user.user.id)
+    .order('created_at', { ascending: false }).limit(10);
+  if (error) throw error;
+  return data as LiveIncident[];
+}
+export const retryIncidentProcessing = (id: string) =>
+  setupRpc<LiveIncident>('retry_incident_processing', { p_id: id });
 export async function incidentAudioUrl(path: string) {
   const { data, error } = await planningClient().storage.from('incident-audio').createSignedUrl(
     path,
@@ -175,24 +190,27 @@ export async function incidentAudioUrl(path: string) {
   if (error) throw error;
   return data.signedUrl;
 }
-export async function startIncidentAnalysis(incidentId: string) {
-  const { error } = await planningClient().functions.invoke('incident-ai', {
-    body: { incidentId },
-  });
-  if (error) return false;
-  return true;
-}
 export const liveSnapshot = (id: string) =>
   setupRpc<LiveSnapshot>('live_event_snapshot', { p_event_id: id });
 export const intelligenceSnapshot = (id: string) =>
   setupRpc<IntelligenceSnapshot>('intelligence_snapshot', { p_event_id: id });
 export const analyzeIncident = (id: string) => setupRpc<unknown>('analyze_incident', { p_incident_id: id });
 export const correlateIncident = (id: string) => setupRpc<unknown>('correlate_incident', { p_incident_id: id });
-export const detectRisk = (id: string) => setupRpc<unknown>('detect_risk', { p_event_id: id });
+export const detectRisk = (id: string) => setupRpc<unknown>('request_event_intelligence', { p_event_id: id });
 export const proposeResponse = (incidentId?: string, riskId?: string) =>
   setupRpc<unknown>('propose_response', { p_incident_id: incidentId ?? null, p_risk_id: riskId ?? null });
-export const approveResponse = (id: string, instruction: string) =>
-  setupRpc<unknown>('approve_response', { p_response_id: id, p_instruction: instruction });
+export const approveResponse = (id:string, revision:number, selections:{userId:string;resourceIndex:number}[]) =>
+  setupRpc<unknown>('approve_response', {p_response_id:id,p_revision:revision,p_selections:selections});
+export const responseCandidates=(id:string)=>setupRpc<ResponseCandidate[]>('response_candidates',{p_response_id:id});
+export const modifyResponse=(id:string,revision:number,shiftId:string,instruction:string,resources:import('@/domain/live-intelligence').ResourceNeed[],actions:string[])=>
+  setupRpc<unknown>('modify_response',{p_id:id,p_revision:revision,p_shift_id:shiftId,p_instruction:instruction,p_resources:resources,p_actions:actions});
+export const dismissResponse=(id:string,revision:number)=>setupRpc<unknown>('dismiss_response',{p_id:id,p_revision:revision});
+export const retryResponse=(id:string)=>setupRpc<unknown>('retry_response_processing',{p_id:id});
+export const completeResponse=(id:string,notes:string)=>setupRpc<unknown>('complete_response',{p_id:id,p_notes:notes});
+export const startEvent=(id:string,grace:number)=>setupRpc<unknown>('start_event',{p_event_id:id,p_grace_minutes:grace});
+export const recordObservation=(id:string,kind:string,value:string,locationId:string|null)=>setupRpc<unknown>('record_event_observation',{p_event_id:id,p_kind:kind,p_value:value,p_location_id:locationId});
+export const setStandby=(id:string,until:string|null)=>setupRpc<unknown>('set_standby',{p_event_id:id,p_available_until:until});
+
 export const resolveIncident = (id: string, notes: string) =>
   setupRpc<unknown>('resolve_incident', { p_id: id, p_notes: notes });
 export const updateDispatch = (id: string, status: string) =>

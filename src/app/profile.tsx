@@ -1,3 +1,4 @@
+import { setupRpc } from '@/services/planning';
 import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
 import { Button, Field, Loading, Notice, Page, Title } from '@/components/ui';
@@ -6,6 +7,7 @@ import { getVolunteerProfile, saveUserProfile, saveVolunteerProfile } from '@/se
 
 export default function ProfileScreen() {
   const { session, role, profile, reload } = useAuth();
+  const [organisation,setOrganisation]=useState('');
   const [name, setName] = useState(profile?.display_name ?? '');
   const [phone, setPhone] = useState(profile?.phone ?? '');
   const [emergencyName, setEmergencyName] = useState('');
@@ -71,6 +73,10 @@ export default function ProfileScreen() {
         My profile
       </Title>
       {message ? <Notice message={message} /> : null}
+      {role==='volunteer'?<>
+        <Field label='Organisation (to manage your own events)' value={organisation} onChangeText={setOrganisation}/>
+        <Button title='Create my coordinator workspace' disabled={saving||!organisation.trim()} onPress={()=>{setSaving(true);void setupRpc('become_coordinator',{p_organisation_name:organisation}).then(async()=>{await reload();router.replace('/coordinator');}).catch(cause=>setMessage(cause instanceof Error?cause.message:'Could not create workspace.')).finally(()=>setSaving(false));}}/>
+      </>:null}
       <Field label='Name' value={name} onChangeText={setName} autoComplete='name' />
       <Field
         label='Phone'

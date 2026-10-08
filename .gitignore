@@ -34,6 +34,7 @@ yarn-error.*
 .env
 .env*.local
 .ground-control-backend-secrets
+.ground-control-demo-logins.json
 
 # typescript
 *.tsbuildinfo
@@ -44,12 +45,6 @@ example
 /ios
 /android
 
-# crowd camera (cv/): credentials, footage, generated media, Python caches
-cv/.env.local
-cv/camera.json
-cv/footage/
-cv/output/*
-!cv/output/.gitkeep
-__pycache__/
-.pytest_cache/
-*.pth
+.ground-control-acceptance-logins.json
+
+.ground-control-setup-acceptance.json

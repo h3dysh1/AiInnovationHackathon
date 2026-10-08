@@ -24,7 +24,7 @@ function local(iso: string, tz: string) {
 export default function Availability() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const load = useCallback(
-    async () => ({ context: await onboardingContext(id), event: await getEvent(id) }),
+    async () => ({ context: await onboardingContext(id), event: await getEvent(id),briefing:await setupRpc<{revision:number;acknowledged:boolean;procedures:{title:string;content:string}[]}>('event_briefing',{p_event_id:id}) }),
     [id],
   );
   const s = useStaffing(load);
@@ -51,18 +51,9 @@ function AvailabilityForm({
   data,
 }: {
   id: string;
-  s: ReturnType<
-    typeof useStaffing<
-      {
-        context: Awaited<ReturnType<typeof onboardingContext>>;
-        event: Awaited<ReturnType<typeof getEvent>>;
-      }
-    >
-  >;
-  data: {
-    context: Awaited<ReturnType<typeof onboardingContext>>;
-    event: Awaited<ReturnType<typeof getEvent>>;
-  };
+  s: {error:string|null;pending:boolean;run:(operation:()=>Promise<unknown>)=>Promise<unknown>};
+  data: {context:Awaited<ReturnType<typeof onboardingContext>>;event:Awaited<ReturnType<typeof getEvent>>;briefing:{revision:number;acknowledged:boolean;procedures:{title:string;content:string}[]}};
+
 }) {
   const p = data.context.preferences;
   const [windows, setWindows] = useState<Window[]>(() =>
@@ -191,6 +182,10 @@ function AvailabilityForm({
           />
         </PlanCard>
       ))}
+      </Section>
+      <Section title='Event briefing'>
+        {data.briefing.procedures.map(p=><PlanCard key={p.title}><Text>{p.title}</Text><Text>{p.content}</Text></PlanCard>)}
+        <Button title={data.briefing.acknowledged?'✓ Current briefing acknowledged':'I have read the event procedures and will follow coordinator instructions'} secondary disabled={s.pending||data.briefing.acknowledged} onPress={()=>{void s.run(()=>setupRpc('acknowledge_event_briefing',{p_event_id:id,p_revision:data.briefing.revision}));}}/>
       </Section>
       <Button
         title={s.pending ? 'Saving…' : 'Save availability'}

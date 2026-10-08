@@ -1,3 +1,4 @@
+import { certificateValidity } from '@/domain/certification';
 import { errorMessage } from '@/domain/errors';
 import { useCallback, useState } from 'react';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
@@ -10,7 +11,7 @@ import type { Membership } from '@/domain/planning';
 import { useAuth } from '@/hooks/auth';
 import { getEvent, updateEvent } from '@/services/events';
 import { getMembership, managerRole } from '@/services/planning';
-import { certificates, myDispatchRequests, myLiveAssignments, onboardingContext, setCheckIn, updateDispatch } from '@/services/staffing';
+import { certificates, myDispatchRequests, myLiveAssignments, onboardingContext, setCheckIn, updateDispatch, setStandby } from '@/services/staffing';
 import type { LiveAssignment } from '@/domain/live';
 export default function EventDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -42,9 +43,8 @@ export default function EventDetails() {
           myLiveAssignments(id),
           myDispatchRequests(id),
         ]);
-        const ownedTypes = new Set(owned.map((certificate) => certificate.type?.toLowerCase()));
         const missing = context.requirements.find((requirement) =>
-          !ownedTypes.has(requirement.certification_type.toLowerCase())
+          !owned.some(c=>certificateValidity(c,e.start_date,e.end_date,requirement.certification_type)===null)
         );
         if (active()) {
           setCertificateRequest(missing
@@ -63,8 +63,9 @@ export default function EventDetails() {
   useFocusEffect(useCallback(() => {
     let active = true;
     void refresh(() => active);
+    const timer=setInterval(()=>{void refresh(()=>active);},10000);
     return () => {
-      active = false;
+      active = false; clearInterval(timer);
     };
   }, [refresh]));
 
@@ -206,11 +207,7 @@ export default function EventDetails() {
                     <PlanCard key={dispatch.id}>
                       <Text style={planStyles.badge}>REASSIGNMENT · {dispatch.status.toUpperCase()}</Text>
                       <Text style={planStyles.text}>{dispatch.instruction}</Text>
-                      {dispatch.status === 'pending'
-                        ? <Button title='Acknowledge instruction' onPress={() => {
-                          void updateDispatch(dispatch.id, 'accepted').then(() => refresh());
-                        }} />
-                        : null}
+                      {(dispatch.status==='pending'?['accepted','declined']:dispatch.status==='accepted'?['en_route','declined']:dispatch.status==='en_route'?['arrived']:dispatch.status==='arrived'?['completed']:[]).map(status=><Button key={status} title={status==='accepted'?'Accept instruction':status==='declined'?'Decline (notify coordinator)':status==='en_route'?'On my way':status==='arrived'?'Arrived and checked in':'Task completed'} disabled={pending} onPress={()=>{setPending(true);void updateDispatch(dispatch.id,status).then(()=>refresh()).catch(cause=>setError(errorMessage(cause,'Could not update response. Try again.'))).finally(()=>setPending(false));}}/>)}
                     </PlanCard>
                   ))}
                   <Section title='My participation'>
@@ -223,21 +220,22 @@ export default function EventDetails() {
                         </Text>
                         <Text style={planStyles.badge}>SHIFT · {assignment.status.replaceAll('_', ' ').toUpperCase()}</Text>
                         {assignment.instructions ? <Text style={planStyles.help}>{assignment.instructions}</Text> : null}
-                        {assignment.status === 'scheduled' || assignment.status === 'late'
+                        {!assignment.response_plan_id && ['scheduled','late','missing'].includes(assignment.status)
                           ? (
                             <Button title='Check in' onPress={() => {
-                              void setCheckIn(assignment.assignment_id, 'check_in').then(() => refresh());
+                              setPending(true);void setCheckIn(assignment.assignment_id, 'check_in').then(() => refresh()).catch(cause=>setError(errorMessage(cause,'Check-in failed. Try again.'))).finally(()=>setPending(false));
                             }} />
                           )
                           : assignment.status === 'checked_in'
                           ? (
                             <Button title='Check out' secondary onPress={() => {
-                              void setCheckIn(assignment.assignment_id, 'check_out').then(() => refresh());
+                              setPending(true);void setCheckIn(assignment.assignment_id, 'check_out').then(() => refresh()).catch(cause=>setError(errorMessage(cause,'Check-out failed. Try again.'))).finally(()=>setPending(false));
                             }} />
                           )
                           : null}
                       </PlanCard>
                     ))}
+                    {event.status==='live'?<Button title='Confirm standby availability for the next 2 hours' secondary disabled={pending} onPress={()=>{setPending(true);void setStandby(id,new Date(Date.now()+2*3600000).toISOString()).then(()=>refresh()).catch(cause=>setError(errorMessage(cause,'Could not confirm standby.'))).finally(()=>setPending(false));}}/>:null}
                     <Button title='Report an incident' onPress={() => router.push({ pathname: '/events/[id]/incident', params: { id } })} />
                     <Button title='Availability & preferences' onPress={() => router.push({ pathname: '/events/[id]/availability', params: { id } })} />
                     <Button title='My shifts' secondary onPress={() => router.push({ pathname: '/events/[id]/schedule', params: { id } })} />

@@ -182,7 +182,7 @@ test('clearing map markings explicitly clears circles and check-in areas without
 test('map drafts retain the image revision and retry ID and stay separate by user/event', () => {
   const stored = new Map();
   const drafts = load('src/services/map-drafts.ts', {
-    'expo-sqlite/localStorage/install': {}, '@/domain/site-geometry': load('src/domain/site-geometry.ts'),
+    './local-storage': {}, '@/domain/site-geometry': load('src/domain/site-geometry.ts'),
   }, { localStorage: { getItem: key => stored.get(key) ?? null, setItem: (key, value) => stored.set(key, value), removeItem: key => stored.delete(key) } });
   drafts.keepMapDraft('event-a', 'user-a', { path: 'event-a/old-image.jpg', item: postDraft });
   assert.equal(drafts.getMapDraft('event-a', 'user-a').item.id, 'stable-post-id');
@@ -237,7 +237,7 @@ test('an old area draft is recovered as a location while preserving geometry and
   const oldArea = { ...postDraft, id: 'old-area-id', kind: 'zone', creating: false,
     name: 'North lawn', radiusPercent: 12, checkIn: null, locationId: null, zoneId: null, zoneName: '' };
   const drafts = load('src/services/map-drafts.ts', {
-    'expo-sqlite/localStorage/install': {}, '@/domain/site-geometry': load('src/domain/site-geometry.ts'),
+    './local-storage': {}, '@/domain/site-geometry': load('src/domain/site-geometry.ts'),
   }, { localStorage: { getItem: () => JSON.stringify({ path: 'event-a/map.jpg', item: oldArea }) } });
   const restored = drafts.getMapDraft('event-a', 'user-a');
   assert.equal(restored.item.kind, 'location');
