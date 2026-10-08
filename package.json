@@ -49,6 +49,9 @@
     "typescript": "~6.0.3"
   },
   "scripts": {
+    "judge:setup": "node scripts/judge-setup.cjs",
+    "judge:handoff": "node scripts/prepare-judge-handoff.cjs",
+    "judge:check": "node scripts/check-hosted-judge.cjs",
     "demo:scenarios": "node --experimental-strip-types scripts/seed-scenarios.ts",
     "demo:seed": "node --experimental-strip-types scripts/seed-demo.ts",
     "start": "expo start",
