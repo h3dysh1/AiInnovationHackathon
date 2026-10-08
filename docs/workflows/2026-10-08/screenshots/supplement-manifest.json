@@ -1,0 +1,238 @@
+{
+  "manifest": [
+    {
+      "id": "c-assistant-answer",
+      "title": "Answer a planning question",
+      "action": "Clarify hours, staffing, qualifications or escalation; answers are saved before AI runs.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/assistant",
+      "screenshot": "screenshots/c-assistant-answer.png"
+    },
+    {
+      "id": "c-assistant-result",
+      "title": "Candidate plan ready for review",
+      "action": "A completed AI job produces a proposal and still requires human review.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/assistant",
+      "screenshot": "screenshots/c-assistant-result.png"
+    },
+    {
+      "id": "c-candidate-plan",
+      "title": "Inspect the unapplied AI candidate",
+      "action": "Check sources and proposed staffing before applying an unconfirmed draft.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/review",
+      "screenshot": "screenshots/c-candidate-plan.png"
+    },
+    {
+      "id": "c-candidate-apply",
+      "title": "Apply the reviewed draft",
+      "action": "Applying a candidate creates an unconfirmed draft; verification remains a separate human step.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/review",
+      "screenshot": "screenshots/c-candidate-apply.png"
+    },
+    {
+      "id": "c-verify",
+      "title": "Verify the operating plan",
+      "action": "Confirm the reviewed operating records and verify the model before recruitment.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/review",
+      "screenshot": "screenshots/c-verify.png"
+    },
+    {
+      "id": "c-map-populated",
+      "title": "Map with positioned posts",
+      "action": "View areas, staffing posts and check-in zones on a site plan.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/map",
+      "screenshot": "screenshots/c-map-populated.png"
+    },
+    {
+      "id": "c-map-edit",
+      "title": "Edit an area on the map",
+      "action": "Review the location position, radius and details before saving.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/map",
+      "screenshot": "screenshots/c-map-edit.png"
+    },
+    {
+      "id": "c-site-add",
+      "title": "Add or correct a location",
+      "action": "Use the manual editor to make the operating plan accurate.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/site",
+      "screenshot": "screenshots/c-site-add.png"
+    },
+    {
+      "id": "c-procedure-edit",
+      "title": "Edit the volunteer procedure",
+      "action": "Keep the briefing concise and state who owns escalation decisions.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/operations",
+      "screenshot": "screenshots/c-procedure-edit.png"
+    },
+    {
+      "id": "c-roster-generate",
+      "title": "Generate shift times",
+      "action": "Start from the verified operating windows and choose a shift length.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/roster",
+      "screenshot": "screenshots/c-roster-generate.png"
+    },
+    {
+      "id": "c-roster-draft",
+      "title": "Review the shift draft",
+      "action": "See staffing requirements and any unfilled places before assigning crew.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/roster",
+      "screenshot": "screenshots/c-roster-draft.png"
+    },
+    {
+      "id": "c-roster-assigned",
+      "title": "Review the assigned candidate",
+      "action": "Deterministic assignment checks availability, qualifications and coverage.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/roster",
+      "screenshot": "screenshots/c-roster-assigned.png"
+    },
+    {
+      "id": "c-roster-confirm",
+      "title": "Confirm roster publication",
+      "action": "Confirm that reviewed assignments should be shared with volunteers.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/roster",
+      "screenshot": "screenshots/c-roster-confirm.png"
+    },
+    {
+      "id": "c-roster-published",
+      "title": "Roster published",
+      "action": "Crew can now view their own assignments.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/roster",
+      "screenshot": "screenshots/c-roster-published.png"
+    },
+    {
+      "id": "c-crowd-map",
+      "title": "Crowd estimates on the site map",
+      "action": "Read density estimates alongside their site location and freshness.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/crowd",
+      "screenshot": "screenshots/c-crowd-map.png"
+    },
+    {
+      "id": "c-weather",
+      "title": "Review modelled weather",
+      "action": "Read current advisory conditions and check local procedures.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/signals",
+      "screenshot": "screenshots/c-weather.png"
+    },
+    {
+      "id": "c-rest-rules",
+      "title": "Review rest and break rules",
+      "action": "Set scheduling limits before generating assignments.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/roster",
+      "screenshot": "screenshots/c-rest-rules.png"
+    },
+    {
+      "id": "shared-login-email",
+      "title": "Log in after email confirmation",
+      "action": "Return after confirming the signup email and enter your email.",
+      "route": "/sign-in",
+      "screenshot": "screenshots/shared-login-email.png"
+    },
+    {
+      "id": "shared-login-password",
+      "title": "Authenticate",
+      "action": "Enter your password to continue. The password is masked.",
+      "route": "/sign-in",
+      "screenshot": "screenshots/shared-login-password.png"
+    },
+    {
+      "id": "v-dispatch-accepted",
+      "title": "Acknowledge the instruction",
+      "action": "Tell the coordinator you accepted the task.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001",
+      "screenshot": "screenshots/v-dispatch-accepted.png"
+    },
+    {
+      "id": "v-dispatch-en-route",
+      "title": "Travel to the destination",
+      "action": "Update your progress when you are on the way.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001",
+      "screenshot": "screenshots/v-dispatch-en-route.png"
+    },
+    {
+      "id": "v-dispatch-arrived",
+      "title": "Confirm arrival",
+      "action": "Arrival tells the coordinator the response is on site.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001",
+      "screenshot": "screenshots/v-dispatch-arrived.png"
+    },
+    {
+      "id": "v-dispatch-complete",
+      "title": "Finish the response task",
+      "action": "Mark the task complete and await further instructions.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001",
+      "screenshot": "screenshots/v-dispatch-complete.png"
+    },
+    {
+      "id": "v-checkout",
+      "title": "Check out after the shift",
+      "action": "Finish the assignment and keep attendance accurate.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001",
+      "screenshot": "screenshots/v-checkout.png"
+    },
+    {
+      "id": "v-certificate-saved",
+      "title": "Evidence saved; review required",
+      "action": "The original is saved; extracted fields require human review before qualification use.",
+      "route": "/certificates",
+      "screenshot": "screenshots/v-certificate-saved.png"
+    },
+    {
+      "id": "v-voice-recording",
+      "title": "Record a voice incident",
+      "action": "Speak the location, what happened and anything urgent. Browser microphone input is simulated.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/incident",
+      "screenshot": "screenshots/v-voice-recording.png"
+    },
+    {
+      "id": "v-voice-ready",
+      "title": "Review the voice report before sending",
+      "action": "Add written context if helpful. This capture does not send or transcribe the recording.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/incident",
+      "screenshot": "screenshots/v-voice-ready.png"
+    },
+    {
+      "id": "v-phone-notifications",
+      "title": "Optional phone alerts",
+      "action": "Enable alerts in an installed mobile build; web screenshots show the settings only.",
+      "route": "/notifications",
+      "screenshot": "screenshots/v-phone-notifications.png"
+    },
+    {
+      "id": "c-response-complete",
+      "title": "Confirm response completion",
+      "action": "Review field updates and record completion notes.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-response-complete.png"
+    },
+    {
+      "id": "c-closeout",
+      "title": "Review the event summary",
+      "action": "Edit the AI draft, confirm follow-up and close the event yourself.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-closeout.png"
+    },
+    {
+      "id": "c-closed",
+      "title": "Event closed",
+      "action": "Event closeout is confirmed while the operational record remains available.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001",
+      "screenshot": "screenshots/c-closed.png"
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "writes": [
+    "simulate AI planning request",
+    "simulate shift draft",
+    "simulate deterministic crew assignment",
+    "simulate roster publication",
+    "simulate dispatch acknowledgement",
+    "simulate dispatch acknowledgement",
+    "simulate dispatch acknowledgement",
+    "simulate dispatch acknowledgement",
+    "simulate attendance",
+    "simulate certificate upload",
+    "simulate completion",
+    "simulate reviewed closeout"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "results": [
+    "Signup is sequential, validates email, preserves Back and shows confirmation",
+    "Event onboarding resumes draft, saves availability, reviews real requirements and acknowledges briefing (writes mocked)",
+    "New account is gated through profile setup; network failure preserves input; completion follows both profile writes",
+    "Welcome has no horizontal overflow at 320, 390 and 1024 widths; coordinator login remains available under reduced motion"
+  ],
+  "errors": [],
+  "blocked": [],
+  "writes": [
+    {
+      "rpc": "save_event_onboarding",
+      "body": {
+        "p_event_id": "d0000000-0000-4000-8000-000000000001",
+        "p_windows": [
+          {
+            "startDate": "2026-12-12",
+            "startTime": "09:00",
+            "endDate": "2026-12-12",
+            "endTime": "17:00"
+          },
+          {
+            "startDate": "2026-12-13",
+            "startTime": "09:00",
+            "endDate": "2026-12-13",
+            "endTime": "17:00"
+          },
+          {
+            "startDate": "2026-12-14",
+            "startTime": "09:00",
+            "endDate": "2026-12-14",
+            "endTime": "17:00"
+          },
+          {
+            "startDate": "2026-12-12",
+            "endDate": "2026-12-12",
+            "startTime": "09:00",
+            "endTime": "17:00"
+          }
+        ],
+        "p_preferences": {
+          "preferredPosts": [],
+          "avoidedPosts": [],
+          "preferredStart": "",
+          "preferredEnd": "",
+          "desiredHours": 6,
+          "maximumHours": 24,
+          "maximumDailyHours": 8,
+          "experienceTags": []
+        }
+      }
+    },
+    {
+      "rpc": "acknowledge_event_briefing",
+      "body": {
+        "p_event_id": "d0000000-0000-4000-8000-000000000001",
+        "p_revision": 6
+      }
+    },
+    "profile",
+    "profile",
+    "profile",
+    "volunteer-profile",
+    "volunteer-profile",
+    "profile",
+    "volunteer-profile",
+    "registration-complete"
+  ]
+}

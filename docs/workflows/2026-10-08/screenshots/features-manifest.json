@@ -1,0 +1,434 @@
+{
+  "manifest": [
+    {
+      "id": "c-home",
+      "title": "Coordinator home",
+      "action": "Review live and preparing events; choose Riverside.",
+      "route": "/coordinator",
+      "screenshot": "screenshots/c-home.png"
+    },
+    {
+      "id": "c-create-organisation",
+      "title": "Choose the organisation",
+      "action": "Choose the organisation responsible for this event.",
+      "route": "/events/new",
+      "screenshot": "screenshots/c-create-organisation.png"
+    },
+    {
+      "id": "c-create-details",
+      "title": "Name the event and venue",
+      "action": "Fill the event name and venue; expand optional details if needed.",
+      "route": "/events/new",
+      "screenshot": "screenshots/c-create-details.png"
+    },
+    {
+      "id": "c-create-dates",
+      "title": "Dates and operating hours",
+      "action": "Set local event dates, opening hours and timezone.",
+      "route": "/events/new",
+      "screenshot": "screenshots/c-create-dates.png"
+    },
+    {
+      "id": "c-create-review",
+      "title": "Review the draft event",
+      "action": "Check the organisation, venue and dates before creating the draft.",
+      "route": "/events/new",
+      "screenshot": "screenshots/c-create-review.png"
+    },
+    {
+      "id": "c-setup",
+      "title": "Describe the operating plan",
+      "action": "Enter event requirements and save the setup description.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/setup",
+      "screenshot": "screenshots/c-setup.png"
+    },
+    {
+      "id": "c-setup-filled",
+      "title": "Write the event brief",
+      "action": "Save clear operating requirements before asking AI to draft the plan.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/setup",
+      "screenshot": "screenshots/c-setup-filled.png"
+    },
+    {
+      "id": "c-documents",
+      "title": "Supporting documents",
+      "action": "Choose and upload original plans, procedures or supporting documents.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/documents",
+      "screenshot": "screenshots/c-documents.png"
+    },
+    {
+      "id": "c-document-selected",
+      "title": "Select a supporting document",
+      "action": "Choose the original and set its title and document type before uploading.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/documents",
+      "screenshot": "screenshots/c-document-selected.png"
+    },
+    {
+      "id": "c-assistant",
+      "title": "AI planning assistant",
+      "action": "Generate a candidate operating plan and answer any clarification questions.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/assistant",
+      "screenshot": "screenshots/c-assistant.png"
+    },
+    {
+      "id": "c-review",
+      "title": "Review the operating plan",
+      "action": "Review proposed records, resolve issues and verify the plan before recruitment.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/review",
+      "screenshot": "screenshots/c-review.png"
+    },
+    {
+      "id": "c-map",
+      "title": "Place the site on the map",
+      "action": "Inspect or position locations and staffing posts on the event map.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/map",
+      "screenshot": "screenshots/c-map.png"
+    },
+    {
+      "id": "c-site",
+      "title": "Locations and staffing posts",
+      "action": "Review areas, posts, coverage and qualification requirements.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/site",
+      "screenshot": "screenshots/c-site.png"
+    },
+    {
+      "id": "c-operations",
+      "title": "Operating hours and procedures",
+      "action": "Confirm operating windows and the procedures volunteers must acknowledge.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/operations",
+      "screenshot": "screenshots/c-operations.png"
+    },
+    {
+      "id": "c-publish",
+      "title": "Recruitment and join code",
+      "action": "Publish recruitment after verification; share the join code with volunteers.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/publish",
+      "screenshot": "screenshots/c-publish.png"
+    },
+    {
+      "id": "c-team",
+      "title": "Event team and permissions",
+      "action": "Find a member and review their event role.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/team",
+      "screenshot": "screenshots/c-team.png"
+    },
+    {
+      "id": "c-team-permissions",
+      "title": "Review event access",
+      "action": "Set roles only for people who need coordinator or safety-lead permissions.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/team",
+      "screenshot": "screenshots/c-team-permissions.png"
+    },
+    {
+      "id": "c-qualifications",
+      "title": "Crew qualifications",
+      "action": "Inspect extracted certificate details before human approval.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/qualifications",
+      "screenshot": "screenshots/c-qualifications.png"
+    },
+    {
+      "id": "c-certificate-review",
+      "title": "Human certificate review",
+      "action": "Compare extracted fields with the original; record the review before approving.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/qualifications",
+      "screenshot": "screenshots/c-certificate-review.png"
+    },
+    {
+      "id": "c-certificate-approved",
+      "title": "Certificate approved",
+      "action": "Human approval is recorded; event-date validity remains a separate deterministic check.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/qualifications",
+      "screenshot": "screenshots/c-certificate-approved.png"
+    },
+    {
+      "id": "c-roster",
+      "title": "Generate and review the roster",
+      "action": "Generate shift times, assign eligible crew, resolve coverage gaps and publish.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/roster",
+      "screenshot": "screenshots/c-roster.png"
+    },
+    {
+      "id": "c-more",
+      "title": "Event tools",
+      "action": "Find setup, site, recruitment and operational tools in grouped sections.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/more",
+      "screenshot": "screenshots/c-more.png"
+    },
+    {
+      "id": "c-event-overview",
+      "title": "Event overview and next step",
+      "action": "Use the event stage to decide whether to finish setup, review crew or open Alerts.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001",
+      "screenshot": "screenshots/c-event-overview.png"
+    },
+    {
+      "id": "c-notifications",
+      "title": "Coordinator updates",
+      "action": "Open qualification warnings or other operational updates.",
+      "route": "/notifications",
+      "screenshot": "screenshots/c-notifications.png"
+    },
+    {
+      "id": "c-start-live",
+      "title": "Check readiness and start operations",
+      "action": "Check acknowledgements and certificates; choose a no-show grace period before starting.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-start-live.png"
+    },
+    {
+      "id": "c-alerts",
+      "title": "Prioritise incidents and risks",
+      "action": "Review urgency colours, severity labels and the most urgent incident first.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-alerts.png"
+    },
+    {
+      "id": "c-incident-review",
+      "title": "Read the original and AI interpretation",
+      "action": "Preserve the original report; confirm or correct the AI interpretation before responding.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-incident-review.png"
+    },
+    {
+      "id": "c-risk-evidence",
+      "title": "Assess emerging risk evidence",
+      "action": "Read supporting reports and confirm conditions on site.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-risk-evidence.png"
+    },
+    {
+      "id": "c-response-draft",
+      "title": "Review the proposed response",
+      "action": "AI drafts a response; no crew move occurs until a person approves.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-response-draft.png"
+    },
+    {
+      "id": "c-response-candidates",
+      "title": "Select eligible crew",
+      "action": "Review destination, instructions, qualifications and current coverage.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-response-candidates.png"
+    },
+    {
+      "id": "c-response-blocked",
+      "title": "Understand unavailable crew",
+      "action": "Blocked candidates show the constraint that prevents a safe move.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-response-blocked.png"
+    },
+    {
+      "id": "c-response-approve",
+      "title": "Approve the chosen response",
+      "action": "Read who will move and approve the selected volunteer; source coverage is rechecked.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-response-approve.png"
+    },
+    {
+      "id": "c-response-tracking",
+      "title": "Track the instruction",
+      "action": "Review the approved response and the volunteer’s acknowledgement status.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-response-tracking.png"
+    },
+    {
+      "id": "c-crowd",
+      "title": "Crowd control",
+      "action": "Inspect advisory camera estimates and crowding alerts; verify on the ground.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/crowd",
+      "screenshot": "screenshots/c-crowd.png"
+    },
+    {
+      "id": "c-camera",
+      "title": "Camera reading and trend",
+      "action": "Review count, density, trend and freshness before requesting a response.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/crowd",
+      "screenshot": "screenshots/c-camera.png"
+    },
+    {
+      "id": "c-signals",
+      "title": "Weather and advisory signals",
+      "action": "Review modelled weather and unverified social information as advisory context.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/signals",
+      "screenshot": "screenshots/c-signals.png"
+    },
+    {
+      "id": "c-social",
+      "title": "Demo social feed",
+      "action": "Original social posts remain synthetic and unverified.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/signals",
+      "screenshot": "screenshots/c-social.png"
+    },
+    {
+      "id": "c-observation",
+      "title": "Record a measured site observation",
+      "action": "Add the location and observed facts so the risk review has a grounded source.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-observation.png"
+    },
+    {
+      "id": "c-timeline",
+      "title": "Review operational history",
+      "action": "Keep incident receipt, human decisions and assignment changes visible.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-timeline.png"
+    },
+    {
+      "id": "v-join-code",
+      "title": "Enter the event code",
+      "action": "Use the join code supplied by the coordinator.",
+      "route": "/join",
+      "screenshot": "screenshots/v-join-code.png"
+    },
+    {
+      "id": "v-join-preview",
+      "title": "Confirm the event",
+      "action": "Check the event name, location and dates before joining.",
+      "route": "/join",
+      "screenshot": "screenshots/v-join-preview.png"
+    },
+    {
+      "id": "v-certificates",
+      "title": "Reusable certificate library",
+      "action": "Upload qualifications once; each event checks its own requirements.",
+      "route": "/certificates",
+      "screenshot": "screenshots/v-certificates.png"
+    },
+    {
+      "id": "v-certificate-selected",
+      "title": "Choose certificate evidence",
+      "action": "Select the original certificate, name it and save it for extraction and human review.",
+      "route": "/certificates",
+      "screenshot": "screenshots/v-certificate-selected.png"
+    },
+    {
+      "id": "v-availability-edit",
+      "title": "Update availability and preferences",
+      "action": "Change availability before roster generation and review event instructions.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/availability",
+      "screenshot": "screenshots/v-availability-edit.png"
+    },
+    {
+      "id": "v-schedule",
+      "title": "Published shifts",
+      "action": "Review time, location, instructions, supervisor and escalation contact.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/schedule",
+      "screenshot": "screenshots/v-schedule.png"
+    },
+    {
+      "id": "v-choose-event",
+      "title": "Switch the selected event",
+      "action": "Choose which event your shifts and event tools belong to.",
+      "route": "/choose-event",
+      "screenshot": "screenshots/v-choose-event.png"
+    },
+    {
+      "id": "v-profile",
+      "title": "Profile and emergency details",
+      "action": "Keep contact details, emergency contact and certificates up to date.",
+      "route": "/profile",
+      "screenshot": "screenshots/v-profile.png"
+    },
+    {
+      "id": "c-workspace",
+      "title": "Create a coordinator workspace",
+      "action": "After shared account onboarding, create your organisation from Profile.",
+      "route": "/profile",
+      "screenshot": "screenshots/c-workspace.png"
+    },
+    {
+      "id": "v-notifications",
+      "title": "Volunteer updates",
+      "action": "Read new shift or coordinator instructions.",
+      "route": "/notifications",
+      "screenshot": "screenshots/v-notifications.png"
+    },
+    {
+      "id": "v-event",
+      "title": "Event and current assignment",
+      "action": "See your current assignment, incident reporting and event preparation.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001",
+      "screenshot": "screenshots/v-event.png"
+    },
+    {
+      "id": "v-checkin",
+      "title": "Arrive and check in",
+      "action": "Check in to the current assignment so the coordinator sees coverage.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001",
+      "screenshot": "screenshots/v-checkin.png"
+    },
+    {
+      "id": "v-checked-in",
+      "title": "Check-in confirmed",
+      "action": "Your assignment now shows checked in.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001",
+      "screenshot": "screenshots/v-checked-in.png"
+    },
+    {
+      "id": "v-incident",
+      "title": "Report an incident",
+      "action": "Give the location, what happened and urgent details; typing and voice are available.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/incident",
+      "screenshot": "screenshots/v-incident.png"
+    },
+    {
+      "id": "v-incident-received",
+      "title": "Report received; AI follows",
+      "action": "Receipt is shown before AI analysis; the original report is retained.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/incident",
+      "screenshot": "screenshots/v-incident-received.png"
+    },
+    {
+      "id": "v-dispatch",
+      "title": "Receive an approved instruction",
+      "action": "Read the coordinator-approved reassignment; accept or decline.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001",
+      "screenshot": "screenshots/v-dispatch.png"
+    },
+    {
+      "id": "c-response-complete",
+      "title": "Confirm response completion",
+      "action": "Review field updates and record completion notes.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-response-complete.png"
+    },
+    {
+      "id": "c-closeout",
+      "title": "Review the event summary",
+      "action": "Edit the AI draft, confirm follow-up and close the event yourself.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001/live",
+      "screenshot": "screenshots/c-closeout.png"
+    },
+    {
+      "id": "c-closed",
+      "title": "Event closed",
+      "action": "Event closeout is confirmed while the operational record remains available.",
+      "route": "/events/d1000000-0000-4000-8000-000000000001",
+      "screenshot": "screenshots/c-closed.png"
+    }
+  ],
+  "failures": [
+    {
+      "name": "dispatch",
+      "error": "locator.waitFor: Timeout 12000ms exceeded."
+    }
+  ],
+  "errors": [],
+  "blocked": [
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/update_dispatch"
+    }
+  ],
+  "writes": [
+    "simulate create event",
+    "simulate certificate review",
+    "simulate start event",
+    "simulate response draft",
+    "simulate human approval",
+    "simulate attendance",
+    "simulate report receipt",
+    "simulate completion",
+    "simulate reviewed closeout"
+  ]
+}

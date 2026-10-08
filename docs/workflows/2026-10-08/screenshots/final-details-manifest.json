@@ -1,0 +1,22 @@
+{
+  "manifest": [
+    {
+      "id": "c-map-populated",
+      "title": "Map with positioned posts",
+      "action": "View areas, staffing posts and check-in zones on a site plan.",
+      "route": "/events/d0000000-0000-4000-8000-000000000001/map",
+      "screenshot": "screenshots/c-map-populated.png"
+    },
+    {
+      "id": "c-profile",
+      "title": "Coordinator account settings",
+      "action": "Keep the coordinator contact details current.",
+      "route": "/profile",
+      "screenshot": "screenshots/c-profile.png"
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "blocked": [],
+  "writes": []
+}
