@@ -8,7 +8,6 @@ export type OperationalNotification = {
 export const myNotifications = (before: string | null = null) => setupRpc<OperationalNotification[]>('my_notifications', { p_before: before });
 export const notificationCount = () => setupRpc<number>('my_notification_count');
 export const readNotification = (id: string | null) => setupRpc<void>('read_notification', { p_id: id });
-export const disablePushDevice = (id: string) => setupRpc<void>('disable_push_device', { p_id: id });
 
 export function notificationDestination(notification: Pick<OperationalNotification, 'kind' | 'audience' | 'event_id'>) {
   if (!/^[\da-f]{8}(-[\da-f]{4}){3}-[\da-f]{12}$/i.test(notification.event_id)) return null;
