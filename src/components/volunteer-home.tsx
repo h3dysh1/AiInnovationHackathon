@@ -72,7 +72,8 @@ export default function VolunteerHome({ eventsOnly = false }: { eventsOnly?: boo
         : !events.length
         ? <Notice message='Enter your coordinator’s join code to join your first event.' />
         : null}
-      {([{ title: 'Your active events', items: events.filter(e => e.status !== 'completed') }, { title: 'Past events', items: events.filter(e => e.status === 'completed') }]).filter(group => group.items.length).map(group => <Section key={group.title} title={group.title} count={group.items.length}>{group.items.map((e) => (
+      {([{ title: 'Your active events', items: events.filter(e => e.status !== 'completed') }, { title: 'Past events', items: events.filter(e => e.status === 'completed') }]).filter(group => group.items.length).map(group => {
+        const rows = group.items.map((e) => (
         <PlanCard key={e.id}>
           <Text style={planStyles.heading}>{e.name}</Text>
           <Text style={planStyles.text}>
@@ -83,16 +84,19 @@ export default function VolunteerHome({ eventsOnly = false }: { eventsOnly?: boo
             title='Open event'
             onPress={() => router.push({ pathname: '/events/[id]', params: { id: e.id } })}
           />
-          {e.event_role === 'volunteer' && !['live', 'completed'].includes(e.status) ? <Button title='Prepare for this event' secondary onPress={() => router.push({ pathname: '/events/[id]/onboarding', params: { id: e.id } })} /> : null}
         </PlanCard>
-      ))}</Section>)}
+      ));
+        return group.title === 'Past events'
+          ? <Disclosure key={group.title} title={`Past events (${group.items.length})`}>{rows}</Disclosure>
+          : <Section key={group.title} title={group.title} count={group.items.length}>{rows}</Section>;
+      })}
       {!eventsOnly ? <Disclosure title='Account and profile'>
         <Button title='Certificate library' secondary compact onPress={() => { setMode('volunteer'); router.push('/certificates'); }} />
         <Button title='My profile' secondary compact onPress={() => { setMode('volunteer'); router.push('/profile'); }} />
         <Button title='Sign out' secondary compact onPress={() => { void signOut(); }} />
       </Disclosure> : null}
       {role === 'coordinator'
-        ? <Button title='Coordinator home' secondary compact onPress={() => { setMode('coordinator'); router.push('/coordinator'); }} />
+        ? <Button title='Coordinator home' secondary compact onPress={() => { setMode('coordinator'); router.replace({ pathname: '/coordinator', params: { mainSection: 'true' } }); }} />
         : null}
       {events.length ? <Button title='Refresh events' secondary compact onPress={() => { void refresh(); }} /> : null}
     </Page>

@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { View } from 'react-native';
 import { EventFields } from '@/components/event-fields';
-import { Button, Disclosure, Loading, Notice, Page, Section, Title } from '@/components/ui';
+import { Button, Disclosure, Loading, NavigationRow, Notice, Page, Section, Title } from '@/components/ui';
 import { PlanCard, planStyles } from '@/components/plan-ui';
 import { draftFromEvent, type Event, type EventDraft } from '@/domain/event';
 import type { Membership } from '@/domain/planning';
@@ -194,6 +194,11 @@ export default function EventDetails() {
                       onPress={() => router.push({ pathname: nextAction.route as '/events/[id]/setup', params: { id } })}
                     />
                   </PlanCard>
+                  <Section title='Manage this event' description='Choose a workspace. Each keeps its own focused tools.'>
+                    <NavigationRow title='Alerts · incidents and response decisions' onPress={() => router.push({ pathname: '/events/[id]/live', params: { id } })} />
+                    <NavigationRow title='Crew · roster and qualifications' onPress={() => router.push({ pathname: '/events/[id]/roster', params: { id } })} />
+                    <NavigationRow title='Event tools · setup, site and recruitment' onPress={() => router.push({ pathname: '/events/[id]/more', params: { id } })} />
+                  </Section>
                   <Disclosure title='Event settings'>
                     <Button title='Team and roles' secondary compact onPress={() => router.push({ pathname: '/events/[id]/team', params: { id } })} />
                   {['draft', 'recruiting'].includes(event.status)
@@ -252,14 +257,12 @@ export default function EventDetails() {
                     {orderedAssignments.length > 2 ? <Button title={showAllAssignments ? 'Show current and next assignments' : `Show all ${orderedAssignments.length} assignments`} secondary onPress={() => setShowAllAssignments(!showAllAssignments)} /> : null}
                     {event.status==='live'?<Button title='Confirm standby availability for the next 2 hours' secondary disabled={pending} onPress={()=>{setPending(true);void setStandby(id,new Date(Date.now()+2*3600000).toISOString()).then(()=>refresh()).catch(cause=>setError(errorMessage(cause,'Could not confirm standby.'))).finally(()=>setPending(false));}}/>:null}
 
+                  </Section>
+                  <Disclosure title='Event preparation'>
                     <Button title='Availability & preferences' secondary onPress={() => router.push({ pathname: '/events/[id]/availability', params: { id } })} />
                     <Button title='Prepare for this event' secondary onPress={() => router.push({ pathname: '/events/[id]/onboarding', params: { id } })} />
-                    <Button title='My shifts' secondary onPress={() => router.push({ pathname: '/events/[id]/schedule', params: { id } })} />
-                    {certificateRequest
-                      ? <Button title='Review event qualifications' secondary onPress={() => router.push({ pathname: '/events/[id]/onboarding', params: { id } })} />
-                      : null}
-                  </Section>
-                  <Button title='My events' secondary onPress={() => router.navigate('/volunteer')} />
+                  </Disclosure>
+                  <Button title='View full shift schedule' secondary onPress={() => router.push({ pathname: '/events/[id]/schedule', params: { id } })} />
                 </>
               )
               : null}

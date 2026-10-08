@@ -44,14 +44,17 @@ export default function CoordinatorHome() {
     {error ? <Notice tone="error" message={error} /> : null}
     {!loading && !error && events.length === 0 ? <Notice message="No events yet. Create your first event to get started." /> : null}
     </Section> : null}
-    {([{ title: 'Live now', items: events.filter(e => e.status === 'live') }, { title: 'Preparing next', items: events.filter(e => !['live', 'completed'].includes(e.status)) }, { title: 'Past events', items: events.filter(e => e.status === 'completed') }]).filter(group => group.items.length).map(group => <Section key={group.title} title={group.title} count={group.items.length}>
-    {group.items.map(event => <Pressable key={event.id} accessibilityRole="button" onPress={() => router.push({ pathname: '/events/[id]', params: { id: event.id } })} style={({ pressed }) => [styles.card, pressed && { backgroundColor: colors.accentSoft }]}>
+    {([{ title: 'Live now', items: events.filter(e => e.status === 'live') }, { title: 'Preparing next', items: events.filter(e => !['live', 'completed'].includes(e.status)) }, { title: 'Past events', items: events.filter(e => e.status === 'completed') }]).filter(group => group.items.length).map(group => {
+      const rows = group.items.map(event => <Pressable key={event.id} accessibilityRole="button" onPress={() => router.push({ pathname: '/events/[id]', params: { id: event.id } })} style={({ pressed }) => [styles.card, pressed && { backgroundColor: colors.accentSoft }]}>
       <Text style={styles.eventName}>{event.name}</Text>
       <View style={styles.cardBottom}><Text style={styles.eventMeta}>{event.start_date} – {event.end_date}</Text><Text style={styles.status}>{event.status.toUpperCase()}</Text></View>
-    </Pressable>)}
-    </Section>)}
+    </Pressable>);
+      return group.title === 'Past events'
+        ? <Disclosure key={group.title} title={`Past events (${group.items.length})`}>{rows}</Disclosure>
+        : <Section key={group.title} title={group.title} count={group.items.length}>{rows}</Section>;
+    })}
     <Disclosure title="Account and profile">
-      <Button title="My volunteer participation" secondary compact onPress={()=>{setMode('volunteer');router.push('/volunteer');}}/>
+      <Button title="My volunteer participation" secondary compact onPress={()=>{setMode('volunteer');router.replace({ pathname: '/volunteer', params: { mainSection: 'true' } });}}/>
       <Button title="My profile" secondary compact onPress={() => { setMode('coordinator'); router.push('/profile'); }} />
       <Button title="Sign out" secondary compact onPress={() => { void signOut(); }} />
     </Disclosure>

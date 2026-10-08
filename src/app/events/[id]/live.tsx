@@ -2,6 +2,8 @@ import { AppText as Text } from '@/components/app-text';
 import { IncidentReview } from '@/components/incident-review';
 import { setupRpc } from '@/services/planning';
 import { useCallback, useState } from 'react';
+import { View } from 'react-native';
+import { colors } from '@/theme';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 
@@ -24,6 +26,7 @@ function LiveDashboard({ id }: { id: string }) {
     live: await liveSnapshot(id),
     intelligence: await intelligenceSnapshot(id),
   }), [id]));
+  const [panel, setPanel] = useState<'attention' | 'responses' | 'tools'>('attention');
   const [resolution, setResolution] = useState<string | null>(null);
   const [notes, setNotes] = useState('');
   const [observation,setObservation]=useState('');
@@ -35,16 +38,29 @@ function LiveDashboard({ id }: { id: string }) {
   if (s.loading) return <Loading label='Loading live operations…' />;
   const snapshot = s.data?.live;
   const intelligence = s.data?.intelligence;
+  const gaps = intelligence?.coverage.filter(c => c.checked_in < c.required || c.qualifications.some(q => q.actual < q.required)) ?? [];
+  const urgent = intelligence?.incidents.filter(i => ['critical', 'high'].includes(i.severity ?? '')).length ?? 0;
+  const urgentRisks = intelligence?.risks.filter(r => ['critical', 'high'].includes(r.severity)).length ?? 0;
+  const responses = intelligence?.responses.filter(r => !['completed', 'dismissed'].includes(r.status)) ?? [];
+  const pastResponses = intelligence?.responses.filter(r => ['completed', 'dismissed'].includes(r.status)) ?? [];
   return (
     <Page>
       <Title subtitle={snapshot?.event.name}>Alerts</Title>
-      {s.updatedAt ? <Text style={planStyles.help}>Last successful update · {s.updatedAt.toLocaleTimeString()} · refreshes every 10 seconds</Text> : null}
+      {s.updatedAt ? <Text style={planStyles.help}>Updated {s.updatedAt.toLocaleTimeString()} · 10s refresh</Text> : null}
       {s.error && s.data ? <Notice tone='warning' message='Live data may be out of date. The last successful snapshot remains visible; refresh to retry.' /> : null}
       {s.error ? <Notice tone="error" message={s.error} /> : null}
+      {snapshot ? <>
+        {urgent || urgentRisks ? <Notice tone='error' message={`${urgent} urgent incident${urgent === 1 ? '' : 's'} · ${urgentRisks} urgent risk${urgentRisks === 1 ? '' : 's'}. Review Attention.`} /> : null}
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+          <Button title={`Attention ${(intelligence?.incidents.length ?? 0) + (intelligence?.risks.length ?? 0) + gaps.length}`} secondary compact selected={panel === 'attention'} onPress={() => setPanel('attention')} />
+          <Button title={`Responses ${responses.length}`} secondary compact selected={panel === 'responses'} onPress={() => setPanel('responses')} />
+          <Button title='Tools' secondary compact selected={panel === 'tools'} onPress={() => setPanel('tools')} />
+        </View>
+      </> : null}
       {snapshot
         ? (
           <>
-            <Text style={planStyles.help}>{snapshot.event.status.toUpperCase()} · {snapshot.staffing.checked_in} checked in · {snapshot.staffing.missing} missing · {snapshot.staffing.late} late</Text>
+            <View style={{ display: panel === 'attention' ? 'flex' : 'none', gap: 24 }} accessibilityElementsHidden={panel !== 'attention'} importantForAccessibility={panel === 'attention' ? 'auto' : 'no-hide-descendants'}>
             <Section title="Active incidents" count={intelligence?.incidents.length ?? 0} description="Most urgent first. Review reports and decide the next action.">
               {!intelligence?.incidents.length
                 ? <Notice message='No unresolved incidents.' />
@@ -55,7 +71,7 @@ function LiveDashboard({ id }: { id: string }) {
                     {incident.severity === 'critical'
                       ? <Notice tone='error' message='CRITICAL INCIDENT · Review immediately' />
                       : null}
-                    <Text style={planStyles.badge}>{(incident.severity ?? incident.status).toUpperCase()}</Text>
+                    <AlertSeverity severity={incident.severity} />
                     <Text style={planStyles.heading}>{incident.summary ?? incident.raw_report}</Text>
                     <Text style={planStyles.text}>{intelligence.locations.find(l => l.id === incident.location_id)?.name ?? 'Location not confirmed'} · {new Date(incident.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
                     <Text style={planStyles.help}>{incidentProcessingLabel(incident)}</Text>
@@ -74,7 +90,7 @@ function LiveDashboard({ id }: { id: string }) {
                       disabled={s.pending || incident.processing_status === 'processing' || incident.processing_status === 'queued'} onPress={() => {
                       void s.run(() => retryIncidentProcessing(incident.id));
                     }} />
-                    <Button title='Draft response' secondary compact onPress={() => { void s.run(() => proposeResponse(incident.id)); }} />
+                    <Button title='Draft response' secondary compact onPress={() => { void s.run(async () => { await proposeResponse(incident.id); setPanel('responses'); }); }} />
                     <IncidentReview key={`${incident.id}:${incident.analyzed_at}`} incident={incident} locations={intelligence.locations} pending={s.pending} run={s.run}/>
                     {resolution === incident.id
                       ? (
@@ -92,15 +108,16 @@ function LiveDashboard({ id }: { id: string }) {
             </Section>
             <Section title="Emerging risks" count={intelligence?.risks.length ?? 0} description="Patterns needing human assessment, with supporting evidence.">
               {!intelligence?.risks.length ? <Text style={planStyles.help}>No emerging risks identified in this snapshot.</Text> : null}
-              {intelligence?.risks.map((risk) => (
+              {[...(intelligence?.risks ?? [])].sort((a, b) => ['critical', 'high', 'medium', 'low'].indexOf(a.severity) - ['critical', 'high', 'medium', 'low'].indexOf(b.severity)).map((risk) => (
                 <PlanCard key={risk.id}>
-                  <Text style={planStyles.badge}>{risk.severity.toUpperCase()} · {risk.title}</Text>
+                  <AlertSeverity severity={risk.severity} />
+                  <Text style={planStyles.heading}>{risk.title}</Text>
                   <Text style={planStyles.text}>{risk.explanation}</Text>
                   <Disclosure title='Evidence and response options'>
                   {risk.evidence?.incidentIds?.map(id=><Text key={id} style={planStyles.help}>Report: {intelligence?.incidents.find(i=>i.id===id)?.summary??'Original report retained in history'}</Text>)}
                   {risk.evidence?.observationIds?.map(id=><Text key={id} style={planStyles.help}>Observation: {intelligence?.observations.find(o=>o.id===id)?.value??'Observation retained in history'}</Text>)}
                   {risk.evidence?.shiftIds?.map(id=>{const c=intelligence?.coverage.find(c=>c.shift_id===id);return c?<Text key={id} style={planStyles.help}>Coverage: {c.post} · {c.checked_in}/{c.required} checked in</Text>:null;})}
-                  <Button title='Draft response' secondary compact onPress={() => { void s.run(() => proposeResponse(undefined, risk.id)); }} />
+                  <Button title='Draft response' secondary compact onPress={() => { void s.run(async () => { await proposeResponse(undefined, risk.id); setPanel('responses'); }); }} />
                   {['dismissed','resolved'].map(status=><Button key={status} title={status==='dismissed'?'Dismiss unsupported risk':'Confirm risk resolved'} secondary compact disabled={s.pending} onPress={()=>{void s.run(()=>setupRpc('set_risk_status',{p_id:risk.id,p_status:status}));}}/>)}
                   </Disclosure>
                 </PlanCard>
@@ -108,21 +125,27 @@ function LiveDashboard({ id }: { id: string }) {
               <Button title='Check for emerging risks' secondary compact onPress={() => { void s.run(() => detectRisk(id)); }} />
               <Button title='Crowd cameras & map' secondary compact onPress={() => router.push({ pathname: '/events/[id]/crowd', params: { id } })} />
             </Section>
-            <Section title='Responses' count={intelligence?.responses.length ?? 0} description='Human review, approvals and response tracking.'>
-              {!intelligence?.responses.length ? <Text style={planStyles.help}>No response drafts yet. Open an incident or risk to draft a response.</Text> : null}
-              {intelligence?.responses.map(response=><ResponseReview key={`${response.id}:${response.revision}:${response.processing_status}`} response={response} snapshot={intelligence} pending={s.pending} run={s.run}/>)}
-            </Section>
-            <Section title='Coverage gaps' description='Staffing and qualification shortfalls that need attention.'>
+            <Section title='Coverage gaps' count={gaps.length} description='Staffing and qualification shortfalls that need attention.'>
               {!intelligence?.coverage.some(c => c.checked_in < c.required || c.qualifications.some(q => q.actual < q.required))
                 ? <Notice message='No current coverage gaps.' />
                 : intelligence?.coverage.filter(c => c.checked_in < c.required || c.qualifications.some(q => q.actual < q.required)).map((coverage) => (
                   <PlanCard key={coverage.shift_id}>
+                    <AlertSeverity severity='medium' label='Staffing gap' />
                     <Text style={planStyles.heading}>{coverage.post}</Text>
                     <Text style={planStyles.text}>{coverage.checked_in} / {coverage.required} checked in</Text>
                     {coverage.qualifications.map((q,index)=><Text key={index} style={planStyles.help}>{q.label} · {q.actual}/{q.required} checked in {q.actual<q.required?'· COVERAGE GAP':''}</Text>)}
                   </PlanCard>
                 ))}
             </Section>
+            </View>
+            <View style={{ display: panel === 'responses' ? 'flex' : 'none', gap: 24 }} accessibilityElementsHidden={panel !== 'responses'} importantForAccessibility={panel === 'responses' ? 'auto' : 'no-hide-descendants'}>
+            <Section title='Responses' count={responses.length} description='Human review, approvals and response tracking.'>
+              {!responses.length ? <Text style={planStyles.help}>No response drafts yet. Open an incident or risk to draft a response.</Text> : null}
+              {responses.map(response=><ResponseReview key={`${response.id}:${response.revision}:${response.processing_status}`} response={response} snapshot={intelligence!} pending={s.pending} run={s.run}/>)}
+              {pastResponses.length ? <Disclosure title={`Past responses (${pastResponses.length})`}>{pastResponses.map(response => <ResponseReview key={`${response.id}:${response.revision}:${response.processing_status}`} response={response} snapshot={intelligence!} pending={s.pending} run={s.run} />)}</Disclosure> : null}
+            </Section>
+            </View>
+            <View style={{ display: panel === 'tools' ? 'flex' : 'none', gap: 24 }} accessibilityElementsHidden={panel !== 'tools'} importantForAccessibility={panel === 'tools' ? 'auto' : 'no-hide-descendants'}>
             <Disclosure title='All active post coverage'>
               {!intelligence?.coverage.length ? <Text style={planStyles.help}>No published shifts are active right now.</Text> : intelligence.coverage.map(c => <Text key={c.shift_id} style={planStyles.text}>{c.post} · {c.checked_in}/{c.required} checked in{c.qualifications.some(q => q.actual < q.required) ? ' · qualification gap' : ''}</Text>)}
             </Disclosure>
@@ -131,9 +154,11 @@ function LiveDashboard({ id }: { id: string }) {
                 <Disclosure key={procedure.id} title={procedure.title}><Text style={planStyles.text}>{procedure.content ?? 'Procedure content is not available in this snapshot.'}</Text></Disclosure>
               ))}
             </Disclosure>
+            </View>
           </>
         )
         : <Notice message='Live operations are unavailable until a roster is published.' />}
+      <View style={{ display: panel === 'tools' ? 'flex' : 'none', gap: 24 }} accessibilityElementsHidden={panel !== 'tools'} importantForAccessibility={panel === 'tools' ? 'auto' : 'no-hide-descendants'}>
       {intelligence?<>
         <Section title='Event operations' description='Readiness, observations and operational history.'>
         <Button title='Weather and social signals' secondary onPress={() => router.push({ pathname: '/events/[id]/signals', params: { id } })} />
@@ -154,7 +179,6 @@ function LiveDashboard({ id }: { id: string }) {
         <Button title='Start a fresh live demo' secondary disabled={s.pending} onPress={()=>setRestart(!restart)}/>
         {restart?<><Notice message='This ends this synthetic scenario and prepares fresh active shifts, initial check-ins and reserves. Its reports and decisions stay in history.'/><Button title='End this demo and prepare a fresh scenario' disabled={s.pending} onPress={()=>{void s.run(async()=>{const next=await setupRpc<string>('restart_riverside_demo',{p_event_id:id});router.replace({pathname:'/events/[id]/live',params:{id:next}});});}}/></>:null}
       </Disclosure>:null}
-      <Button title='Refresh live status' secondary disabled={s.pending} onPress={() => { void s.refresh(); }} />
       {snapshot?.event.status === 'live'
         ? <Disclosure title='Reviewed closeout'>
           <Button title='Generate event summary draft' secondary disabled={s.pending} onPress={()=>{void s.run(()=>setupRpc('request_event_summary',{p_event_id:id}));}}/>
@@ -165,7 +189,8 @@ function LiveDashboard({ id }: { id: string }) {
           <Button title='Confirm summary and close event' disabled={s.pending||!closeout.trim()} onPress={()=>{void s.run(()=>closeEvent(id,closeout));}}/>
         </Disclosure>
         : null}
-      <Button title='Back to event' secondary onPress={() => router.back()} />
+      </View>
+      <Button title='Refresh live status' secondary compact disabled={s.pending} onPress={() => { void s.refresh(); }} />
     </Page>
   );
 }
@@ -209,4 +234,12 @@ function IncidentAudio({ path }: { path: string }) {
     />
     </>
   );
+}
+
+function AlertSeverity({ severity, label }: { severity: string | null | undefined; label?: string }) {
+  const high = severity === 'critical' || severity === 'high';
+  const medium = severity === 'medium';
+  return <View style={{ alignSelf: 'flex-start', backgroundColor: high ? colors.errorSoft : medium ? colors.warningSoft : colors.accentSoft, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 4 }}>
+    <Text style={[planStyles.badge, { color: high ? colors.error : medium ? colors.warning : colors.secondary }]}>{label ?? (severity ? `${severity.toUpperCase()} severity` : 'Awaiting assessment')}</Text>
+  </View>;
 }
