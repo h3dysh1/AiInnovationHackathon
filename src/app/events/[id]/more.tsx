@@ -8,7 +8,7 @@ export default function EventTools() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { role } = useAuth();
   const { setMode } = useNavigationContext();
-  const open = (pathname: '/events/[id]/setup' | '/events/[id]/assistant' | '/events/[id]/review' | '/events/[id]/map' | '/events/[id]/site' | '/events/[id]/operations' | '/events/[id]/documents' | '/events/[id]/publish' | '/events/[id]/team') => router.push({ pathname, params: { id } });
+  const open = (pathname: '/events/[id]/setup' | '/events/[id]/assistant' | '/events/[id]/review' | '/events/[id]/map' | '/events/[id]/site' | '/events/[id]/operations' | '/events/[id]/documents' | '/events/[id]/publish' | '/events/[id]/team' | '/events/[id]/crowd') => router.push({ pathname, params: { id } });
   return <EventManagerGate id={id}><Page>
     <Title subtitle='Preparation and administration, separate from live alerts.'>Event tools</Title>
     <Button secondary title='Back to all my events' onPress={() => router.navigate(role === 'coordinator' ? '/coordinator' : '/volunteer')} />
@@ -27,7 +27,10 @@ export default function EventTools() {
       <NavigationRow title='Recruitment and join code' onPress={() => open('/events/[id]/publish')} />
       <NavigationRow title='Team and permissions' onPress={() => open('/events/[id]/team')} />
     </Section>
-    <Section title='Operational signals'><NavigationRow title='Weather and demo social feed' onPress={() => router.push({ pathname: '/events/[id]/signals', params: { id } })} /></Section>
+    <Section title='Operational signals'>
+      <NavigationRow title='Crowd control' onPress={() => open('/events/[id]/crowd')} />
+      <NavigationRow title='Weather and demo social feed' onPress={() => router.push({ pathname: '/events/[id]/signals', params: { id } })} />
+    </Section>
     <Section title='Account'><NavigationRow title='My profile' onPress={() => router.push('/profile')} />{role === 'coordinator' ? <NavigationRow title='My volunteer participation' onPress={() => { setMode('volunteer'); router.navigate('/volunteer'); }} /> : null}</Section>
   </Page></EventManagerGate>;
 }

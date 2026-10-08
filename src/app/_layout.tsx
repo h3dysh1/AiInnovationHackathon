@@ -53,9 +53,10 @@ function Routes() {
         <Stack.Screen name='events/[id]/operations' options={{ title: 'Staffing requirements' }} />
         <Stack.Screen name='events/[id]/publish' options={{ title: 'Recruitment' }} />
         <Stack.Screen name='events/[id]/team' options={{ title: 'Team permissions' }} />
-        <Stack.Screen name='events/[id]/live' options={{ title: 'Alerts' }} />
-        <Stack.Screen name='events/[id]/more' options={{ title: 'Event tools' }} />
-        <Stack.Screen name='events/[id]/signals' options={{ title: 'Event signals' }} />
+       <Stack.Screen name='events/[id]/live' options={{ title: 'Alerts' }} />
+       <Stack.Screen name='events/[id]/crowd' options={{ title: 'Crowd control' }} />
+       <Stack.Screen name='events/[id]/more' options={{ title: 'Event tools' }} />
+       <Stack.Screen name='events/[id]/signals' options={{ title: 'Event signals' }} />
       </Stack.Protected>
       <Stack.Protected guard={Boolean(session && role === 'coordinator')}>
         <Stack.Screen name='coordinator' options={{ title: 'Home' }} />

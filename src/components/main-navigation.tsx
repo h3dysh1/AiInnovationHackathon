@@ -17,7 +17,7 @@ export function MainNavigation() {
   const focused = ['/', '/sign-in', '/sign-up', '/profile-onboarding', '/join', '/events/new', '/choose-event'].includes(path) || /\/(onboarding|incident|assistant|review|availability)$/.test(path);
   if (!session || !role || needsProfileSetup || focused) return null;
   const manager = mode === 'coordinator';
-  const active = manager ? /\/(roster|qualifications)$/.test(path) || path === '/crew' ? 'Crew' : path.endsWith('/live') || path === '/alerts' ? 'Alerts' : path === '/coordinator' || /^\/events\/[^/]+$/.test(path) ? 'Home' : 'More' : path === '/profile' || path === '/certificates' ? 'Profile' : path.endsWith('/schedule') || path === '/my-shifts' ? 'My shifts' : path === '/my-events' || path.startsWith('/events/') ? 'Events' : 'Home';
+  const active = manager ? /\/(roster|qualifications)$/.test(path) || path === '/crew' ? 'Crew' : /\/(live|crowd)$/.test(path) || path === '/alerts' ? 'Alerts' : path === '/coordinator' || /^\/events\/[^/]+$/.test(path) ? 'Home' : 'More' : path === '/profile' || path === '/certificates' ? 'Profile' : path.endsWith('/schedule') || path === '/my-shifts' ? 'My shifts' : path === '/my-events' || path.startsWith('/events/') ? 'Events' : 'Home';
   const destinations = manager ? [
     { label: 'Home', route: role === 'coordinator' ? '/coordinator' : '/volunteer', icon: { ios: 'house', android: 'home', web: 'home' } },
     { label: 'Crew', route: '/crew', icon: { ios: 'person.2', android: 'group', web: 'group' } },

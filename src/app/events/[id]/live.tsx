@@ -110,6 +110,7 @@ function LiveDashboard({ id }: { id: string }) {
                 </PlanCard>
               ))}
               <Button title='Check for emerging risks' secondary compact onPress={() => { void s.run(() => detectRisk(id)); }} />
+              <Button title='Crowd cameras & map' secondary compact onPress={() => router.push({ pathname: '/events/[id]/crowd', params: { id } })} />
             </Section>
             <Section title='Responses' count={intelligence?.responses.length ?? 0} description='Human review, approvals and response tracking.'>
               {!intelligence?.responses.length ? <Text style={planStyles.help}>No response drafts yet. Open an incident or risk to draft a response.</Text> : null}
