@@ -55,12 +55,6 @@ export async function listLocations(eventId: string): Promise<SiteLocation[]> {
   return data as SiteLocation[];
 }
 
-export async function getLocation(id: string): Promise<SiteLocation> {
-  const { data, error } = await client().from('locations').select('*').eq('id', id).single();
-  if (error) throw error;
-  return data as SiteLocation;
-}
-
 function locationValues(draft: LocationDraft) {
   return { name: draft.name.trim(), description: draft.description.trim() || null };
 }
@@ -85,12 +79,6 @@ export async function listPosts(locationId: string): Promise<Post[]> {
   const { data, error } = await client().from('posts').select('*').eq('location_id', locationId).order('name');
   if (error) throw error;
   return data as Post[];
-}
-
-export async function getPost(id: string): Promise<Post> {
-  const { data, error } = await client().from('posts').select('*').eq('id', id).single();
-  if (error) throw error;
-  return data as Post;
 }
 
 function postValues(draft: PostDraft) {
