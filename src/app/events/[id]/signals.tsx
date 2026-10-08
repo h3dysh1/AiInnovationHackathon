@@ -8,6 +8,8 @@ import { useStaffing } from '@/hooks/staffing';
 import { eventSignals, importDemoSocial, refreshWeather } from '@/services/event-signals';
 import { setupRpc } from '@/services/planning';
 import { weatherDescription } from '@/domain/external-signals';
+import { validVenuePoint } from '@/domain/site-geometry';
+import VenuePicker from '@/components/venue-picker';
 import { mockPosts } from '@/social/mockPosts';
 import { processSocialPosts } from '@/social/socialProcessor';
 
@@ -19,10 +21,12 @@ function Signals({ eventId }: { eventId: string }) {
   const s = useStaffing(useCallback(() => eventSignals(eventId), [eventId]));
   const [latitudeEdit, setLatitude] = useState<string | null>(null), [longitudeEdit, setLongitude] = useState<string | null>(null);
   const [heatEdit, setHeat] = useState<string | null>(null), [gustEdit, setGust] = useState<string | null>(null);
-  const point = s.data?.settings ?? s.data?.venue;
+  // Disabling weather clears its coordinates, so fall back to the saved venue.
+  const point = s.data?.settings?.latitude != null ? s.data.settings : s.data?.venue;
   const latitude = latitudeEdit ?? (point ? String(point.latitude) : '');
   const longitude = longitudeEdit ?? (point ? String(point.longitude) : '');
   const heat = heatEdit ?? String(s.data?.settings?.heat_threshold ?? 35), gust = gustEdit ?? String(s.data?.settings?.gust_threshold ?? 60);
+  const picked = { latitude: Number(latitude), longitude: Number(longitude) };
   const { refresh } = s;
   useEffect(() => {
     const timer = setInterval(() => { void refresh(); }, 15000);
@@ -40,6 +44,7 @@ function Signals({ eventId }: { eventId: string }) {
       <Text style={planStyles.help}>Modelled conditions from Open-Meteo. This is not an official emergency warning service. Live events refresh about every 15 minutes; you can also request a check before the event.</Text>
       <Button title='Check weather' secondary disabled={s.pending || !s.data?.settings?.weather_enabled} onPress={() => { void s.run(() => refreshWeather(eventId)); }} />
       <Disclosure title='Weather location and advisory thresholds'>
+        <VenuePicker value={latitude.trim() && longitude.trim() && validVenuePoint(picked) ? picked : null} disabled={s.pending} onChange={next => { setLatitude(String(next.latitude)); setLongitude(String(next.longitude)); }} />
         <Field label='Venue latitude (−90 to 90)' value={latitude} onChangeText={setLatitude} />
         <Field label='Venue longitude (−180 to 180)' value={longitude} onChangeText={setLongitude} />
         <Field label='Heat advisory threshold (°C)' value={heat} onChangeText={setHeat} keyboardType='decimal-pad' />
