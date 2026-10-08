@@ -104,3 +104,7 @@ class GroundControl:
             "p_location_name": camera["location_name"],
             "p_captured_at": (captured_at or datetime.now(timezone.utc)).isoformat(),
         })
+
+    def rpc(self, name: str, args: dict):
+        """Call any Ground Control database function as the signed-in event manager."""
+        return self._request("POST", f"/rest/v1/rpc/{name}", args)
