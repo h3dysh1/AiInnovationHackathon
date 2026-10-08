@@ -79,6 +79,20 @@ python cv/analyse.py 0 --send --show --blur --no-video
 
 Then, in the app: **Event → Live operations → Crowd cameras & map**.
 
+## Mock feed (testing and rehearsals)
+
+No camera or footage needed. Readings drift naturally and **never alert** unless you ask for a surge.
+Mock cameras are named `mock-cam-…`, so their alerts are easy to clean up.
+
+```sh
+python3 cv/mock_feed.py                         # calm, runs until Ctrl+C, never alerts
+python3 cv/mock_feed.py --scenario busy         # busy but under the alert line
+python3 cv/mock_feed.py --scenario surge        # calm -> build-up -> HIGH alert -> eases (~2.5 min)
+python3 cv/mock_feed.py --cleanup               # dismiss alerts raised by mock cameras only
+```
+Use `--location "Gate A"` (repeatable) for other places, and `--dry-run` to print without sending.
+Uses the same login and event as `send.py` (`cv/.env.local`).
+
 ## How alerts work
 
 | Sustained density (lowest of the last 3 readings within 2 min) | Alert |
