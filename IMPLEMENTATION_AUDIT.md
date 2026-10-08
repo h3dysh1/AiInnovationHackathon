@@ -20,7 +20,7 @@ Steps 1–7 now have substantive implementations. This does not establish every 
 
 Final checks passed: Expo lint, TypeScript, Deno worker typecheck, 53 domain/worker tests, database migration reruns and role/coverage/history scenarios, and iOS/Android/web exports. Mobile web checks covered both roles and preserving response edits during polling. Database migrations through 028 and the incident worker were deployed.
 
-Remaining acceptance limitations: a fresh hosted setup extraction remained running; its downstream certificate extraction and automatic roster walkthrough were not reached. Prepared demo certificates and plans are labelled synthetic fixtures, not proof of live extraction. Real AI response drafting failed as described above. Native microphone interaction needs a device walkthrough. P2 integrations remain deferred; no live weather feed or autonomous safety action was added.
+Remaining acceptance limitations: a fresh hosted setup extraction remained running; its downstream certificate extraction and automatic roster walkthrough were not reached. Prepared demo certificates and plans are labelled synthetic fixtures, not proof of live extraction. Real AI response drafting failed as described above. Native microphone interaction needs a device walkthrough. No autonomous safety action was added. Since this progress note was first written, several P2 integrations have been added in advisory form: modelled weather from Open-Meteo, camera-based crowd estimates, phone push notifications (development or installed builds only) and a demo social feed built from hardcoded posts. Live social ingestion remains deferred.
 
 ## Main findings
 
@@ -131,6 +131,8 @@ Even after fixing the approval SQL error, `approve_response` uses `limit 1` on p
 ### Deferred scope
 
 Real weather, social signals, crowd-density feeds, push notifications, advanced map interpretation, predictive analytics, external integrations and advanced optimization remain absent. The roadmap labels them P2; they should wait until the P0 loop works.
+
+Update, 8 October 2026: weather, crowd-density estimates, push notifications and a demo social feed now exist, as described under Implementation progress above. The rest of this list is still absent.
 
 ## Recommended order of work
 

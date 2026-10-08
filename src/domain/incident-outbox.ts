@@ -11,6 +11,7 @@ export type QueuedIncident = {
   status: 'queued' | 'blocked' | 'received';
   error: string | null;
   incidentId: string | null;
+  receivedAt?: number;
 };
 
 export const outboxKey = (userId: string) => `ground-control:incident-outbox:${userId}`;
@@ -31,7 +32,8 @@ export function parseOutbox(raw: string | null, userId: string): QueuedIncident[
       typeof q.nextAttemptAt !== 'number' || !Number.isFinite(q.nextAttemptAt) ||
       !['queued', 'blocked', 'received'].includes(String(q.status)) ||
       !(q.error === null || typeof q.error === 'string') ||
-      !(q.incidentId === null || typeof q.incidentId === 'string')) {
+      !(q.incidentId === null || typeof q.incidentId === 'string') ||
+      !(q.receivedAt === undefined || typeof q.receivedAt === 'number' && Number.isFinite(q.receivedAt))) {
       throw new Error('Invalid saved report. Original retained.');
     }
     return q as QueuedIncident;
@@ -46,6 +48,13 @@ export function reportSendFailure(cause: unknown): { message: string; blocked: b
   const blocked = ['42501', 'P0001', '23503', '23514', '400', '403', '413'].includes(code) ||
     /under 10 MB|could not read the voice recording|recording is missing/i.test(message);
   return { message, blocked };
+}
+
+// A received report is held by the server; the local copy only lets the report
+// screen show its confirmation. Unsent and blocked reports are never pruned.
+export const RECEIVED_RETENTION_MS = 24 * 60 * 60 * 1000;
+export function expiredReceipt(report: QueuedIncident, now: number): boolean {
+  return report.status === 'received' && now - (report.receivedAt ?? Date.parse(report.createdAt)) > RECEIVED_RETENTION_MS;
 }
 
 export const retryDelay = (attempt: number) => Math.min(300000, 5000 * 2 ** Math.min(attempt - 1, 6));

@@ -26,7 +26,7 @@ Use the relevant existing capability rather than creating a second general-purpo
 
 Read AGENTS.md and the relevant roadmap.md section first. package.json currently pins Expo 57 and React Native 0.86.3. Always re-read it and use `https://docs.expo.dev/versions/v57.0.0/` (or the installed version at the time of future work), followed by relevant links from `https://docs.expo.dev/llms.txt`. Skills are guidance, not a replacement for matching API docs. Use `expo install` for future app dependencies. No package.json or package-lock.json change was needed here.
 
-The actual app owns Location → Post; “zone” in external product language does not authorize another data layer. Audit recommendations must preserve existing social-signal modules even though they have no routed UI yet.
+The actual app owns Location → Post; “zone” in external product language does not authorize another data layer. Audit recommendations must preserve existing social-signal modules, which are now shown as a demo feed on the Event signals screen.
 
 ## Verification and limitations
 

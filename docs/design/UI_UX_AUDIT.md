@@ -62,7 +62,7 @@ Event hub
 
 Major entities: organisation, event, location, post, certification requirement, operating window, event membership, qualification/document, availability/onboarding, shift, roster revision/assignment, attendance, incident/original report/interpretation/relations, risk, response, dispatch and operational observation/history. No standalone zones screen/entity exists. People management is distributed across team, qualifications, roster and event membership rather than a unified People destination.
 
-Lifecycle includes draft/recruitment, staffing/publication, live operation and completion. These states exist but hub actions/copy do not consistently reflect them. Existing `src/social/mockPosts.ts`, `socialProcessor.ts`, `types.ts` and the empty `src/services/signalApi.ts` remain preserved; they are a partial social-processing foundation, **not an integrated social monitoring screen or deployed ingestion workflow**.
+Lifecycle includes draft/recruitment, staffing/publication, live operation and completion. These states exist but hub actions/copy do not consistently reflect them. Existing `src/social/mockPosts.ts`, `socialProcessor.ts`, `types.ts` and the empty `src/services/signalApi.ts` remain preserved; they are a partial social-processing foundation, **not an integrated social monitoring screen or deployed ingestion workflow**. Update after this audit: these modules now appear as a demo feed on the Event signals screen (`events/[id]/signals`), where a manager can import them as advisory observations. There is still no live ingestion.
 
 ## 6. Major user journeys
 
@@ -186,7 +186,7 @@ Target overview: event/live identity + successful-update time; critical exceptio
 
 Keep narrow server-side AI, validated references, deterministic feasibility, persisted raw incident before AI, visible processing/failure/review, evidence/relations and human approval. Model confidence is not operational correctness; repeated warnings can be condensed but the distinction cannot be erased.
 
-AI setup belongs in setup; staffing suggestions alongside actual coverage problems; risk correlations beside related incidents; proposed actions beside affected posts/crew and procedures. Avoid adding a generic AI tab or chat-based dependency for critical actions. Inference should show its basis and allow correction. Keep original reports even when related/duplicate. Social content, if eventually integrated, needs source/time/reliability and human review; current social code is partial and was preserved, not treated as deployed monitoring.
+AI setup belongs in setup; staffing suggestions alongside actual coverage problems; risk correlations beside related incidents; proposed actions beside affected posts/crew and procedures. Avoid adding a generic AI tab or chat-based dependency for critical actions. Inference should show its basis and allow correction. Keep original reports even when related/duplicate. Social content, if eventually integrated, needs source/time/reliability and human review; current social code is partial and was preserved, not treated as deployed monitoring. Update after this audit: the demo feed on the Event signals screen labels its posts as synthetic and unverified, and importing them creates advisory observations for review only.
 
 ## 15. Accessibility and mobile interaction
 
@@ -201,7 +201,7 @@ Shared compact targets are 40px in browser; native interactive rectangles should
 3. AI provenance, explicit candidate review/manual editing/verification, meaningful failure states and grounded procedures.
 4. Human approval of safety responses, eligibility/coverage feasibility, dispatch acknowledgment and operational history.
 5. Manager gates/server permissions, join preview and normal button/field basics.
-6. Existing event-creation progression, map/list/site data, volunteer schedule/check-in and partially integrated social modules. Nothing was removed.
+6. Existing event-creation progression, map/list/site data, volunteer schedule/check-in and partially integrated social modules (since routed as the Event signals demo feed). Nothing was removed.
 
 ## 17. Proposed information architecture
 

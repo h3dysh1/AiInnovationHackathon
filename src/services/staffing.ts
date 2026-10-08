@@ -201,8 +201,6 @@ export const liveSnapshot = (id: string) =>
   setupRpc<LiveSnapshot>('live_event_snapshot', { p_event_id: id });
 export const intelligenceSnapshot = (id: string) =>
   setupRpc<IntelligenceSnapshot>('intelligence_snapshot', { p_event_id: id });
-export const analyzeIncident = (id: string) => setupRpc<unknown>('analyze_incident', { p_incident_id: id });
-export const correlateIncident = (id: string) => setupRpc<unknown>('correlate_incident', { p_incident_id: id });
 export const detectRisk = (id: string) => setupRpc<unknown>('request_event_intelligence', { p_event_id: id });
 export const proposeResponse = (incidentId?: string, riskId?: string) =>
   setupRpc<unknown>('propose_response', { p_incident_id: incidentId ?? null, p_risk_id: riskId ?? null });

@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { router } from 'expo-router';
 import { Button, Disclosure, Notice, Page, Section, Title } from '@/components/ui';
 import { AppText as Text } from '@/components/app-text';
 import { useAuth } from '@/hooks/auth';
 import { useNavigationContext } from '@/hooks/navigation';
+import { usePolling } from '@/hooks/polling';
 import { useStaffing } from '@/hooks/staffing';
 import { useOperations } from '@/hooks/operations';
 import { myNotifications, notificationDestination, pushTestStatus, readNotification, requestPushTest, type PushTestDelivery } from '@/services/notifications';
@@ -21,21 +22,13 @@ export default function NotificationsInbox() {
   const [pushTest, setPushTest] = useState<{ notificationId: string; deliveries: PushTestDelivery[] } | null>(null);
   const pushTestId = pushTest?.notificationId;
   const { refresh } = s;
-  useEffect(() => {
-    const timer = setInterval(() => { void refresh(); }, 15000);
-    return () => clearInterval(timer);
-  }, [refresh]);
-  useEffect(() => {
+  usePolling(refresh, 15000);
+  const refreshPushTest = useCallback(async () => {
     if (!pushTestId) return;
-    const poll = () => {
-      void pushTestStatus(pushTestId)
-        .then(deliveries => setPushTest(previous => previous ? { ...previous, deliveries } : previous))
-        .catch(() => {});
-    };
-    poll();
-    const timer = setInterval(poll, 5000);
-    return () => clearInterval(timer);
+    const deliveries = await pushTestStatus(pushTestId);
+    setPushTest(previous => previous?.notificationId === pushTestId ? { ...previous, deliveries } : previous);
   }, [pushTestId]);
+  usePolling(refreshPushTest, 5000, Boolean(pushTestId));
   return <Page>
     <Title subtitle='Reports, instructions and updates across your events.'>Notifications</Title>
     {s.error ? <Notice tone='error' message={s.error} /> : null}

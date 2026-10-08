@@ -26,7 +26,7 @@ Preserve operational complexity, but reveal it when relevant. Every screen owns 
 
 Authoritative structure: Organisation → Event → Location → Post → requirements/operating windows. No separate zone entity exists. AI can interpret conversational precinct/zone names into reviewable Locations; do not add another hierarchy layer by assumption.
 
-The repository contains setup description/documents/map, AI extraction and clarification, candidate review/manual correction/verification, recruitment, reusable profiles/certifications, event availability, deterministic roster generation/publication, check-ins, incident receipt/intelligence, human-approved dispatch and closeout. Social-signal processor/mock posts are preserved but have no routed UI or live ingestion integration. Actual behavior and acceptance limitations are documented separately in roadmap.md and IMPLEMENTATION_AUDIT.md.
+The repository contains setup description/documents/map, AI extraction and clarification, candidate review/manual correction/verification, recruitment, reusable profiles/certifications, event availability, deterministic roster generation/publication, check-ins, incident receipt/intelligence, human-approved dispatch and closeout. The social-signal processor and mock posts appear as a demo feed on the Event signals screen, where a manager can import them as advisory observations; there is no live social ingestion. Actual behavior and acceptance limitations are documented separately in roadmap.md and IMPLEMENTATION_AUDIT.md.
 
 ## Safety and evidence
 

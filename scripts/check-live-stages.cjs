@@ -3,7 +3,7 @@ const path = require('node:path');
 const assert = require('node:assert/strict');
 const Module = require('node:module');
 const ts = require('typescript');
-const { PGlite } = require(process.env.PGLITE_MODULE || '/tmp/ground-control-validation/node_modules/@electric-sql/pglite');
+const { PGlite } = require(process.env.PGLITE_MODULE || '@electric-sql/pglite');
 const root = path.resolve(__dirname, '..');
 const fixtureFile = path.join(__dirname, 'demo-fixture.ts');
 const fixture = new Module(fixtureFile, module);
@@ -66,16 +66,29 @@ const { demo, demoSql, certificatePdf } = fixture.exports;
     await db.query('select public.retry_incident_processing($1)',[first.id]);
     await asWorker();job=(await one('select public.claim_incident_processing($1) as j',[first.id])).j;await advance(job,[],[risk]);
     await asUser(ids[0]);snap=(await one('select public.intelligence_snapshot($1) as s',[demo.eventId])).s;assert.equal(snap.risks.length,1,'Risk refresh updates active risk');
+    assert.equal(snap.responses.length,2,'One draft per incident and risk; retries do not duplicate drafts');
+    assert.ok(snap.responses.every(r=>r.status==='proposed'),'Automatic drafting does not approve responses');
+    await assert.rejects(()=>db.query('select public.queue_incident_response($1)',[first.id]),/permission denied/);
     const plan=(await one('select public.propose_response($1,null) as p',[first.id])).p;
-    await asWorker();let responseJob=(await one('select public.claim_response_processing() as j')).j;
-    assert.equal(responseJob.planning_stage,'retrieve');
-    const context=(await one('select public.response_ai_context($1) as c',[plan.id])).c;
-    await assert.rejects(()=>db.query('select public.finish_response_retrieval($1,$2,$3)',[plan.id,responseJob.processing_attempt,JSON.stringify(['a0000000-0000-4000-8000-000000000099'])]),/Unknown event procedure/);
-    await db.query('select public.finish_response_retrieval($1,$2,$3)',[plan.id,responseJob.processing_attempt,JSON.stringify([context.procedures[0].id])]);
-    responseJob=(await one('select public.claim_response_processing() as j')).j;assert.equal(responseJob.planning_stage,'draft');
-    await db.query('select public.finish_response_processing($1,$2,$3,null)',[plan.id,responseJob.processing_attempt,JSON.stringify({title:'Grounded support',rationale:'Reviewed procedure',targetLocationId:demo.locationId,instruction:'Confirm with Mo',actions:['Assess with Mo'],resources:[{label:'First Aid',count:1,certificationType:'HLTAID011',experienceRequirement:null}],procedureIds:[context.procedures[0].id]})]);
+    assert.ok(snap.responses.some(r=>r.id===plan.id),'Manual request reuses the incident draft');
+    await asWorker();
+    const completed=new Set();
+    for(let step=0;step<4;step++) {
+      const responseJob=(await one('select public.claim_response_processing() as j')).j;
+      assert.ok(responseJob,'Both queued drafts progress through retrieval and drafting');
+      const context=(await one('select public.response_ai_context($1) as c',[responseJob.id])).c;
+      if(responseJob.planning_stage==='retrieve') {
+        await assert.rejects(()=>db.query('select public.finish_response_retrieval($1,$2,$3)',[responseJob.id,responseJob.processing_attempt,JSON.stringify(['a0000000-0000-4000-8000-000000000099'])]),/Unknown event procedure/);
+        await db.query('select public.finish_response_retrieval($1,$2,$3)',[responseJob.id,responseJob.processing_attempt,JSON.stringify([context.procedures[0].id])]);
+      } else {
+        assert.equal(responseJob.planning_stage,'draft');
+        await db.query('select public.finish_response_processing($1,$2,$3,null)',[responseJob.id,responseJob.processing_attempt,JSON.stringify({title:'Grounded support',rationale:'Reviewed procedure',targetLocationId:demo.locationId,instruction:'Confirm with Mo',actions:['Assess with Mo'],resources:[{label:'First Aid',count:1,certificationType:'HLTAID011',experienceRequirement:null}],procedureIds:[context.procedures[0].id]})]);
+        completed.add(responseJob.id);
+      }
+    }
+    assert.equal(completed.size,2);
     await asUser(ids[0]);snap=(await one('select public.intelligence_snapshot($1) as s',[demo.eventId])).s;
-    assert.equal(snap.responses[0].processing_status,'complete');assert.equal(snap.responses[0].procedure_ids[0],context.procedures[0].id);
+    assert.ok(snap.responses.every(r=>r.processing_status==='complete' && r.procedure_ids.length===1 && r.status==='proposed'));
     console.log('Durable AI stages, retry from saved progress, relationship integrity, risk idempotence and validated procedure retrieval/drafting passed.');
   } finally { await db.close(); }
 })().catch(error => { console.error(error.message); console.error(error.query ?? error.stack); process.exitCode = 1; });

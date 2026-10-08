@@ -12,3 +12,6 @@ export async function preserveIncidentAudio(uri: string, _requestId: string): Pr
     reader.readAsDataURL(blob);
   });
 }
+
+// Web recordings live inside the queue entry itself, so there is no file to remove.
+export function releaseIncidentAudio(_requestId: string): void {}
