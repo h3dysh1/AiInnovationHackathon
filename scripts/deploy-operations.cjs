@@ -28,7 +28,7 @@ async function main() {
     to_regclass('vault.decrypted_secrets') is not null as vault,
     to_regnamespace('cron') is not null as cron` });
   if (!Object.values(check[0] ?? {}).every(Boolean)) throw new Error('Required deployed schema is unavailable. No migrations applied.');
-  for (const name of ['202610080029_operational_notifications.sql', '202610080030_external_signals.sql', '202610080031_roster_rest_rules.sql']) {
+  for (const name of ['202610080029_operational_notifications.sql', '202610080030_external_signals.sql', '202610080031_roster_rest_rules.sql', '202610080034_certificate_attention.sql']) {
     await api('/database/query', { query: fs.readFileSync(path.join(root, 'supabase/migrations', name), 'utf8') });
     console.log(`Applied ${name}.`);
   }

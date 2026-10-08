@@ -899,6 +899,8 @@ AI may extract:
 
 AI does NOT make the authoritative operational validity decision.
 
+Every extracted certificate requires coordinator/safety-lead approval of its original evidence before it counts toward staffing. Deterministic event-date warnings proactively notify event managers, including certificates expiring before or during the event and unknown expiry. Approval confirms evidence review; it cannot override full-event validity. Recalculate warnings when certificate facts, event dates or membership change, retain notification/review history, and preserve originals when processing fails.
+
 Deterministic logic should check:
 
 -   whether the credential type satisfies the requirement

@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/auth';
 import { useStaffing } from '@/hooks/staffing';
 import {
   certificateValidity,
+  certificateDateWarnings,
   type Certification,
   validateCertificateFields,
 } from '@/domain/certification';
@@ -42,6 +43,7 @@ function Review({ id }: { id: string }) {
   const [never, setNever] = useState(false);
   const [note, setNote] = useState('');
   if (s.loading) return <Loading />;
+  const pendingCount = s.data?.crew.flatMap(m => m.certifications).filter(c => ['uploaded', 'processing', 'requires_review', 'failed'].includes(c.status)).length ?? 0;
   const select = (c: Certification) => {
     setSelected(c);
     setFields({
@@ -84,10 +86,11 @@ function Review({ id }: { id: string }) {
     });
   return (
     <Page>
-      <Title subtitle='Review original evidence before confirming. Qualifications must cover the whole event.'>
+      <Title subtitle='Every certificate needs human approval. Review the original evidence; qualifications must cover the whole event.'>
         Crew qualifications
       </Title>
       {s.error && <Notice tone="error" message={s.error} />}
+      {s.data ? <Notice message={`${pendingCount} certificate${pendingCount === 1 ? '' : 's'} awaiting approval or processing. Date warnings remain in force after approval.`} /> : null}
       {selected && (
         <PlanCard>
           <Text style={planStyles.heading}>Review {selected.title}</Text>
@@ -109,6 +112,8 @@ function Review({ id }: { id: string }) {
               placeholder={k.endsWith('At') ? 'YYYY-MM-DD' : ''}
             />
           ))}
+          {s.data ? certificateDateWarnings({ issued_at: fields.issuedAt || null, expires_at: fields.expiresAt || null, never_expires: never }, s.data.event.start_date, s.data.event.end_date).map(warning => <Notice key={warning} tone='warning' message={warning} />) : null}
+          <Text style={planStyles.help}>Approval confirms your review of the evidence. A certificate with a date warning still cannot satisfy this event’s staffing requirements.</Text>
           <Button
             title={never ? '✓ No expiry confirmed' : 'Confirm certificate has no expiry'}
             secondary
@@ -119,7 +124,7 @@ function Review({ id }: { id: string }) {
           />
           <Field label='Review notes (required)' value={note} onChangeText={setNote} multiline />
           <Button
-            title='Confirm qualification'
+            title='Approve certificate after review'
             disabled={s.pending || !note.trim()}
             onPress={() => {
               void review(true);
@@ -169,7 +174,9 @@ function Review({ id }: { id: string }) {
           {m.certifications.map((c) => (
             <PlanCard key={c.id}>
               <Text>{c.title} · {c.status.replaceAll('_', ' ')}</Text>
-              <Text>{c.type ?? 'Type unknown'} · Expiry: {c.expires_at ?? 'Unknown'}</Text>
+              <Text>{c.type ?? 'Type unknown'} · Expiry: {c.expires_at ?? (c.never_expires ? 'No expiry confirmed' : 'Unknown')}</Text>
+              <Text>{c.reviewed_at ? `Human ${c.status === 'rejected' ? 'rejection' : 'review'} recorded ${new Date(c.reviewed_at).toLocaleDateString()}` : 'Awaiting human approval'}</Text>
+              {certificateDateWarnings(c, s.data!.event.start_date, s.data!.event.end_date).map(warning => <Notice key={warning} tone='warning' message={`${warning}${c.status === 'requires_review' ? ' Extracted details need checking against the original.' : ''}`} />)}
               <Text>
                 {certificateValidity(c, s.data!.event.start_date, s.data!.event.end_date) ??
                   'Valid for this full event'}

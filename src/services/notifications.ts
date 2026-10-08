@@ -17,7 +17,8 @@ export const pushTestStatus = (notificationId: string) => setupRpc<PushTestDeliv
 export function notificationDestination(notification: Pick<OperationalNotification, 'kind' | 'audience' | 'event_id'>) {
   if (!/^[\da-f]{8}(-[\da-f]{4}){3}-[\da-f]{12}$/i.test(notification.event_id)) return null;
   return {
-    pathname: notification.kind === 'roster' ? '/events/[id]/schedule' as const
+    pathname: notification.kind === 'certificate' && notification.audience === 'manager' ? '/events/[id]/qualifications' as const
+      : notification.kind === 'roster' ? '/events/[id]/schedule' as const
       : notification.audience === 'manager' ? '/events/[id]/live' as const : '/events/[id]' as const,
     params: { id: notification.event_id },
   };

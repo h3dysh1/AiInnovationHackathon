@@ -70,7 +70,7 @@ module.exports = async ({ db, event, vol, mo, other, asUser, one, query, rejects
   await asUser(vol);
   assert.equal(
     (await one('select status from public.certifications where id=$1', [cert])).status,
-    'verified',
+    'requires_review',
   );
   for (
     const scenario of [{ holderName: 'Someone else', confidence: .99, status: 'requires_review' }, {
@@ -119,6 +119,19 @@ module.exports = async ({ db, event, vol, mo, other, asUser, one, query, rejects
   assert.equal((await query('select * from public.certifications where id=$1', [cert])).length, 0);
   await rejects('select public.event_crew_context($1)', [event], /unavailable/);
   await asUser(mo);
+  let notices = (await one('select public.my_notifications() as n')).n.filter(n => n.kind === 'certificate' && n.source_id === cert);
+  assert.equal(notices.length, 1, 'Extraction proactively flags Mo');
+  assert.match(notices[0].body, /Expires.*during the event/);
+  assert.match(notices[0].body, /Human approval required/);
+  assert.equal(notices[0].read_at, null);
+  await rejects('select public.refresh_event_certificate_attention($1)', [event], /permission denied/);
+  await rejects('select * from public.certificate_attention_state', [], /permission denied/);
+  // A human may verify evidence, but cannot waive whole-event validity.
+  await db.query('select public.review_certification($1,$2,false,true,$3)', [cert, JSON.stringify(fields), 'Reviewed original evidence. Expiry is during the event.']);
+  assert.equal((await one('select status from public.certifications where id=$1', [cert])).status, 'verified');
+  notices = (await one('select public.my_notifications() as n')).n.filter(n => n.kind === 'certificate' && n.source_id === cert && !n.read_at);
+  assert.equal(notices.length, 1, 'Approval leaves the expiry warning active');
+  assert.match(notices[0].body, /during the event/);
   const revision =
     (await one('select setup_revision from public.events where id=$1', [event])).setup_revision;
   const roster = randomUUID();
@@ -191,6 +204,7 @@ module.exports = async ({ db, event, vol, mo, other, asUser, one, query, rejects
     JSON.stringify(fields),
     'Original confirms expiry 31 December 2027.',
   ]);
+  assert.equal((await one('select public.my_notifications() as n')).n.filter(n => n.kind === 'certificate' && n.source_id === cert && !n.read_at).length, 0, 'Correcting and approving clears certificate attention, retains history');
   ready = (await one('select public.get_roster_readiness($1) as r', [roster])).r;
   assert.equal(ready.ready, true, JSON.stringify(ready.issues));
   const context = (await one('select public.get_roster_context($1) as c', [roster])).c;

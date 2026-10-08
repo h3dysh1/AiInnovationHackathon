@@ -454,6 +454,7 @@ const { PGlite } = require(
   console.log(
     'Riverside extraction → review → verification → publish → join, retries, rollback, stale changes, original retention and role isolation passed.',
   );
+  await require('./certificate-attention-database-scenarios.cjs')({ db, event, vol, mo, other, asUser, one, query, rejects });
   await db.close();
 })().catch((e) => {
   console.error(e.message);

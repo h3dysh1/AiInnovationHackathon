@@ -53,7 +53,7 @@ export default function NotificationsInbox() {
       {!s.data?.notifications.length ? <Notice message={s.loading ? 'Loading event updates…' : 'No notifications yet. New reports and approved instructions will appear here.'} /> : null}
       {s.data?.notifications.map(n => <Section key={n.id} title={`${n.urgent ? 'Urgent · ' : ''}${n.title}`} description={`${n.event_name} · ${new Date(n.created_at).toLocaleString()}${n.read_at ? ' · Read' : ' · Unread'}`}>
         <Text style={planStyles.text}>{n.body}</Text>
-        <Button title='Open event' secondary={Boolean(n.read_at)} onPress={() => {
+        <Button title={n.kind === 'certificate' ? 'Review qualifications' : 'Open event'} secondary={Boolean(n.read_at)} onPress={() => {
           const destination = notificationDestination(n);
           if (destination) router.push(destination);
           void readNotification(n.id).then(refreshCount).catch(() => { /* A receipt failure must not block investigation. It remains unread for retry. */ });

@@ -136,6 +136,21 @@ test('event dates require whole-event validity, known expiry or human no-expiry 
     null,
   );
 });
+test('certificate date warnings remain visible before human approval', () => {
+  const c = { ...fixture().crew[0].certifications[0], status: 'requires_review', expires_at: '2026-12-03' };
+  assert.equal(cert.certificateValidity(c, '2026-12-12', '2026-12-14'), 'Requires verification');
+  assert.match(cert.certificateDateWarnings(c, '2026-12-12', '2026-12-14')[0], /Expires 2026-12-03, before.*2026-12-12/);
+  assert.match(cert.certificateDateWarnings({ ...c, expires_at: '2026-12-13' }, '2026-12-12', '2026-12-14')[0], /during the event/);
+  assert.match(cert.certificateDateWarnings({ ...c, expires_at: null }, '2026-12-12', '2026-12-14')[0], /unknown/);
+  assert.equal(cert.certificateDateWarnings({ ...c, expires_at: null, never_expires: true }, '2026-12-12', '2026-12-14').length, 0);
+});
+test('certificate alerts take managers to qualifications; malformed event references are rejected', () => {
+  const notifications = load('src/services/notifications.ts', { './planning': {} });
+  const base = { event_id: '11111111-1111-4111-8111-111111111111', kind: 'certificate', audience: 'manager' };
+  assert.equal(notifications.notificationDestination(base).pathname, '/events/[id]/qualifications');
+  assert.equal(notifications.notificationDestination({ ...base, audience: 'volunteer' }).pathname, '/events/[id]');
+  assert.equal(notifications.notificationDestination({ ...base, event_id: 'bad' }), null);
+});
 test('four total includes one qualified volunteer rather than adding a fifth seat', () => {
   const c = fixture(), r = rules.generateRoster(c);
   assert.equal(r.complete, true);

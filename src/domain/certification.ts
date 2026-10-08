@@ -107,6 +107,19 @@ export function certificateValidity(
   if (c.expires_at && c.expires_at < end) return 'Expires during event';
   return null;
 }
+// Date warnings stay visible even while evidence awaits human approval.
+export function certificateDateWarnings(
+  c: Pick<Certification, 'issued_at' | 'expires_at' | 'never_expires'>,
+  start: string,
+  end: string,
+): string[] {
+  const warnings: string[] = [];
+  if (c.issued_at && c.issued_at > start) warnings.push(`Issued ${c.issued_at}, after the event starts on ${start}.`);
+  if (!c.expires_at && !c.never_expires) warnings.push('Expiry is unknown. Check the original before approving.');
+  if (c.expires_at && c.expires_at < start) warnings.push(`Expires ${c.expires_at}, before the event starts on ${start}.`);
+  else if (c.expires_at && c.expires_at < end) warnings.push(`Expires ${c.expires_at}, during the event (${start} to ${end}).`);
+  return warnings;
+}
 const nullable = { type: ['string', 'null'] };
 export const certificateSchema = {
   type: 'object',

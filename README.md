@@ -117,9 +117,12 @@ npx tsc --noEmit
 node scripts/check-site-geometry.cjs
 node --test scripts/check-map-services.cjs scripts/check-setup-ai.cjs
 node scripts/check-setup-database.cjs
+node --test scripts/check-staffing.cjs scripts/check-staffing-workers.cjs
 ```
 
 The database test uses PGlite in `/tmp/ground-control-validation/node_modules/@electric-sql/pglite`, or the package path specified by `PGLITE_MODULE`. It applies the actual migrations against local Postgres with Supabase Auth/Storage schema stubs. It checks migration reruns, creator membership, Riverside extraction/application/review/publishing/joining, private originals, raw answer retention after AI failure, stale proposals, coverage constraints and coordinator/safety-lead/volunteer isolation. Storage network behaviour and a live Gemini response still require the hosted services.
+
+Certificate extraction now always awaits human approval. Certificate-date warnings and review requests notify active event coordinators/safety leads through the in-app inbox and notification badge. Event-date changes, certificate corrections and joining recalculate attention; approval cannot waive full-event validity. Earlier automatic acceptances without a human review record return to review, preserving evidence/history. The focused deployment is `node scripts/deploy-certificate-attention.cjs` (Ground Control only, migrations 029 if needed and 034). Device push delivery depends on the existing configured mobile build/operations worker; certificate attention remains available in-app without push or AI. Local database scenarios also cover warning recurrence, deduplication, resolution and role isolation.
 
 The backend is independently checked using `deno check --config supabase/functions/deno.json supabase/functions/setup-ai/index.ts`. The Expo TypeScript config excludes server-only files intentionally. `npx expo export --platform all` checks Android, iOS and web bundle compatibility. These checks do not replace testing real phone taps or document selection on a device.
 
