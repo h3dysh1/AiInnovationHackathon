@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { EventManagerGate } from '@/components/event-manager-gate';
 import { Button, Disclosure, Field, Notice, Page, Section, Title } from '@/components/ui';
 import { AppText as Text } from '@/components/app-text';
 import { planStyles } from '@/components/plan-ui';
+import { usePolling } from '@/hooks/polling';
 import { useStaffing } from '@/hooks/staffing';
 import { eventSignals, importDemoSocial, refreshWeather } from '@/services/event-signals';
 import { setupRpc } from '@/services/planning';
@@ -28,10 +29,7 @@ function Signals({ eventId }: { eventId: string }) {
   const heat = heatEdit ?? String(s.data?.settings?.heat_threshold ?? 35), gust = gustEdit ?? String(s.data?.settings?.gust_threshold ?? 60);
   const picked = { latitude: Number(latitude), longitude: Number(longitude) };
   const { refresh } = s;
-  useEffect(() => {
-    const timer = setInterval(() => { void refresh(); }, 15000);
-    return () => clearInterval(timer);
-  }, [refresh]);
+  usePolling(refresh, 15000);
   return <Page>
     <Title subtitle='Advisory context for human operational decisions.'>Event signals</Title>
     {s.error ? <Notice tone='error' message={s.error} /> : null}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { AppText as Text } from '@/components/app-text';
@@ -8,6 +8,7 @@ import { EventManagerGate } from '@/components/event-manager-gate';
 import { CameraCard, CrowdLegend, CrowdMap } from '@/components/crowd-map';
 import { secondsAgo } from '@/domain/crowd';
 import { useSiteMap } from '@/hooks/site-map';
+import { usePolling } from '@/hooks/polling';
 import { useStaffing } from '@/hooks/staffing';
 import { crowdSnapshot } from '@/services/crowd';
 import { proposeResponse } from '@/services/staffing';
@@ -26,13 +27,10 @@ function CrowdDashboard({ id }: { id: string }) {
   const [drafted, setDrafted] = useState<string[]>([]);
   const [now, setNow] = useState(() => Date.now());
   const { refresh } = s;
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setNow(Date.now());
-      void refresh();
-    }, REFRESH_MS);
-    return () => clearInterval(timer);
-  }, [refresh]);
+  usePolling(useCallback(() => {
+    setNow(Date.now());
+    return refresh();
+  }, [refresh]), REFRESH_MS);
   if (s.loading) return <Loading label='Loading crowd cameras…' />;
   const snapshot = s.data;
   const covered = snapshot?.locations.filter((l) => l.latest) ?? [];
